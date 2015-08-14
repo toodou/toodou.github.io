@@ -1,18 +1,28 @@
+@font face{
+    font-family: "youngGirl";
+    src:url("DFFN_H3.TTC");
+}
+.youngGirlType{
+    font-family: "youngGirl";
+    font-size: 20pt;
+}
 .nav {
-	z-index: 5;
+	z-index: 1;
     width: 50%;
     height: 50px;
-    margin: auto;
-    /*background-color: #9A5927;
+    background-color: #9A5927;
     width: 100%;
     position: absolute;
-    top:0px;
+    margin: auto;
+    margin-left: 35%;
+    /*top:0px;
     left:0px;*/
 }
 .rowbar{
-	z-index: 6;
+	z-index: 1;
 	background-color: #9A5927;
 	height: 50px;
+    /*position: fixed;*/
 }
 
 ul li {
