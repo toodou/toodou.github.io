@@ -1,0 +1,97 @@
+.nav {
+    font-family: "華康娃娃體";
+}
+
+#designBackground {
+    font-size: 20pt;
+    font-family: "華康正顏楷體W5";
+}
+
+#storyStart {
+    font-size: 20pt;
+    font-family: "華康正顏楷體W5";
+}
+
+#prettyBread {
+    font-size: 20pt;
+    font-family: "華康正顏楷體W5";
+}
+
+#creamBread {
+    font-size: 20pt;
+    font-family: "華康正顏楷體W5";
+}
+
+#burnBread {
+    font-size: 20pt;
+    font-family: "華康正顏楷體W5";
+}
+
+#coatBread {
+    font-size: 20pt;
+    font-family: "華康正顏楷體W5";
+}
+
+#frenchBread {
+    font-size: 20pt;
+    font-family: "華康正顏楷體W5";
+}
+
+#blackSugar {
+    font-size: 20pt;
+    font-family: "華康正顏楷體W5";
+}
+
+h2 {
+    font-size: 20pt;
+    font-family: "華康正顏楷體W5";
+    color: white;
+    background-color: #B89705;
+}
+
+#tableContext {
+    margin: auto;
+    width: 1200px;
+    text-align: justify;
+}
+
+.paraPTable {
+    font-family: "華康娃娃體";
+    font-size: 14pt;
+    text-align: justify;
+    background-color: lightgreen;
+    height: 123px;
+}
+
+.paraPContext {
+    font-family: "華康娃娃體";
+    font-size: 14pt;
+    border-width: 2px;
+    border-color: #AE5104;
+    border-style: dashed;
+}
+
+#bk {
+    margin: auto;
+    width: 1200px;
+}
+
+h4 {
+    background-color: #9A5927;
+    color: white;
+}
+
+.tableBorder {
+    border-width: 2px;
+    border-color: #0B1ADE;
+    border-style: dashed;
+}
+
+.code {
+	margin-top: 20px;
+    font-size: 20pt;
+    font-family: 'Calligraffitti', cursive;
+    font-weight: bolder;
+    text-decoration: none;
+    color: black;
+}

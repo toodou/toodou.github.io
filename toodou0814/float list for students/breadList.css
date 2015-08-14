@@ -1,27 +1,20 @@
-@font face{
-    font-family: "youngGirl";
-    src:url("DFFN_H3.TTC");
-}
-.youngGirlType{
-    font-family: "youngGirl";
-    font-size: 20pt;
-}
 .nav {
-	z-index: 1;
+    z-index: 1;
     width: 50%;
-    height: 50px;
+    height: 70px;
     background-color: #9A5927;
     width: 100%;
     position: absolute;
     margin: auto;
-    margin-left: 35%;
+    margin-left: 23%;
     /*top:0px;
     left:0px;*/
 }
-.rowbar{
-	z-index: 1;
-	background-color: #9A5927;
-	height: 50px;
+
+.rowbar {
+    z-index: 1;
+    background-color: #9A5927;
+    height: 70px;
     /*position: fixed;*/
 }
 
@@ -29,10 +22,11 @@ ul li {
     float: left;
     display: block;
     background-color: #9A5927;
-    width: 150px;
+    width: 200px;
     text-align: center;
-    line-height: 50px;
-    font-size: 14pt;
+    line-height: 70px;
+    font-size:25pt;
+    margin-left: 30px;
 }
 
 ul li a {
@@ -42,6 +36,7 @@ ul li a {
 
 ul li ul {
     display: none;
+    margin-left: -30px;
 }
 
 ul li:hover ul {
