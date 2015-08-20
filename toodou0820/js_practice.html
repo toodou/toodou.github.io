@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>toodou0820</title>
+    <link rel="stylesheet" type="text/css" href="js_practice.css">
+</head>
+
+<body>
+
+<div class="title">TooDou0820 Pratice Code</div>
+    <div class="row">
+        <div class="col">
+            <h2>First Practice</h2>
+            <p>
+                <div class="code">
+                    <div class="subtitle">Code</div>
+                    <script type="text/javascript">
+                    document.write(
+                        "var i,total;<br>\
+					total=0;<br>\
+					for(i=3; i<104; i+=2){<br>\
+  						total+=i;<br>\
+  						document.write(total);<br>\
+					}<br>\
+				");
+                    </script>
+                </div>
+                <br>
+                <div class="result">
+                    <div class="subtitle">Result
+                    </div>
+                    <script type="text/javascript" src="sum1to103.js"></script>
+                </div>
+            </p>
+        </div>
+        <div class="col">
+            <h2>Second Practice</h2>
+            <p>
+                <div class="code">
+                    <div class="subtitle">Code</div>
+                    <script type="text/javascript">
+                    document.write("\
+                    	var j=3;<br>\
+						var t2=0;<br>\
+						var count=0;<br>\
+						while(j<1000){<br>\
+						  t2+=j;<br>\
+						  j+=2;<br>\
+						  count+=1;<br>\
+						  document.write("+"'"+"Write number j "+"'"+"+"+"t2"+");<br>\
+						  document.write("+"'"+"Count number j "+"'"+"+"+"count"+");<br>\
+						}<br>\
+					");
+					</script>
+                </div>
+                <br>
+                <div class="result">
+                    <div class="subtitle">Result</div>
+                    <script type="text/javascript" src="sum1to103below1000.js"></script>
+                </div>
+            </p>
+        </div>
+        <div class="col">
+            <h2>Third Practice</h2>
+            <p>
+                <div class="code">
+                    <div class="subtitle">Code</div>
+                    <script type="text/javascript">
+                    document.write("\
+						var ans  =1452;<br>\
+						var guess=4258;<br>\
+						document.write("+"'"+"Answer number is "+"'"+"+ans"+");<br>\
+						document.write("+"'"+"Guess number is "+"'"+"+guess"+"));<br>\
+						var ansS =ans.toString();<br>\
+						var guessS=guess.toString();<br>\
+						var ansSL =ans.toString().length;<br>\
+						var guessSL=guess.toString().length;<br>\
+						countA=0;<br>\
+						countB=0;<br>\
+						var i,j;<br>\
+						document.write("+"'"+"ansSL length="+"'"+"+ansSL"+");<br>\
+						document.write("+"'"+"guessSL length="+"'"+"+guessSL"+");<br>\
+						for (i=0; i<=ansSL;i++){<br>\
+						  for (j=0; j<guessSL;j++){<br>\
+						    //a condition<br>\
+						    if(i==j && ansS[i]==guessS[j]){<br>\
+						      countA+=1;<br>\
+						      document.write(countA+"+"'"+"A"+"'"+"+countB+"+"'"+"B"+"'"+");<br>\
+						    }else if(ansS[i]==guessS[j]){<br>\
+						      countB+=1;<br>\
+						      document.write(countA+"+"'"+"A"+"'"+"+countB+"+"'"+"B"+"'"+");<br>\
+						    }<br>\
+						  }<br>\
+						}<br>\
+						document.write("+"'"+"Final: "+"'"+"+countA+"+"'"+"A"+"'"+"+countB+"+"'"+"B"+"'"+");<br>\
+                    ");
+                    </script>
+                </div>
+                <br>
+                <div class="result">
+                    <div class="subtitle">Result</div>
+                    <script type="text/javascript" src="guessNumber.js"></script>
+                </div>
+            </p>
+        </div>
+        <div class="col">
+            <h2>Fourth Practice</h2>
+            <p>
+                <div class="code">
+                    <div class="subtitle">Code</div>
+                    <script type="text/javascript">
+                    document.write("\
+						var ans  =prompt("+"'"+"plz tell me your wondering number!"+"'"+");<br>\
+						var guess=prompt("+"'"+"plz guess now!"+"'"+");<br>\
+						//var ans  =1452;<br>\
+						//var guess=4258;<br>\
+						document.write("+"'"+"Answer number is "+"'"+"+ans"+");<br>\
+						document.write("+"'"+"Guess number is "+"'"+"+guess"+"));<br>\
+						var ansS =ans.toString();<br>\
+						var guessS=guess.toString();<br>\
+						var ansSL =ans.toString().length;<br>\
+						var guessSL=guess.toString().length;<br>\
+						countA=0;<br>\
+						countB=0;<br>\
+						var i,j;<br>\
+						document.write("+"'"+"ansSL length="+"'"+"+ansSL"+");<br>\
+						document.write("+"'"+"guessSL length="+"'"+"+guessSL"+");<br>\
+						for (i=0; i<=ansSL;i++){<br>\
+						  for (j=0; j<guessSL;j++){<br>\
+						    //a condition<br>\
+						    if(i==j && ansS[i]==guessS[j]){<br>\
+						      countA+=1;<br>\
+						      document.write(countA+"+"'"+"A"+"'"+"+countB+"+"'"+"B"+"'"+");<br>\
+						    }else if(ansS[i]==guessS[j]){<br>\
+						      countB+=1;<br>\
+						      document.write(countA+"+"'"+"A"+"'"+"+countB+"+"'"+"B"+"'"+");<br>\
+						    }<br>\
+						  }<br>\
+						}<br>\
+						document.write("+"'"+"Final: "+"'"+"+countA+"+"'"+"A"+"'"+"+countB+"+"'"+"B"+"'"+");<br>\
+                    ");
+                    </script>
+                </div>
+                <br>
+                <div class="result">
+                    <div class="subtitle">Result</div>
+                    <script type="text/javascript" src="guessNumber2.js"></script>
+                </div>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>
