@@ -1,0 +1,25 @@
+/* Mobile Device small size */
+
+@media screen and ( min-width:768px) and ( max-width: 991px) {
+    .col-3 {
+        width: 100%;
+    }
+}
+
+
+/* Medium Device medium size */
+
+@media screen and ( min-width:992px) and ( max-width: 1023px) {
+    .col-3 {
+        width: 40%;
+    }
+}
+
+
+/* Desktop Device large size */
+
+@media screen and ( min-width:1024px) {
+    .col-3 {
+        width: 16%;
+    }
+}

@@ -1,0 +1,22 @@
+#header01{
+	box-sizing:border-box;
+	font-size: 20pt;
+	font-style: italic;
+	background-repeat: no-repeat;
+	background-color: #00D3FF;
+	border-radius: 10%;
+	padding: 10px;
+}
+/*選取所有href以https開頭的a*/
+a[href^="https"]{
+	font-size: 14pt;
+	color: green;
+	}
+/*選取所有href以.pdf結尾的a*/
+a[href$="html"]{
+	font-weight: lighter;
+}
+/*選取所有href包含ntu的a*/
+a[href*=”ntu”]{
+	font-style: oblique;
+}

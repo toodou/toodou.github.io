@@ -1,0 +1,59 @@
+* {
+    box-sizing: border-box;
+}
+
+[class*="col-"] {
+    float: left;
+    padding: 2%;
+    width: 16%;
+    text-align: center;
+    margin: 0.2%;
+}
+
+
+/*在這一個部份時，我們要設定/row:after，表示在row下面
+的class或是div之類的元素不會受到上層row的影響，所以我
+們寫了一行叫做clear:both，除此之外，我們設定了display
+為block，是在將row下面的所有元素變成獨立的一個element
+，如果顯示出來就很像是獨立的div一樣的感覺。*/
+
+.row:after {
+    /*content: "";*/
+    clear: both;
+    display: block;
+}
+
+
+/*在最外層加上去一個CONTAINER，在他的位置設計為相對的
+，因為這樣的話他的實際位置都還是在第一行第一列的位置，
+之後再不同視窗大小調整內容時，際會一路排下去，因為他的
+起始位置是一樣的，加上剛剛在前面有設定他的FLOAT的屬性
+已經設定為LEFT向左排列!*/
+
+.container {
+    position: relative;
+}
+
+
+/*define different size of visionb*/
+
+@media screen and(min width) {
+    col-1
+}
+
+img {
+    max-width: 100%;
+}
+
+img[src*=".png"] {
+    border: 3px dashed red;
+    border-radius: 50%;
+}
+
+a[href^="http"]:after {
+    content: "I am real";
+}
+
+h4:after {
+    content: "click me";
+}

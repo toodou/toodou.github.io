@@ -1,0 +1,18 @@
+@media only screen and (min-width: 450px){
+	.col{
+		width: 100%;
+		float: left;
+	}
+}
+@media only screen and (min-width: 700px){
+	.col{
+		width: 45%;
+		float: left;
+	}
+}
+@media only screen and (min-width: 1200px){
+	.col{
+		width: 29%;
+		float: left;
+	}
+}

@@ -1,0 +1,44 @@
+.menu{
+	position: fixed;
+	background-color: black;
+	width: 100%;
+	height: 50px;
+	top:0%;
+}
+#menuList{
+	width: 100%;
+	padding-left: 10%;
+}
+nav{
+	z-index: 100;
+}
+ul li{
+	float: left;
+	display: block;
+	text-align: center;
+	background: black;
+	color: white;
+	font-size: 16pt;
+	font-weight: bold;
+	line-height: 50px;
+	font-family: arial;
+	width: 220px;
+	height: 50px;
+}
+ul li a{
+	text-decoration: none;
+}
+ul li ul{
+	display: none;
+}
+ul li:hover ul{
+	display: block;
+}
+ul li:hover{
+	background-color: #EAEAEA;
+	color: black;
+}
+ul li ul li:hover{
+	background-color: #C7C3C3;
+	color: black;
+}

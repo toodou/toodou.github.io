@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=7">
+    <meta:renderer></meta:renderer>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta:author></meta:author>
+    <meta name="keywords" content="Keyword 1,Keyword 2">
+    <meta name="description" content="description">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="stylesheet" type="text/css" href="rwd_student.css">
+    <link rel="stylesheet" type="text/css" href="jquery-1.11.3.min.js">
+    <link rel="stylesheet" type="text/css" href="narrow.css">
+    <title>RWD</title>
+    <!--
+    <script>
+    function adjustStyle(width) {
+        width = parseInt(width);
+        if (width < 701) {
+            $("#size-stylesheet").attr("href", "narrow.css");
+        } else if (width < 900) {
+            $("#size-stylesheet").attr("href", "medium.css");
+        } else {
+            $("#size-stylesheet").attr("href", "wide.css");
+        }
+    }
+
+    $(function() {
+        adjustStyle($(this).width());
+        $(window).resize(function() {
+            adjustStyle($(this).width());
+        });
+    });
+    </script>-->
+</head>
+
+<body>
+    <div>
+        <h2>Para esta práctica: .row: after</h2>
+        <h3>在這一個部份時，我們要設定/row: after，表示在row下面的class或是div之類的元素不會受到上層row的影響，所以我們寫了一行叫做clear: both，除此之外，我們設定了display為block，是在將row下面的所有元素變成獨立的一個element，如果顯示出來就很像是獨立的div一樣的感覺。<br>
+        .row: after {<br>
+            /*content: "";*/<br>
+            clear: both;<br>
+            display: block;<br>
+        }<br><br>
+        </h3>
+    </div>
+    <div>
+        <h2>Para esta práctica: .container</h2>
+        <h3>在最外層加上去一個CONTAINER，在他的位置設計為相對的，因為這樣的話他的實際位置都還是在第一行第一列的位置，之後再不同視窗大小調整內容時，際會一路排下去，因為他的起始位置是一樣的，加上剛剛在前面有設定他的FLOAT的屬性已經設定為LEFT向左排列!<br>
+        .container {<br>
+            position: relative;<br>
+        }<br>
+        </h3>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
+                <a href="http://www.san-x.jp/characters/rilakkuma.html"><img src="img/rila01.jpg" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href="httq://www.san-x.jp/charactersrilakkuma.html"><img src="img/rila05.gif" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href="httq://www.san-x.jp/charactersrilakkuma.html"><img src="img/rila06.jpg" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href="httq://www.san-x.jp/charactersrilakkuma.html"><img src="img/rila11.png" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href="httq://www.san-x.jp/charactersrilakkuma.html"><img src="img/rila10.png" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href=""><img src="img/rila02.jpeg" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href=""><img src="img/rila03.png" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href="http://www.san-x.jp/characters/rilakkuma.html"><img src="img/rila11.png" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href="httq://www.san-x.jp/charactersrilakkuma.html"><img src="img/rila02.jpeg" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href="http://www.san-x.jp/characters/rilakkuma.html"><img src="img/rila05.gif" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href=""><img src="img/rila12.png" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href="http://www.san-x.jp/characters/rilakkuma.html"><img src="img/rila07.png" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href=""><img src="img/rila11.png" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href="http://www.san-x.jp/characters/rilakkuma.html"><img src="img/rila04.jpg" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href="httq://www.san-x.jp/charactersrilakkuma.html"><img src="img/rila09.png" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href=""><img src="img/rila03.png" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href="http://www.san-x.jp/characters/rilakkuma.html"><img src="img/rila04.jpg" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href=""><img src="img/rila11.png" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href="http://www.san-x.jp/characters/rilakkuma.html"><img src="img/rila07.png" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href=""><img src="img/rila06.jpg" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href="httq://www.san-x.jp/charactersrilakkuma.html"><img src="img/rila04.jpg" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href=""><img src="img/rila08.png" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href="http://www.san-x.jp/characters/rilakkuma.html"><img src="img/rila05.gif" alt=""></a>
+                <h4></h4>
+            </div>
+            <div class="col-3">
+                <a href="http://www.san-x.jp/characters/rilakkuma.html"><img src="img/rila01.jpg" alt=""></a>
+                <h4></h4>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>

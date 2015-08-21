@@ -1,0 +1,7 @@
+/* Medium Device medium size */
+
+@media screen and ( min-width:992px) and ( maxwidth: 1023px) {
+    .col-3 {
+        width: 32%;
+    }
+}
