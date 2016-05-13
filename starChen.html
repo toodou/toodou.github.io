@@ -164,28 +164,44 @@ for (i in c(1:dim(sumTableClass)[2])){
   Pi[,i]&lt;-sumTableClass[,i]/employedPopulation[i]
 }
 
-Pg&lt;-matrix(0,1,dim(sumTableClass)[2])
+Pi</code></pre>
+<pre><code>##      [,1]       [,2]      [,3]
+## [1,] 0.25 0.33333333 0.0000000
+## [2,] 0.15 0.06666667 0.1666667
+## [3,] 0.05 0.00000000 0.2500000</code></pre>
+<pre class="r"><code>Pg&lt;-matrix(0,1,dim(sumTableClass)[2])
 for (i in c(1:dim(sumTableClass)[2])){
   Pg[i]&lt;-sum(Pi[,i])
 }
 
-Uv&lt;-Pg*log2(1/Pg)
-
-Hg&lt;-matrix(0,1,dim(sumTableClass)[2])
+Pg</code></pre>
+<pre><code>##      [,1] [,2]      [,3]
+## [1,] 0.45  0.4 0.4166667</code></pre>
+<pre class="r"><code>(Uv&lt;-Pg*log2(1/Pg))</code></pre>
+<pre><code>##           [,1]      [,2]      [,3]
+## [1,] 0.5184014 0.5287712 0.5262643</code></pre>
+<pre class="r"><code>Hg&lt;-matrix(0,1,dim(sumTableClass)[2])
 for(i in c(1:dim(sumTableClass)[2])){
   temp=matrix(Pi[,i]/Pg[i])*log2(1/(Pi[,i]/Pg[i]))
   Hg[i]&lt;-sum(temp[!is.nan(temp)])
 }
 
-Rv=Pg*Hg
-
-v&lt;-matrix(0,1,dim(sumTableClass)[2])
+Hg</code></pre>
+<pre><code>##          [,1]      [,2]      [,3]
+## [1,] 1.351644 0.6500224 0.9709506</code></pre>
+<pre class="r"><code>(Rv=Pg*Hg)</code></pre>
+<pre><code>##           [,1]     [,2]      [,3]
+## [1,] 0.6082399 0.260009 0.4045627</code></pre>
+<pre class="r"><code>v&lt;-matrix(0,1,dim(sumTableClass)[2])
 oriV&lt;-Pi*log2(1/Pi)
 for (i in c(1:dim(sumTableClass)[2])){
   v[i]=sum(oriV[!is.nan(oriV[,i]),i])
 }
 
-# statistic diagram
+v</code></pre>
+<pre><code>##          [,1]      [,2]      [,3]
+## [1,] 1.126641 0.7887802 0.9308271</code></pre>
+<pre class="r"><code># statistic diagram
 matplot(sumTableClass,pch = 1:length(areaNo),col = 1:length(areaNo),xlab = 'Industrial Number',ylab = 'Total Employed Population',main='Employed Population of Different Industry in Each Administrative')
 for (i in c(1:3)){
   lines(sumTableClass[,i],col = i)
