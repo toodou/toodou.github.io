@@ -1,0 +1,14 @@
+.ttt {
+    position: relative;
+    float: left;
+}
+
+#myDiv {
+    position: fixed;
+}
+
+#cr {
+    float: none;
+    position: relative;
+    width: 1000;
+}
