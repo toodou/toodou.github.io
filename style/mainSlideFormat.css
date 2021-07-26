@@ -1,0 +1,13 @@
+@charset "utf-8";
+.mainSlideFormat {
+	color:white;
+	font-family:"微軟正黑體 Light";
+	font-weight:bold;
+	font-size:20px;
+	cursor:pointer;
+	text-align:center;
+	height:35px;
+	line-height:35px;
+	width:200px;
+	text-decoration: none;
+}

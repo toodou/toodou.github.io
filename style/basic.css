@@ -1,0 +1,130 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+.listH {
+    background-color: black;
+    width: 100%;
+    height: 35px;
+    text-align: center;
+    position: fixed;
+}
+
+#menuList {
+    padding-right: 12%;
+    padding-left: 12%;
+    z-index: 10;
+    position: fixed;
+}
+
+.main {
+    background-color: #000;
+    color: white;
+    font-family: "微軟正黑體 Light";
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+    text-align: center;
+    height: 35px;
+    line-height: 35px;
+    width: 200px;
+    text-decoration: none;
+}
+
+.main:hover {
+    background-color: #888;
+}
+
+.sub {
+    cursor: pointer;
+    background-color: #F7F7F7;
+    color: black;
+    font-family: "微軟正黑體 Light";
+    font-weight: bold;
+    text-align: center;
+    width: 200px;
+    position: absolute;
+    text-decoration: none;
+}
+
+.sub li a:hover {
+    background-color: #888;
+    color: white;
+    text-decoration: none;
+}
+
+.sub li:hover {
+    background-color: #888;
+    color: white;
+    text-decoration: none;
+}
+
+.sub li:hover a {
+    background-color: #888;
+    color: #fff;
+}
+
+.sub li a {
+    color: black;
+    font-family: "微軟正黑體 Light";
+    font-weight: bold;
+    text-align: center;
+    width: 200px;
+    text-decoration: none;
+}
+
+.sub li {
+    list-style-type: none;
+    line-height: 25px;
+}
+
+.item {
+    float: left;
+}
+
+#language {
+    top: -70px;
+    margin: auto;
+    position:relative;
+    z-index: -10;
+}
+
+#all {
+    top:-49px;
+    position:relative;
+    width: 968px;
+    height: 582px;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: -10;
+}
+
+
+/* 設定長寬與圖片一樣 */
+
+#contents {
+    width: 968px;
+    height: 582px;
+}
+
+#menu {
+    top: -25px;
+    text-align: center;
+    position: relative
+}
+
+#menu img {
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+#subContents {
+    top: 50px;
+    position: relative;
+}
+
+#lastTitle {
+    top: 100px;
+    position: relative;
+}

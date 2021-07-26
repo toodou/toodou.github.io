@@ -1,0 +1,7 @@
+@charset "utf-8";
+.welcomeMessage {
+	font-family: "Calisto MT";
+	font-size: 20px;
+	font-style: oblique;
+	font-weight: bold;
+}
