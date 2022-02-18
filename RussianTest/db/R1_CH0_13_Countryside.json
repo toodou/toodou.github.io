@@ -1,0 +1,12 @@
+DATA = [
+    [1, "солнце", "sun", "Countryside", "ср."],
+    [2, "луна", "moon", "Countryside", "жен."],
+    [3, "небо", "sky", "Countryside", "ср."],
+    [4, "деревня", "village", "Countryside", "жен."],
+    [5, "сад", "orchard", "Countryside", "муж."],
+    [6, "лес", "wood(s), forest", "Countryside", "муж."],
+    [7, "поле", "field", "Countryside", "ср."],
+    [8, "река", "river", "Countryside", "жен."],
+    [9, "дерево", "tree", "Countryside", "ср."],
+    [10, "цветок", "flower", "Countryside", "муж."]
+]

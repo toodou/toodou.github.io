@@ -1,0 +1,9 @@
+DATA = [
+    [1, "полотенце", "towel", "Bathroom", "ср."],
+    [2, "зубная паста", "toothpaste", "Bathroom", "жен."],
+    [3, "зубная щётка", "toothbrush", "Bathroom", "жен."],
+    [4, "полка", "shelf", "Bathroom", "жен."],
+    [5, "мыло", "soap", "Bathroom", "ср."],
+    [6, "кран", "tap, faucet", "Bathroom", "муж."],
+    [7, "раковина", "washbasin", "Bathroom", "жен."]
+]

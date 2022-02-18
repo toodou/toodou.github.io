@@ -1,0 +1,15 @@
+DATA = [
+    [1, "жена", "wife", "Family", "жен."],
+    [2, "муж", "husband", "Family", "муж."],
+    [3, "мать", "mother", "Family", "жен."],
+    [4, "отец", "father", "Family", "муж."],
+    [5, "дочь", "daughter", "Family", "жен."],
+    [6, "сын", "son", "Family", "муж."],
+    [7, "сестра", "sister", "Family", "жен."],
+    [8, "брат", "brother", "Family", "муж."],
+    [9, "родители", "pl. parents", "Family", "муж."],
+    [10, "дедушка", "grandfather", "Family", "муж."],
+    [11, "бабушка", "grandmother", "Family", "жен."],
+    [12, "внук", "grandson", "Family", "муж."],
+    [13, "внучка", "granddaughter", "Family", "жен."],
+]

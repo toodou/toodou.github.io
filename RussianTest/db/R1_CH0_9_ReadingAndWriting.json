@@ -1,0 +1,16 @@
+DATA = [
+    [1, "книга", "book", "Reading and Writing", "жен."],
+    [2, "газета", "newspaper", "Reading and Writing", "жен."],
+    [3, "учебник", "textbook", "Reading and Writing", "муж."],
+    [4, "журнал", "magazine", "Reading and Writing", "муж."],
+    [5, "словарь", "dictionary", "Reading and Writing", "муж."],
+    [6, "буква", "letter (字母)", "Reading and Writing", "жен."],
+    [7, "бумага", "paper", "Reading and Writing", "жен."],
+    [8, "конверт", "envelope", "Reading and Writing", "муж."],
+    [9, "письмо", "letter (信)", "Reading and Writing", "ср."],
+    [10, "ручка", "pen", "Reading and Writing", "жен."],
+    [11, "карандаш", "pencil", "Reading and Writing", "муж."],
+    [12, "марка", "stamp", "Reading and Writing", "жен."],
+    [13, "открытка", "postcard", "Reading and Writing", "жен."],
+    [14, "телеграмма", "telegram", "Reading and Writing", "жен."]
+]

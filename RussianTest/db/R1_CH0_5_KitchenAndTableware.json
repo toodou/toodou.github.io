@@ -1,0 +1,17 @@
+DATA = [
+    [1, "вилка", "fork", "Kitchen and Tableware", "жен."],
+    [2, "нож", "knife", "Kitchen and Tableware", "муж."],
+    [3, "сковорода / сковородка", "frying pan, skillet", "Kitchen and Tableware", "жен."],
+    [4, "кастрюля", "saucepan", "Kitchen and Tableware", "жен."],
+    [5, "кран", "tap, faucet", "Kitchen and Tableware", "муж."],
+    [6, "холодильник", "refrigerator", "Kitchen and Tableware", "муж."],
+    [7, "стакан", "glass", "Kitchen and Tableware", "муж."],
+    [8, "чашка", "cup", "Kitchen and Tableware", "жен."],
+    [9, "блюдце", "saucer", "Kitchen and Tableware", "ср."],
+    [10, "тарелка", "plate", "Kitchen and Tableware", "жен."],
+    [11, "ложка", "spoon", "Kitchen and Tableware", "жен."],
+    [12, "чайник", "teapot", "Kitchen and Tableware", "муж."],
+    [13, "салфетка", "(table) napjin, serviette", "Kitchen and Tableware", "жен."],
+    [14, "скатерть", "tablecloth", "Kitchen and Tableware", "жен."],
+    [15, "стол", "table", "Kitchen and Tableware", "муж."]
+]

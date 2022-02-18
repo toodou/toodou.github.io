@@ -1,0 +1,8 @@
+DATA = [
+    [1, "трамвай", "tram, streetcar", "City Transport", "муж."],
+    [2, "метро", "Underground, metro", "City Transport", "ср."],
+    [3, "троллейбус", "trolleybus", "City Transport", "муж."],
+    [4, "автобус", "bus", "City Transport", "муж."],
+    [5, "такси", "taxi, cab", "City Transport", "ср."],
+    [6, "машина", "(motor)car, auto(mobile)", "City Transport", "жен."]
+]
