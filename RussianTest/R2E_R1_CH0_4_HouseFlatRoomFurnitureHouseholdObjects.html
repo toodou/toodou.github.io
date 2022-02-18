@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+<!--
+    Editorial by HTML5 UP
+    html5up.net | @ajlkn
+    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+    <title>TooDou</title>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="images/CAPP.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+    <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+    <script src="db/R1_CH0_4_HouseFlatRoomFurnitureHouseholdObjects.json"></script>
+    <script src="js/testFunction_R1.js"></script>
+</head>
+
+<body>
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Main -->
+        <div id="main">
+            <div class="inner">
+                <!-- Header -->
+                <header id="header">
+                    <a href="../index.html" class="logo"><strong>Russian</strong> Vocabulary Test</a>
+                    <ul class="icons">
+                        <li><a href="https://twitter.com/TOODOUMIKE" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+                        <li><a href="https://www.facebook.com/chunhsiang.chan" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+                        <li><a href="https://www.instagram.com/mi04ke19/?modal=true" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+                    </ul>
+                </header>
+                <!-- Banner -->
+                <section id="banner">
+                    <div class="content">
+                        <header>
+                            <h2>[Chapter 0 4 House, Flat, Room, Furniture, Household Objects] Russian to English<br />
+                                            [Урок 0 4 Дом, квартира, комната, мебель, предметы быта] Русский язык на английский язык</h2>
+                            <p>Inverse Test :: English2Russian <a href="E2R_R1_CH0_4_HouseFlatRoomFurnitureHouseholdObjects.html">Test Now!!!</a></p>
+                        </header>
+                        <p>
+                            <ul align="justify">1. Key the "<b>NUMBER</b>" of questions in the textbox.
+                                <br/>Укажите «Количество» вопросов в текстовом поле.</ul>
+                            <ul align="justify">
+                                2. Click the "<b>Register</b>" button.
+                                <br/>Нажмите кнопку «Регистрация».
+                            </ul>
+                            <ul align="justify">3. Click the button "<b>Print</b>" to show questions below.
+                                <br/>Нажмите кнопку «Печать», чтобы показать вопросы.</ul>
+                            <ul align="justify">4. Please "<b>ANSWER</b>" the questions in <i>English</i> and <b>FILL</b> in the blanks.
+                                <br/>Пожалуйста, «Ответьте» на вопросы на <i>Английском</i> языке, и «Заполнить» пробел.</ul>
+                            <ul align="justify">5. Click the button "<b>Check</b>" to confirm your answers.
+                                <br/>Нажмите кнопку «Проверить», чтобы подтвердить свои ответы.</ul>
+                            <ul align="justify">
+                                6. If you want to do the same chapter test again, please press the button of your keyboard "<b>F5</b>" for <b>Windows</b>, or press both "<b>Command</b>" and "<b>R</b>" buttons for <b>Mac</b> at the same time to refresh the website.
+                                <br/>Если вы хотите повторить тот же экзамен по уроку, нажмите кнопку на клавиатуре «F5» для Windows или одновременно нажмите кнопки «Команда» и «R» for Mac, чтобы обновить веб-сайт.
+                            </ul>
+                        </p>
+                    </div>
+                </section>
+                <!--Test-->
+                <form id="numQuestionForm" action="#">
+                    Total:42
+                    <br/>顯示題數:
+                    <input type="Number" id="numQuestion">
+                    <input type="button" value="Register" onclick="readNumQuestion()">
+                </form>
+                <div id="showNumQuestion">
+                </div>
+                <form id="printQuestionRequest" action="#">
+                    <input type="button" value="Print" onclick="printQuestion(numQ)">
+                </form>
+                <div id="showQuestion">
+                </div>
+                <form id="checkYourAns" action="#">
+                    <input type="button" value="Check" onclick="checkAns(numQ,indQue,ansArr)">
+                </form>
+                <div id="checkAnsCorrected">
+                </div>
+                <div id="ee3">
+                </div>
+                <div id="test">
+                </div>
+                <!-- Copyright -->
+                <br/>
+                <br/>
+                <br/>
+                <p>
+                    &copy; TooDou. All rights reserved || Design: <a href="http://homepage.ntu.edu.tw/~d04228002/index.html">TooDou</a>
+                    <br/>
+                </p>
+            </div>
+        </div>
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <div class="inner">
+                <!-- Search -->
+                <section id="search" class="alt">
+                    <form method="post" action="#">
+                        <input type="text" name="query" id="query" placeholder="Search" />
+                    </form>
+                </section>
+                <!-- Menu -->
+                <nav id="menu">
+                    <header class="major">
+                        <h2>Menu</h2>
+                    </header>
+                    <ul>
+                        <li><a href="index.html">RVT Homepage</a></li>
+                        <li><a href="guidelines.html">User Guidelines</a></li>
+                        <li>
+                            <span class="opener">Russian 1</span>
+                            <ul>
+                                <li><span class="opener">Simple Words</span>
+                                    <ul>
+                                        <li><a href="R2E_R1_CH0_1_HumanBeings.html">Human Beings</a></li>
+                                        <li><a href="R2E_R1_CH0_2_PartsOfTheBody.html">City</a></li>
+                                        <li><a href="R2E_R1_CH0_3_Family.html">Food</a></li>
+                                        <li><a href="R2E_R1_CH0_4_HouseFlatRoomFurnitureHouseholdObjects.html">House Flat</a></li>
+                                        <li><a href="R2E_R1_CH0_5_KitchenAndTableware.html">Kitchen And Tableware</a></li>
+                                        <li><a href="R2E_R1_CH0_6_Bathroom.html">Bathroom</a></li>
+                                        <li><a href="R2E_R1_CH0_7_Clothes.html">Clothes</a></li>
+                                        <li><a href="R2E_R1_CH0_8_Food.html">Food</a></li>
+                                        <li><a href="R2E_R1_CH0_9_ReadingAndWriting.html">Reading And Writing</a></li>
+                                        <li><a href="R2E_R1_CH0_10_City.html">City</a></li>
+                                        <li><a href="R2E_R1_CH0_11_CityTransport.html">City Transport</a></li>
+                                        <li><a href="R2E_R1_CH0_12_Sport.html">Sport</a></li>
+                                        <li><a href="R2E_R1_CH0_13_Countryside.html">Countryside</a></li>
+                                        <li><a href="R2E_R1_CH0_14_DomesticAnimals.html">Domestic Animals</a></li>
+                                        <li><a href="R2E_R1_CH0_15_TimeSeasons.html">Time Seasons</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="R2E_R1_CH1.html">Unit 1</a></li>
+                                <li><a href="R2E_R1_CH2.html">Unit 2</a></li>
+                                <li><a href="R2E_R1_CH3.html">Unit 3</a></li>
+                                <li><a href="R2E_R1_CH4.html">Unit 4</a></li>
+                                <li><a href="R2E_R1_CH5.html">Unit 5</a></li>
+                                <li><a href="R2E_R1_CH6.html">Unit 6</a></li>
+                                <li><a href="R2E_R1_CH7.html">Unit 7</a></li>
+                                <li><a href="R2E_R1_CH8.html">Unit 8</a></li>
+                                <li><a href="R2E_R1_CH9.html">Unit 9</a></li>
+                                <li><a href="R2E_R1_CH10.html">Unit 11</a></li>
+                                <li><a href="R2E_R1_CH11.html">Unit 10</a></li>
+                                <li><a href="R2E_R1_CH12.html">Unit 12</a></li>
+                                <li><a href="R2E_R1_CH13.html">Unit 13</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <span class="opener">Russian 2</span>
+                            <ul>
+                                <li><a href="R2EC_1_postOffice.html">Post Office</a></li>
+                                <li><a href="R2EC_2_city.html">City</a></li>
+                                <li><a href="R2EC_3_food.html">Food</a></li>
+                                <li><a href="R2EC_4_shop.html">Shop</a></li>
+                                <li><a href="R2EC_5_buy.html">Buy</a></li>
+                                <li><a href="R2EC_6_museum.html">Museum</a></li>
+                                <li><a href="R2EC_7_health.html">Health</a></li>
+                                <li><a href="R2EC_8_sport.html">Sport</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="testAns1061.html">Test Ans 1061 RU01</a></li>
+                        <li><a href="download.html">Download</a></li>
+                        <li><a href="acknowledge.html">Acknowledgements</a></li>
+                    </ul>
+                </nav>
+                <!-- Section -->
+                <section>
+                    <header class="major">
+                        <h2>Get in touch</h2>
+                    </header>
+                    <p align="justify">Hello! My name is Chan, Chun-Hsiang (TooDou). If you want to ask questions, please feel free to see my website!</p>
+                    <p align="justify">Привет! Меня зовут Чан, Чун-Сян (TooDou). Если вы хотите задать вопросы, не стесняйтесь видеть мой сайт!</p>
+                    <ul class="contact">
+                        <li class="fa-envelope-o">
+                            <a href="mailto:d04228002@ntu.edu.tw">d04228002@ntu.edu.tw</a></li>
+                        <li class="fa-envelope-o">
+                            <a href="mailto:mi04ke19@yahoo.com.tw">mi04ke19@yahoo.com.tw</a></li>
+                    </ul>
+                </section>
+                <!-- Footer -->
+                <footer id="footer">
+                    <p class="copyright">&copy; All rights reserved. Design: <a href="https://toodou.github.io/">TooDou</a>.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/skel.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>
