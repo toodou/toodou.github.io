@@ -1,0 +1,38 @@
+html {
+    /*background: url(CCH_Loga-01.png) no-repeat center fixed;
+    background-size: 36%;
+    background-position: 50% 82%;*/
+    font-family: 'Arial';
+}
+
+div,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+span,
+p,ul {
+    text-align: center;
+}
+
+/*table {
+    width: 100%;
+}
+
+table,
+th,
+td {
+    align-content: center;
+}
+
+/*th,
+td {
+    padding: 5px;
+    text-align: center;
+}*/
+
+/*input[type="button"] {
+    font-size: 40px;
+}*/
