@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="shortcut icon" href="../images/webIcon.ico" />
+    <title>RussianWord4Review</title>
+    <link rel="stylesheet" href="r4r.css" />
+    <script src="convertcsv.json"></script>
+    <script type="text/javascript">
+    //宣告變數
+    var totalWordsInDB = DATA.length;
+    //產生隨機亂數function
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+    //only 4 test
+    /*function printRandomNum() {
+        test.innerHTML = getRandomInt(0, 9);
+    }*/
+    //讀寫整個資料庫
+    function loadAllWord() {
+        console.log(DATA); // {"a" : "b", "c" : "d"}
+    }
+    //讀測驗題目數
+    var numQ = 0;
+    function readNumQuestion() {
+        numQ = document.getElementById("numQuestion").value;
+        showNumQuestion.innerHTML = "You have selected " + numQ + " questions!";
+    }
+    //印出題目
+    //DATA[indexQ].[1] +
+    var indexQ = 0;
+    var indQue = [];
+    var quesArr = [];
+    var ansArr = [];
+    var ansArrC = [];
+    function printQuestion(numQ) {
+    	var outQ = '<table id="questionTable" align="center">';
+        for (var i = 0; i < numQ; i++) {
+            indexQ = getRandomInt(0, totalWordsInDB);
+            orderNo = i;
+            outQ += '<tr><td>' + orderNo + '</td><td>' +DATA[indexQ][1] +  '</td><td><input type="text" id ="q' + i + '"></td></tr>';
+            showQuestion.innerHTML = outQ + '</table>';
+            //record the correct answer into array
+            indQue.push(indexQ);
+            quesArr.push(DATA[indexQ][1]);
+            ansArr.push(DATA[indexQ][2]);
+            ansArrC.push(DATA[indexQ][3]);
+        }
+    }
+	//宣告單元
+	// create DIV element and append to the table cell
+	function createCell(cell, text, style) {
+	    var div = document.createElement('div'), // create DIV element
+	        txt = document.createTextNode(text); // create text node
+	    div.appendChild(txt);                    // append text node to the DIV
+	    div.setAttribute('style', 'color:red;'); // set text to red color
+	    div.setAttribute('class', style);        // set DIV class attribute
+	    div.setAttribute('className', style);    // set DIV class attribute for IE (?!)
+	    cell.appendChild(div);                   // append DIV to the table cell
+	}
+    function createCellTW(cell, text, style) {
+        var div = document.createElement('div'), // create DIV element
+            txt = document.createTextNode(text); // create text node
+        div.appendChild(txt);                    // append text node to the DIV
+        div.setAttribute('style', 'color:blue;'); // set text to red color
+        div.setAttribute('class', style);        // set DIV class attribute
+        div.setAttribute('className', style);    // set DIV class attribute for IE (?!)
+        cell.appendChild(div);                   // append DIV to the table cell
+    }
+    function createCellURL(cell, text, style, url) {
+        var div = document.createElement('div'), // create DIV element
+            txt = document.createTextNode(text); // create text node
+        txt.setAttribute('href',url);
+        div.appendChild(txt);                    // append text node to the DIV
+        div.setAttribute('style', 'color:blue;'); // set text to red color
+        div.setAttribute('class', style);        // set DIV class attribute
+        div.setAttribute('className', style);    // set DIV class attribute for IE (?!)
+        //div.setAttribute('href',url);
+        cell.appendChild(div);                   // append DIV to the table cell
+    }
+    //檢驗答案
+    //if it is wrong answer, then we print correct answer after
+    var yourAns = [];
+    var ansQ4each = "";
+    var outCA = "";
+    function checkAns(numQ,indQue,ansArr){
+    	var tbl = document.getElementById('questionTable'); // table reference
+    	for (var i = 0; i<numQ; i++){
+    		idName = 'q'+i;
+			ansQ4each=document.getElementById(idName).value;
+    		yourAns.push(ansQ4each);
+    		//ee3.innerHTML = yourAns;
+            //window.open('https://translate.google.com.tw/?hl=zh-TW#ru/en/я', '_blank', 'toolbar=0,location=0,menubar=0');
+    		if (yourAns[i]!=ansArr[i] && yourAns[i]!=ansArrC[i]){
+                searchLink = '"https://translate.google.com.tw/?hl=zh-TW#ru/en/' + quesArr[i];
+
+    			outCA += 'You answer is ' + yourAns[i] + ' ; Correct answer is ' + ansArr[i] +'(' +ansArrC[i]+')'+';<br/>';
+    			createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length), ansArr[i], 'col');
+                createCellTW(tbl.rows[i].insertCell(tbl.rows[i].cells.length), ansArrC[i], 'col');
+    		}else{
+    			createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length), '', 'col');
+                createCellTW(tbl.rows[i].insertCell(tbl.rows[i].cells.length), '', 'col');
+    		}
+    	}
+		checkAnsCorrected.innerHTML = outCA;
+    }
+    </script>
+</head>
+
+<body>
+    <!--填寫測驗的題目數量-->
+    <h2>TooDou APP :: Russian Word for Review</h2>
+    <p style="color: gray"><i>Version R4r.1.1.25</i></p>
+	<p>This application can help you to review all russian words. Wish you all enjoy it!<br/>Это приложение может помочь вам просмотреть все русские слова. Желаю всем вам понравиться!</p>
+	<p><b>Usage::</b>
+		<ul>1. Key the "<b>NUMBER</b>" of questions in the textbox.<br/>1. Укажите «Количество» вопросов в текстовом поле.</ul>
+		<ul>2. Click the button "<b>Print</b>" to show questions below.<br/>2. Нажмите кнопку «Печать», чтобы показать вопросы.</ul>
+        <ul>3. Please "<b>ANSWER</b>" the questions in <i>English</i> or <i>Chinese</i> and <b>FILL</b> in the blanks.<br/>Пожалуйста, «Ответьте» на вопросы на <i>Английском</i> или <i>Китайском</i> языке, и «Заполнить» пробел.</ul>
+		<ul>4. Click the button "<b>Check</b>" to confirm your answers.<br/>Нажмите кнопку «Проверить», чтобы подтвердить свои ответы.</ul>
+	</p>
+    <form id="numQuestionForm" action="#">
+        顯示題數:
+        <input type="Number" id="numQuestion">
+        <input type="button" value="Register" onclick="readNumQuestion()">
+    </form>
+    <!--
+    <form id="printRN" action="#">
+        <input type="button" value="Print Random Number" onclick="printRandomNum()">
+    </form>-->
+    <div id="showNumQuestion">
+    </div>
+    <form id="printQuestionRequest" action="#">
+        <input type="button" value="Print" onclick="printQuestion(numQ)">
+    </form>
+    <div id="showQuestion">
+    </div>
+    <form id="checkYourAns" action="#">
+		<input type="button" value="Check" onclick="checkAns(numQ,indQue,ansArr)">
+    </form>
+    <div id="checkAnsCorrected">
+    </div>
+    <div id="ee3">
+    </div>
+    <div id="test">
+    </div>
+    <!-- Copyright -->
+    <p><b>Credit</b> to <a href="http://homepage.ntu.edu.tw/~d04228002/">TooDou</a> (Chan, Chun-Hsiang) 2017.06.09 21:35</p>
+    <p>
+        &copy; TooDou. All rights reserved || Design: <a href="http://homepage.ntu.edu.tw/~d04228002/index.html">TooDou</a><br/>
+    </p>
+</body>
+
+</html>
