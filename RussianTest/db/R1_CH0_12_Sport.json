@@ -1,0 +1,6 @@
+DATA = [
+    [1, "хоккей", "hockye", "Sport", "муж."],
+    [2, "футбол", "football, soccer", "Sport", "муж."],
+    [3, "теннис", "tennis", "Sport", "муж."],
+    [4, "болейбол", "volleyball", "Sport", "муж."]
+]

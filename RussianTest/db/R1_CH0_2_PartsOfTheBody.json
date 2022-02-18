@@ -1,0 +1,14 @@
+DATA = [
+    [1, "голова", "head", "Parts of the Body", "жен."],
+    [2, "лоб", "forehead", "Parts of the Body", "муж."],
+    [3, "лицо", "face", "Parts of the Body", "ср."],
+    [4, "глаз", "eye", "Parts of the Body", "муж."],
+    [5, "нос", "nose", "Parts of the Body", "муж."],
+    [6, "волосы", "pl. hair", "Parts of the Body", "муж."],
+    [7, "зуб", "tooth", "Parts of the Body", "муж."],
+    [8, "губы", "pl. lips", "Parts of the Body", "муж."],
+    [9, "ухо", "ear", "Parts of the Body", "ср."],
+    [10, "рука", "hand, arm ", "Parts of the Body", "жен."],
+    [11, "палец", "finger", "Parts of the Body", "муж."],
+    [12, "нога", "foot, leg", "Parts of the Body", "жен."],
+]

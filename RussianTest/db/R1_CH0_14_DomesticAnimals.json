@@ -1,0 +1,8 @@
+DATA = [
+    [1, "птица", "bird", "Domestic Animals", "жен."],
+    [2, "кошка", "cat", "Domestic Animals", "жен."],
+    [3, "собака", "dog", "Domestic Animals", "жен."],
+    [4, "корова", "cow", "Domestic Animals", "жен."],
+    [5, "лошадь", "horse", "Domestic Animals", "муж."],
+    [6, "курица", "hen", "Domestic Animals", "жен."]
+]

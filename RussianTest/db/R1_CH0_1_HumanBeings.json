@@ -1,0 +1,8 @@
+DATA = [
+    [1, "женщина", "woman", "Human Beings", "жен."],
+    [2, "мужчина", "man", "Human Beings", "муж."],
+    [3, "молодой человек", "young man", "Human Beings", "муж."],
+    [4, "девушка", "girl (in her late teens)", "Human Beings", "жен."],
+    [5, "мальчик", "boy", "Human Beings", "муж."],
+    [6, "девочка", "(small) girl", "Human Beings", "жен."]
+]
