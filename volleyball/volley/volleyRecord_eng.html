@@ -1,0 +1,1080 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="FREE Volleyball Record System">
+    <meta name="keywords" content="Volleyball, TooDou, Record System, 排球, 計分系統">
+    <meta name="author" content="Chan, Chun-Hsiang (TooDou)">
+    <meta name="copyright" content="CCH (TooDou)">
+    <!-- Plotly.js -->
+    <title>VolleyRecord</title>
+    <link href="images/volleyball.ico" rel="SHORTCUT ICON">
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!--Array Math.js-->
+    <script src="js/arrayMath.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="toodou.css">
+    <script>
+    //合併欄位
+    function rowcat(a, b) {
+        //a,b should be array
+        //a,b dimension should be the same
+        var c = new Array(a.length);
+        for (var i = 0; i < a.length; i++) {
+            c[i] = new Array(2);
+            c[i][0] = a[i];
+            c[i][1] = b[i];
+        }
+        return c;
+    }
+
+    //讀取資料庫
+    //宣告變數
+    var DATAbase;
+    var DBkeys;
+    //讀取檔案
+    $.getJSON("test.json", function(json) {
+        console.log(json); // this will show the info it in firebug console
+        DATAbase = json;
+        DBkeys = Object.keys(DATAbase);
+    });
+    //取得primary key - 比賽代碼
+    </script>
+</head>
+
+<body>
+    <div align="middle">
+        <a href="index.html"><img src="images/VolleyICONs.png" alt="Toodou :: VolleyRecord" style="width:20%;"></a>
+    </div>
+    <h3 align="center">v.12.20161221</h3>
+    <h4>Handbook: <a href="file/VolleyRecord_Handbook_twn.pdf"> Click me to Download</a></h4>
+    <!--比賽場次id-->
+    <h3>Basic Information</h3>
+    <form id="match" action="#">
+        Match ID(English Alphabet and Numbers)
+        <input type="text" id="gameID">
+        <input type="button" value="Register" onclick="registerMatchID()">
+    </form>
+    <!--確認比賽代碼-->
+    <h3>Match ID</h3>
+    <div id="matchName"></div>
+    <!--輸入球員資料-->
+    <h3>Player Submission</h3>
+    <h5>Enter your player numbers in the following blanks:</h5>
+    <div>
+        <form id="playerNum" action="#">
+            Setter:
+            <input type="text" id="setter">
+            <br> Opposite:
+            <input type="text" id="viceSpike">
+            <br> Fore-spiker:
+            <input type="text" id="foreSpike">
+            <br> Back-spiker:
+            <input type="text" id="backSpike">
+            <br> Fore-Middle Blocker:
+            <input type="text" id="foreFast">
+            <br> Back-Middle Blocker:
+            <input type="text" id="backFast">
+            <br> Libero :
+            <input type="text" id="libero">
+            <br>
+            <!--儲存球員資料-->
+            <input type="button" value="Submit" onclick="submitPlyNum(0)">
+        </form>
+    </div>
+    <!--確認球員資料-->
+    <div id="show"></div>
+    <!--確認球員異動資料-->
+    <div id="playerSub">No Changes</div>
+    <!--得失分選擇表-->
+    <h3>Player List</h3>
+    <form name="ply" size="7">
+        <select name="plySelect" size="7" style="width: 5%">
+            <option value="value1"></option>
+            <option value="value2"></option>
+            <option value="value3"></option>
+            <option value="value4"></option>
+            <option value="value5"></option>
+            <option value="value6"></option>
+            <option value="value7"></option>
+        </select>
+    </form>
+    <table class="nobg">
+        <tr>
+            <th colspan="4">Action Record
+            </th>
+        </tr>
+        <tr>
+            <th colspan="2">No obtain or loss point</th>
+            <th colspan="2">get or loss point</th>
+        </tr>
+        <tr>
+            <td>
+                <h3>Defense</h3>
+                <form name="defense">
+                    <select name="defenseSelect">
+                        <option value="value1">(G)R-Serve</option>
+                        <option value="value2">(G)Block</option>
+                        <option value="value3">(G)R-Spike</option>
+                        <option value="value4">(G)R-Tip</option>
+                        <option value="value5">(B)R-Serve</option>
+                        <option value="value6">(B)Block</option>
+                        <option value="value7">(B)R-Spike</option>
+                        <option value="value8">(B)R-Tip</option>
+                    </select>
+                    <input type="button" onclick="defenseOption();instantBoardWrite();statisticTable();adviceSuggest();pointBoardWrite();chartPlot();evaluatePlayer();" value="Choose">
+                </form>
+            </td>
+            <td>
+                <h3>Attack</h3>
+                <form name="attack">
+                    <select name="attackSelect">
+                        <option value="value1">Serve</option>
+                        <option value="value2">Spike</option>
+                        <option value="value3">Modify</option>
+                        <option value="value4">Tip</option>
+                        <option value="value5">Send</option>
+                    </select>
+                    <input type="button" onclick="attackOption();instantBoardWrite();statisticTable();adviceSuggest();pointBoardWrite();chartPlot();evaluatePlayer();" value="Choose">
+                </form>
+            </td>
+            <td>
+                <h3>Get Point Reason</h3>
+                <form name="getPoint">
+                    <!--發球得分 扣球得分 小球得分 修正得分 攔網得分 對方失誤-->
+                    <select name="getSelect">
+                        <option value="value1">Serve</option>
+                        <option value="value2">Spike</option>
+                        <option value="value3">Tip</option>
+                        <option value="value4">Modify</option>
+                        <option value="value5">Block</option>
+                        <option value="value6">O:Fault</option>
+                    </select>
+                    <input type="button" onclick="getOption();instantBoardWrite();statisticTable();adviceSuggest();pointBoardWrite();chartPlot();evaluatePlayer();" value="Choose">
+                </form>
+            </td>
+            <td>
+                <h3>Lose Point Reason</h3>
+                <form name="losePoint">
+                    <!--發球失分 扣球失分 小球失分 修正失分 攔網失分 接發失分 接扣失分 接小失分 接嗆斯失 犯規失分-->
+                    <select name="loseSelect">
+                        <option value="value1">Serve</option>
+                        <option value="value2">Spike</option>
+                        <option value="value3">Tip</option>
+                        <option value="value4">Modify</option>
+                        <option value="value5">Block</option>
+                        <option value="value6">R-Serve</option>
+                        <option value="value7">R-Spike</option>
+                        <option value="value8">R-Tip</option>
+                        <option value="value9">R-Chance</option>
+                        <option value="value10">Fouls</option>
+                    </select>
+                    <input type="button" onclick="loseOption();instantBoardWrite();statisticTable();adviceSuggest();pointBoardWrite();chartPlot();evaluatePlayer();" value="Choose">
+                </form>
+            </td>
+        </tr>
+    </table>
+    <!--取消紀錄-->
+    <form id="cancel" action="#">
+        Delete Record
+        <input type="button" value="Confirm" onclick="cancelRecord()">
+    </form>
+    <div id="cancelMessage"></div>
+    <!--選擇需要呈現的方式 預設: 全顯示-->
+    <h3>Please select the following information, which you would like to view.</h3>
+    <div id="functionSelect">
+        Simple Board:
+        <input type="checkbox" id="chk_simpleBoard"> Compact Board:
+        <input type="checkbox" id="chk_compactBoard"> Detailed Board:
+        <input type="checkbox" id="chk_detailedBoard"> Strategy Advice:
+        <input type="checkbox" id="chk_strategyAdvice"> Statisitic Information:
+        <input type="checkbox" id="chk_statisticInformation"> Player Evaluation:
+        <input type="checkbox" id="chk_playerEvaluation">
+        <button onclick="chkSelected()">Confirm</button>
+        <div id="chk_whichSelected"></div>
+    </div>
+    <!--記分板-->
+    <h3>Simple Board</h3>
+    <div id="point"></div>
+    <!--得失分詳細資訊-->
+    <h3>Compact Board</h3>
+    <div id="detail"></div>
+    <!--統計詳細資訊-->
+    <h3>Detailed Board</h3>
+    <table id="statis" border="2">
+        <thead>
+            <tr>
+                <th colspan="2" rowspan="2"></th>
+                <th colspan="8">Defense(no get, no loss)</th>
+                <th colspan="5" rowspan="2">Attack(no get, no loss)</th>
+                <th colspan="6" rowspan="2">Get</th>
+                <th colspan="10" rowspan="1">Loss</th>
+            </tr>
+            <tr>
+                <th colspan="4">Good :: R-</th>
+                <th colspan="4">Bad :: R-</th>
+                <th colspan="5">Attack</th>
+                <th colspan="4">Defend</th>
+                <th colspan="1"></th>
+            </tr>
+            <tr>
+                <th>RID</th>
+                <th>#no</th>
+                <th>Serve</th>
+                <th>Block</th>
+                <th>Spike</th>
+                <th>Tip</th>
+                <th>Serve</th>
+                <th>Block</th>
+                <th>Spike</th>
+                <th>Tip</th>
+                <th>Serve</th>
+                <th>Spike</th>
+                <th>Modify</th>
+                <th>Tip</th>
+                <th>Send</th>
+                <th>Serve</th>
+                <th>Spike</th>
+                <th>Tip</th>
+                <th>Modify</th>
+                <th>Block</th>
+                <th>O:Fault</th>
+                <th>Serve</th>
+                <th>Spike</th>
+                <th>Tip</th>
+                <th>Modify</th>
+                <th>Block</th>
+                <th>Serve</th>
+                <th>Spike</th>
+                <th>Tip</th>
+                <th>Chance</th>
+                <th>Fouls</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    </div>
+    <!--得失分組成結構分析-->
+    <h3>Strategy Advice</h3>
+    <div id="advice">no advice</div>
+    <!--統計資訊-->
+    <h3>Statisitic Information</h3>
+    <div id="chart">
+        <h3>Player-based Counting</h3>
+        <table id="statisInfoP" border="1"></table>
+        <h3>Team-based Counting</h3>
+        <table id="statisInfoT" border="1"></table>
+        <h3>Player-based Counting in %</h3>
+        <table id="statisInfoR" border="1"></table>
+    </div>
+    <!--球員評比-->
+    <h3>Player Evaluation</h3>
+    <div id="evaluation">
+        <table id="evalTable" border="1"></table>
+    </div>
+    <script>
+    //宣告變數-比賽ID註冊
+    var strMsgID = "";
+    var idName = "";
+    var idEqual = 0;
+    //寫入比賽ID
+    function registerMatchID() {
+        idName = document.getElementById("gameID").value;
+        //與資料庫的Primary Key做比對
+        var infoSum = 0;
+        for (var i = 0; i < DBkeys.length; i++) {
+            if (idName == DBkeys[i]) {
+                infoSum += 1;
+            }
+        }
+        if (infoSum != DBkeys.length) {
+            //need = Object.keys(bb)[0];
+            //need = bb.match3;
+            //aa[Object.keys(bb)[0]] = need;
+            idEqual = 1;
+            alert("register successfully");
+        } else {
+            alert("the id you register, which has already registered before!");
+        }
+        //重複跳出警告訊息-將會繼續編輯上次的檔案
+        //將dataSet load回來並restore
+        //不重複-印出本次比賽的id
+        matchName.innerHTML = idName;
+    }
+    //宣告變數-選手名單
+    var plyName = matrix(7, 1, 0);
+    var plyNo = matrix(7, 1, 0);
+    var position = ["setter", "viceSpike", "foreSpike", "backSpike", "foreFast", "backFast", "libero"];
+    var plySubstitution = matrix(7, 1, 0);
+    var plySubmitCount = 0;
+    var allplayers = matrix(1, 7, 0);
+    //取得選手名單
+    function submitPlyNum() {
+        var strMsg = "";
+        for (var i = 0; i < position.length; i++) {
+            plyName[i] = position[i];
+            plyNo[i] = document.getElementById(position[i]).value;
+            strMsg += plyName[i] + ":  " + plyNo[i] + "<br>";
+            document.getElementsByName("plySelect")[0].options[i].innerHTML = plyNo[i];
+            if (plySubmitCount == 0) {
+                plySubstitution[i][0] = document.getElementById(position[i]).value;
+                allplayers[i] = document.getElementById(position[i]).value;
+            } else {
+                plySubstitution[i].push(plyNo[i]);
+            }
+        }
+
+        var strChangesSub = "";
+        if (plySubmitCount > 0) {
+            for (var i = 0; i < 7; i++) {
+                if (plySubstitution[i][plySubmitCount] != plySubstitution[i][plySubmitCount - 1]) {
+                    allplayers.push(plySubstitution[i][plySubmitCount]);
+                    strChangesSub += "Changes :: " + plySubstitution[i][plySubmitCount] + " <br/>";
+                }
+            }
+        }
+        plySubmitCount += 1;
+        //合併矩陣(6*2)::第一層是防守位置名稱(字串);第二層是該選手的編號(數字)
+        playerInfo = rowcat(plyName, plyNo);
+        show.innerHTML = strMsg;
+        playerSub.innerHTML = strChangesSub;
+    }
+    //宣告變數-選手紀錄
+    //RID #no defense*4*2 attack*5 get*5 lose*10
+    //21*1 matrix
+    //第一筆資料直接填入，非第一筆資料利用push的方式增加新的欄位
+    var playRecord = matrix(31, 1, 0);
+    var who = document.ply.plySelect;
+    var defenseItem = document.defense.defenseSelect;
+    var attackItem = document.attack.attackSelect;
+    var getItem = document.getPoint.getSelect;
+    var loseItem = document.losePoint.loseSelect;
+    var count = 0;
+    //寫入防守紀錄
+    function defenseOption() {
+        if (playRecord[0].length != 0) {
+            count += 1;
+            for (var i = 0; i < playRecord.length; i++) {
+                playRecord[i].push(0);
+            }
+        }
+        //RID::記錄下這一筆資料的位置
+        playRecord[0][count] = count;
+        //#no::紀錄是誰的資料
+        playRecord[1][count] = plyNo[who.options[who.selectedIndex].index];
+        //defense item
+        playRecord[1 + 1 + defenseItem.options[defenseItem.selectedIndex].index][count] = 1;
+        //def.innerHTML = playRecord;
+    }
+    //寫入攻擊紀錄
+    function attackOption() {
+        if (playRecord[0].length != 0) {
+            count += 1;
+            for (var i = 0; i < playRecord.length; i++) {
+                playRecord[i].push(0);
+            }
+        }
+        //RID::記錄下這一筆資料的位置
+        playRecord[0][count] = count;
+        //#no::紀錄是誰的資料
+        playRecord[1][count] = plyNo[who.options[who.selectedIndex].index];
+        //attack item
+        playRecord[9 + 1 + attackItem.options[attackItem.selectedIndex].index][count] = 1;
+        //ata.innerHTML = playRecord;
+
+    } //寫入得分紀錄
+    function getOption() {
+        if (playRecord[0].length != 0) {
+            count += 1;
+            for (var i = 0; i < playRecord.length; i++) {
+                playRecord[i].push(0);
+            }
+        }
+        //RID::記錄下這一筆資料的位置
+        playRecord[0][count] = count;
+        //#no::紀錄是誰的資料
+        playRecord[1][count] = plyNo[who.options[who.selectedIndex].index];
+        //get item
+        playRecord[14 + 1 + getItem.options[getItem.selectedIndex].index][count] = 1;
+        //ge.innerHTML = playRecord;
+
+    } //寫入失分紀錄
+    function loseOption() {
+        if (playRecord[0].length != 0) {
+            count += 1;
+            for (var i = 0; i < playRecord.length; i++) {
+                playRecord[i].push(0);
+            }
+        }
+        //RID::記錄下這一筆資料的位置
+        playRecord[0][count] = count;
+        //#no::紀錄是誰的資料
+        playRecord[1][count] = plyNo[who.options[who.selectedIndex].index];
+        //lose item
+        playRecord[20 + 1 + loseItem.options[loseItem.selectedIndex].index][count] = 1;
+        //lo.innerHTML = playRecord;
+    }
+    //宣告變數-取消紀錄
+    var cancelstr = "record has been deleted";
+    //取取資料並取消紀錄
+    function cancelRecord() {
+        if (playRecord[0].length == 1) {
+            alert("你沒有紀錄可以取消!");
+        } else {
+            for (var i = 0; i < playRecord.length; i++) {
+                playRecord[i].pop();
+            }
+            for (var i = 0; i < instantBoard.length; i++) {
+                instantBoard[i].pop();
+            }
+
+            cancelMessage.innerHTML = "#" + count + " :: " + cancelstr;
+            count -= 1;
+            alert("你已取消一筆紀錄!");
+            instantBoardWrite();
+            statisticTable();
+        }
+    }
+    //選擇需要呈現的方式
+    function chkSelected() {
+        var str = "";
+        if (document.getElementById("chk_simpleBoard").checked == true) {
+            document.getElementById("point").style.display = 'block';
+            str += 'Simple Board is selected' + '</br>';
+        } else {
+            document.getElementById("point").style.display = 'none';
+        }
+        if (document.getElementById("chk_compactBoard").checked == true) {
+            document.getElementById("detail").style.display = 'block';
+            str += 'Compact Board is selected' + '</br>';
+        } else {
+            document.getElementById("detail").style.display = 'none';
+        }
+        if (document.getElementById("chk_detailedBoard").checked == true) {
+            document.getElementById("statis").style.display = 'block';
+            str += 'Detailed Board is selected' + '</br>';
+        } else {
+            document.getElementById("statis").style.display = 'none';
+        }
+        if (document.getElementById("chk_strategyAdvice").checked == true) {
+            document.getElementById("advice").style.display = 'block';
+            str += 'Strategy Advice is selected' + '</br>';
+        } else {
+            document.getElementById("advice").style.display = 'none';
+        }
+        if (document.getElementById("chk_statisticInformation").checked == true) {
+            document.getElementById("chart").style.display = 'block';
+            str += 'Statistic Information is selected' + '</br>';
+        } else {
+            document.getElementById("chart").style.display = 'none';
+        }
+        if (document.getElementById("chk_playerEvaluation").checked == true) {
+            document.getElementById("evaluation").style.display = 'block';
+            str += 'Player Evaluation is selected' + '</br>';
+        } else {
+            document.getElementById("evaluation").style.display = 'none';
+        }
+        document.getElementById("chk_whichSelected").innerHTML = str;
+    }
+    //宣告變數-即時戰況
+    //RID, H, V, Detail
+    //H: our points now
+    //V: their points now
+    var instantBoard = matrix(5, 1, 0);
+    //寫入即時戰況表
+    function instantBoardWrite() {
+        if (count != 0) {
+            for (var i = 0; i < instantBoard.length; i++) {
+                instantBoard[i].push(0);
+            }
+        }
+        instantBoard[0][count] = count;
+        var sumGet = 0;
+        var sumLose = 0;
+        for (var i = 0; i < playRecord[0].length; i++) {
+            sumGet += playRecord[15][i] + playRecord[16][i] + playRecord[17][i] + playRecord[18][i] + playRecord[19][i] + playRecord[20][i];
+            sumLose += playRecord[21][i] + playRecord[22][i] + playRecord[23][i] + playRecord[24][i] + playRecord[25][i] + playRecord[26][i] + playRecord[27][i] + playRecord[28][i] + playRecord[29][i] + playRecord[30][i];
+        }
+        instantBoard[1][count] = sumGet;
+        instantBoard[2][count] = sumLose;
+        var detailInfo = ["G_Cserve", "G_Cblock", "G_Cspike", "G_Csmall", "B_Cserve", "B_Cblock", "B_Cspike", "B_Csmall", "serve", "spike", "modify", "small", "chance", "Get_serve", "Get_spike", "Get_small", "Get_modify", "Get_block", "Get_enemy", "Lose_serve", "Lose_spike", "Lose_small", "Lose_modify", "Lose_block", "Lose_Cserve", "Lose_Cspike", "Lose_Csmall", "Lose_Cchance", "Lose_rule"];
+        var detailIndex = matrix(detailInfo.length, 1, 0);
+        for (var i = 2; i < 31; i++) {
+            if (playRecord[i][count] == 1) {
+                instantBoard[3][count] = detailInfo[[i - 2]]; //選擇呈現的文字
+                instantBoard[4][count] = playRecord[1][count]; //show the number of player
+            }
+        }
+        var detailText = "";
+        detailText = instantBoard[0][count] + "th " + instantBoard[1][count] + " : " + instantBoard[2][count] + "  " + instantBoard[4][count] + " " + instantBoard[3][count];
+        detail.innerHTML += detailText + "<br>";
+    }
+    //宣告變數-記分板
+    var pointBoard = matrix(2, 1, 0);
+    //寫入資料
+    function pointBoardWrite() {
+        var sumGet = 0;
+        var sumLose = 0;
+        for (var i = 0; i < playRecord[0].length; i++) {
+            sumGet += playRecord[15][i] + playRecord[16][i] + playRecord[17][i] + playRecord[18][i] + playRecord[19][i] + playRecord[20][i];
+            sumLose += playRecord[21][i] + playRecord[22][i] + playRecord[23][i] + playRecord[24][i] + playRecord[25][i] + playRecord[26][i] + playRecord[27][i] + playRecord[28][i] + playRecord[29][i] + playRecord[30][i];
+        }
+        pointBoard[0] = sumGet;
+        pointBoard[1] = sumLose;
+        var pointBoardText = pointBoard[0] + ":" + pointBoard[1];
+        point.innerHTML = pointBoardText + "<br>";
+    }
+    //宣告變數-統計表格
+    var tableRef = document.getElementById('statis').getElementsByTagName('tbody')[0];
+    //寫入資料進入統計表
+    function statisticTable() {
+        // Insert a row in the table at the last row
+        var newRow = tableRef.insertRow(tableRef.rows.length);
+        for (var i = 0; i < playRecord.length; i++) {
+            // Insert a cell in the row at index 0
+            var newCell = newRow.insertCell(i);
+            // Append a text node to the cell
+            var statisticBoard = playRecord[i][count];
+            var newText = document.createTextNode(statisticBoard);
+            newCell.appendChild(newText);
+        }
+    }
+    //宣告變數-建議戰略
+    //建議暫停:: 隊伍連續失分5以上
+    var timeUpThreshold = 5;
+    //建議換人:: 該人連續失分5以上
+    var playerChangesThreshold = 5;
+    //建議更換防守戰術:: 隊伍連續失分3以上
+    var defenseChangesThreshold = 3;
+    //建議更換攻擊戰術:: 隊伍連續無法得3以上
+    var attackChangesThreshold = 3;
+    //
+    var reduceBoard = matrix(2, 1, 0);
+    var count4rb = 0;
+    var adviceCell = ["Advice::Pause", "建議換人", "Advice::Change Defense Strategy", "Advice::Change Attack Strategy"];
+    var timeUpText = "";
+    //var playerChangesText = "";
+    var defenseChangesText = "";
+    var attackChangesText = "";
+    //判斷策略修改
+    function adviceSuggest() {
+        if (instantBoard[1].length > 1) {
+            if (instantBoard[1][count - 1] != instantBoard[1][count] || instantBoard[2][count - 1] != instantBoard[2][count]) {
+                for (var i = 0; i < reduceBoard.length; i++) {
+                    reduceBoard[i].push(0);
+                }
+                count4rb += 1;
+                reduceBoard[0][count4rb] = instantBoard[1][count];
+                reduceBoard[1][count4rb] = instantBoard[2][count];
+            }
+            if (reduceBoard[1].length > timeUpThreshold) {
+                //建議暫停
+                if (reduceBoard[1][count4rb] - reduceBoard[1][count4rb - timeUpThreshold] >= timeUpThreshold) {
+                    timeUpText = adviceCell[0];
+                } else {
+                    timeUpText = "";
+                }
+            }
+            /*if (reduceBoard[1].length > playerChangesThreshold) {
+                //建議換人
+                if (reduceBoard[1][count4rb] - reduceBoard[1][count4rb - playerChangesThreshold] >= playerChangesThreshold) {
+                    for (var i=0;i<playerChangesThreshold;i--){
+
+                    }
+                    playerChangesText = adviceCell[1];
+                } else {
+                    playerChangesText = "";
+                }
+            }*/
+            if (reduceBoard[1].length > defenseChangesThreshold) {
+                //建議更換防守戰術
+                if (reduceBoard[1][count4rb] - reduceBoard[1][count4rb - defenseChangesThreshold] >= defenseChangesThreshold) {
+                    defenseChangesText = adviceCell[2];
+                } else {
+                    defenseChangesText = "";
+                }
+            }
+            if (reduceBoard[1].length > attackChangesThreshold) {
+                //建議更換攻擊戰術
+                if (reduceBoard[1][count4rb] - reduceBoard[1][count4rb - attackChangesThreshold] >= attackChangesThreshold) {
+                    attackChangesText = adviceCell[3];
+                } else {
+                    attackChangesText = "";
+                }
+            }
+        }
+        advice.innerHTML = timeUpText + "</br>" + defenseChangesText + "</br>" + attackChangesText;
+    }
+    //宣告變數-分析圖表
+    var plyActionSum = matrix(allplayers.length, 30, 0);
+    var plyActionSumT = matrix(30, allplayers.length, 0);
+    var totalSum = matrix(1, 29, 0);
+    var plyActionRatio = matrix(30, allplayers.length, 0);
+
+    function chartPlot() {
+        plyActionSum = matrix(allplayers.length, 30, 0);
+        for (var i = 0; i < allplayers.length; i++) {
+            plyActionSum[i][0] = allplayers[i];
+            //尋找相同id的一筆資料出來作做加總
+            for (var j = 0; j < playRecord[1].length; j++) {
+                if (plyActionSum[i][0] == playRecord[1][j]) {
+                    for (var k = 2; k < playRecord.length; k++) {
+                        plyActionSum[i][k - 1] += playRecord[k][j];
+                    }
+                }
+            }
+        }
+        for (var i = 0; i < allplayers.length; i++) {
+            for (var j = 0; j < 30; j++) {
+                plyActionSumT[j][i] = plyActionSum[i][j];
+            }
+        }
+        //將表格印出
+        var printTable = '<tr>';
+        var infoClass = ["#no", "G_Cserve", "G_Cblock", "G_Cspike", "G_Csmall", "B_Cserve", "B_Cblock", "B_Cspike", "B_Csmall", "serve", "spike", "modify", "small", "chance", "Get_serve", "Get_spike", "Get_small", "Get_modify", "Get_block", "Get_enemy", "Lose_serve", "Lose_spike", "Lose_small", "Lose_modify", "Lose_block", "Lose_Cserve", "Lose_Cspike", "Lose_Csmall", "Lose_Cchance", "Lose_rule"];
+        for (var i = 0; i < plyActionSumT.length; i++) {
+            printTable += '<td>' + infoClass[i] + '</td>';
+        }
+        printTable += '</tr>';
+        for (var i = 0; i < allplayers.length; i++) {
+            printTable += '<tr>';
+            for (var j = 0; j < plyActionSumT.length; j++) {
+                printTable += '<td>' + plyActionSumT[j][i] + '</td>';
+            }
+            printTable += '</tr>';
+        }
+        statisInfoP.innerHTML = printTable;
+        //百分比模式
+        totalSum = matrix(1, 29, 0);
+        //統計各發生的總次數再算比例
+        for (var i = 1; i < 30; i++) {
+            for (var j = 0; j < allplayers.length; j++) {
+                totalSum[0][i - 1] += plyActionSumT[i][j];
+            }
+        }
+        //印出表格
+        var printTableS = '<tr>';
+        var infoClassS = ["", "G_Cserve", "G_Cblock", "G_Cspike", "G_Csmall", "B_Cserve", "B_Cblock", "B_Cspike", "B_Csmall", "serve", "spike", "modify", "small", "chance", "Get_serve", "Get_spike", "Get_small", "Get_modify", "Get_block", "Get_enemy", "Lose_serve", "Lose_spike", "Lose_small", "Lose_modify", "Lose_block", "Lose_Cserve", "Lose_Cspike", "Lose_Csmall", "Lose_Cchance", "Lose_rule"];
+        for (var i = 0; i < plyActionSumT.length; i++) {
+            printTableS += '<td>' + infoClassS[i] + '</td>';
+        }
+        printTableS += '</tr>';
+        printTableS += '<td>All</td>';
+        for (var j = 0; j < plyActionSumT.length - 1; j++) {
+            printTableS += '<td>' + totalSum[0][j] + '</td>';
+        }
+        printTableS += '</tr>';
+        statisInfoT.innerHTML = printTableS;
+        //比例模式
+        //計算比例
+        plyActionRatio = matrix(30, allplayers.length, 0);
+        plyActionRatio[0] = allplayers;
+        for (var i = 1; i < 30; i++) {
+            for (var j = 0; j < allplayers.length; j++) {
+                plyActionRatio[i][j] = 100 * plyActionSumT[i][j] / totalSum[0][i - 1];
+                plyActionRatio[i][j] = plyActionRatio[i][j].toFixed(1);
+                if (isNaN(plyActionRatio[i][j])) {
+                    plyActionRatio[i][j] = 0;
+                }
+            }
+        }
+        //將表格印出
+        var printTableR = '<tr>';
+        for (var i = 0; i < plyActionRatio.length; i++) {
+            printTableR += '<td>' + infoClass[i] + '</td>';
+        }
+        printTableR += '</tr>';
+        for (var i = 0; i < allplayers.length; i++) {
+            printTableR += '<tr>';
+            for (var j = 0; j < plyActionRatio.length; j++) {
+                printTableR += '<td>' + plyActionRatio[j][i] + '</td>';
+            }
+            printTableR += '</tr>';
+        }
+        statisInfoR.innerHTML = printTableR;
+    }
+    //宣告變數-球員評比
+    var playerBasedData = matrix(allplayers.length, 5, 0); //代表[1. 個人防守失分 2. 個人防守總數 3. 個人攻擊得分 4. 個人攻擊失分 5. 攻擊總數]
+    var teamBasedData = matrix(2, 1, 0); //代表[1.整隊防守總數 2.整隊攻擊總數]
+    var plyDefLoss = [5, 6, 7, 8, 24, 25, 26, 27, 28];
+    var plyDefTotal = [1, 2, 3, 4, 5, 6, 7, 8, 24, 25, 26, 27, 28];
+    var plySpkGet = [14, 15, 16, 17, 18];
+    var plySpkLoss = [20, 21, 22, 23, 29];
+    var plySpkTotal = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 21, 22, 23, 29];
+    var evalInfo = matrix(allplayers.length, 10, 0); //0.球員代碼 1.穩定度-防守 2.穩定度-攻擊 3.觸球率-防守 4.觸球率-攻擊 5.得分率 6.失分率 7.防守表現 8.攻擊表現 9.球員價值
+    //Compute 球員評比
+
+    function evaluatePlayer() {
+        playerBasedData = matrix(allplayers.length, 5, 0);
+        for (var i = 0; i < allplayers.length; i++) {
+            //1. 個人防守失分 (接壞球算半顆壞球)
+            for (var j = 0; j < plyDefLoss.length; j++) {
+                if (j < 4) {
+                    playerBasedData[i][0] += plyActionSumT[plyDefLoss[j]][i] * 0.5;
+                } else {
+                    playerBasedData[i][0] += plyActionSumT[plyDefLoss[j]][i];
+                }
+            }
+            //2. 個人防守總數
+            for (var j = 0; j < plyDefTotal.length; j++) {
+                playerBasedData[i][1] += plyActionSumT[plyDefTotal[j]][i];
+            }
+            //3. 個人攻擊得分
+            for (var j = 0; j < plySpkGet.length; j++) {
+                playerBasedData[i][2] += plyActionSumT[plySpkGet[j]][i];
+            }
+            //4. 個人攻擊失分
+            for (var j = 0; j < plySpkLoss.length; j++) {
+                playerBasedData[i][3] += plyActionSumT[plySpkLoss[j]][i];
+            }
+            //5. 攻擊總數
+            for (var j = 0; j < plySpkTotal.length; j++) {
+                playerBasedData[i][4] += plyActionSumT[plySpkTotal[j]][i];
+            }
+        }
+        teamBasedData = matrix(2, 1, 0);
+        for (var i = 0; i < allplayers.length; i++) {
+            //1.整隊防守總數
+            teamBasedData[0][0] += playerBasedData[i][1];
+            //2.整隊攻擊總數
+            teamBasedData[1][0] += playerBasedData[i][4];
+        }
+        evalInfo = matrix(allplayers.length, 10, 0);
+        for (var i = 0; i < allplayers.length; i++) {
+            //0.球員代碼
+            evalInfo[i][0] = allplayers[i];
+            //1.穩定度-防守
+            evalInfo[i][1] = (playerBasedData[i][0] / playerBasedData[i][1]) * (-1);
+            //2.穩定度-攻擊
+            evalInfo[i][2] = (playerBasedData[i][2] - playerBasedData[i][3]) / playerBasedData[i][4];
+            //3.觸球率-防守
+            evalInfo[i][3] = playerBasedData[i][1] / teamBasedData[0][0];
+            //4.觸球率-攻擊
+            evalInfo[i][4] = playerBasedData[i][4] / teamBasedData[1][0];
+            //5.得分率
+            evalInfo[i][5] = playerBasedData[i][2] / playerBasedData[i][4];
+            //6.失分率
+            evalInfo[i][6] = ((playerBasedData[i][0] / playerBasedData[i][1]) * 0.5 + (playerBasedData[i][3] / playerBasedData[i][4]) * 0.5) * (-1);
+            //7.防守表現
+            evalInfo[i][7] = evalInfo[i][1] * evalInfo[i][3];
+            //8.攻擊表現
+            evalInfo[i][8] = evalInfo[i][2] * evalInfo[i][4];
+            //9.球員價值
+            evalInfo[i][9] = evalInfo[i][7] * 1 + evalInfo[i][8] * 1;
+        }
+        for (var i = 0; i < allplayers.length; i++) {
+            for (var j = 0; j < 10; j++) {
+                if (isNaN(evalInfo[i][j])) {
+                    evalInfo[i][j] = 0;
+                } else if (j > 0) {
+                    evalInfo[i][j] = evalInfo[i][j] * 100;
+                    evalInfo[i][j] = evalInfo[i][j].toFixed(4);
+                }
+            }
+        }
+        //印到表格
+        var printTableE = '<tr>';
+        var infoClassE = ["#No", "Stability-Defense", "Stability-Attack", "TouchingProb-Defense", "TouchingProb-Attack", "GetPoint Rate", "LossPoint Rate", "Performance-Defense", "Performance-Attack", "Player Evaluation"];
+        for (var i = 0; i < evalInfo[0].length; i++) {
+            printTableE += '<td>' + infoClassE[i] + '</td>';
+        }
+        printTableE += '</tr>';
+        for (var i = 0; i < allplayers.length; i++) {
+            printTableE += '<tr>';
+            for (var j = 0; j < evalInfo[0].length; j++) {
+                printTableE += '<td>' + evalInfo[i][j] + '</td>';
+            }
+            printTableE += '</tr>';
+        }
+        evalTable.innerHTML = printTableE;
+    }
+    //宣告變數-arrayToJson
+    var fieldName = ["RID", "#no", "(好)接發球", "(好)攔網", "(好)接扣球", "(好)接小球", "(壞)接發球", "(壞)攔網", "(壞)接扣球", "(壞)接小球", "發球", "攻擊", "修正", "小球", "送球", "發球得分", "扣球得分", "小球得分", "修正得分", "攔網得分", "對方失誤", "發球失分", "扣球失分", "小球失分", "修正失分", "攔網失分", "接發失分", "接扣失分", "接小失分", "接嗆斯失", "犯規失分"];
+    var fieldNameE = ["RID", "#no", "G_Cserve", "G_Cblock", "G_Cspike", "G_Csmall", "B_Cserve", "B_Cblock", "B_Cspike", "B_Csmall", "serve", "spike", "modify", "small", "chance", "Get_serve", "Get_spike", "Get_small", "Get_modify", "Get_block", "Get_enemy", "Lose_serve", "Lose_spike", "Lose_small", "Lose_modify", "Lose_block", "Lose_Cserve", "Lose_Cspike", "Lose_Csmall", "Lose_Cchance", "Lose_rule"];
+    var FN_StatisInfo = ["#no", "G_Cserve", "G_Cblock", "G_Cspike", "G_Csmall", "B_Cserve", "B_Cblock", "B_Cspike", "B_Csmall", "serve", "spike", "modify", "small", "chance", "Get_serve", "Get_spike", "Get_small", "Get_modify", "Get_block", "Get_enemy", "Lose_serve", "Lose_spike", "Lose_small", "Lose_modify", "Lose_block", "Lose_Cserve", "Lose_Cspike", "Lose_Csmall", "Lose_Cchance", "Lose_rule"];
+    var FN_StatisInfoSum = ["G_Cserve", "G_Cblock", "G_Cspike", "G_Csmall", "B_Cserve", "B_Cblock", "B_Cspike", "B_Csmall", "serve", "spike", "modify", "small", "chance", "Get_serve", "Get_spike", "Get_small", "Get_modify", "Get_block", "Get_enemy", "Lose_serve", "Lose_spike", "Lose_small", "Lose_modify", "Lose_block", "Lose_Cserve", "Lose_Cspike", "Lose_Csmall", "Lose_Cchance", "Lose_rule"];
+    var FN_EvalTable = ["#No", "Stability-Defense", "Stability-Attack", "TouchingProb-Defense", "TouchingProb-Attack", "GetPoint Rate", "LossPoint Rate", "Performance-Defense", "Performance-Attack", "Player Evaluation"];
+    //導入function先
+    function array2dToJson(a, p, nl) {
+        var i, j, s = '{"' + p + '":[';
+        nl = nl || '';
+        for (i = 0; i < a.length; ++i) {
+            s += nl + array1dToJson(a[i]);
+            if (i < a.length - 1) {
+                s += ',';
+            }
+        }
+        s += nl + ']}';
+        return s;
+    }
+
+    function array2dToJson2(a, nl) {
+        var i, j, s = '[';
+        nl = nl || '';
+        for (i = 0; i < a.length; ++i) {
+            s += nl + array1dToJson(a[i]);
+            if (i < a.length - 1) {
+                s += ',';
+            }
+        }
+        s += nl + ']';
+        return s;
+    }
+
+    function array2dToJson2_M(a, p, nl) {
+        var i, j, s = '{"' + p + '":[';
+        nl = nl || '';
+        for (i = 0; i < a.length; ++i) {
+            s += nl + array1dToJson_M(a[i]);
+            if (i < a.length - 1) {
+                s += ',';
+            }
+        }
+        s += nl + ']';
+        return s;
+    }
+
+    function array1dToJson(a, p) {
+        var i, s = '[';
+        for (i = 0; i < a.length; ++i) {
+            if (typeof a[i] == 'string') {
+                s += '"' + a[i] + '"';
+            } else { // assume number type
+                s += a[i];
+            }
+            if (i < a.length - 1) {
+                s += ',';
+            }
+        }
+        s += ']';
+        if (p) {
+            return '{"' + p + '":' + s + '}';
+        }
+        return s;
+    }
+
+    function arrayToJson(mat, fn, pkey) {
+        var s = '{"' + pkey + '":[';
+        for (var j = 0; j < mat[0].length; j++) {
+            s += '{';
+            for (var i = 0; i < mat.length; i++) {
+                if (typeof mat[i][j] == 'string') {
+                    s += '"' + fn[i] + '":' + '"' + mat[i][j] + '"';
+                } else {
+                    s += '"' + fn[i] + '":' + mat[i][j];
+                }
+                if (i < mat.length - 1) {
+                    s += ',';
+                }
+            }
+            s += '}';
+            if (j < mat[0].length - 1) {
+                s += ',';
+            }
+        }
+        s += ']}';
+        return s;
+    }
+
+    function arrayToJson_trans(mat, fn, pkey) {
+        var s = '{"' + pkey + '":[';
+        for (var j = 0; j < mat.length; j++) {
+            s += '{';
+            for (var i = 0; i < mat[0].length; i++) {
+                if (typeof mat[j][i] == 'string') {
+                    s += '"' + fn[i] + '":' + '"' + mat[j][i] + '"';
+                } else {
+                    s += '"' + fn[i] + '":' + mat[j][i];
+                }
+                if (i < mat[0].length - 1) {
+                    s += ',';
+                }
+            }
+            s += '}';
+            if (j < mat.length - 1) {
+                s += ',';
+            }
+        }
+        s += ']}';
+        return s;
+    }
+
+    function arrayToCSV(mat, fn) {
+        var s = '';
+        for (var i = 0; i < fn.length; i++) {
+            s += fn[i];
+            if (i < fn.length - 1) {
+                s += ',';
+            }
+        }
+        s += ' \r\n ';
+        for (var j = 0; j < mat[0].length; j++) {
+
+            for (var i = 0; i < mat.length; i++) {
+                s += mat[i][j];
+                if (i < mat.length - 1) {
+                    s += ',';
+                }
+            }
+            s += ' \r\n ';
+        }
+        return s;
+    }
+
+    function arrayToCSV_trans(mat, fn) {
+        var s = '';
+        for (var i = 0; i < fn.length; i++) {
+            s += fn[i];
+            if (i < fn.length - 1) {
+                s += ',';
+            }
+        }
+        s += ' \r\n ';
+        for (var j = 0; j < mat.length; j++) {
+
+            for (var i = 0; i < mat[0].length; i++) {
+                s += mat[j][i];
+                if (i < mat[0].length - 1) {
+                    s += ',';
+                }
+            }
+            s += ' \r\n ';
+        }
+        return s;
+    }
+
+    function array1dToJson_M(a, p) {
+        var i, s = '{';
+        for (i = 0; i < a.length; ++i) {
+            if (typeof a[i] == 'string') {
+                s += '"' + fieldName[i] + '"' + ":" + '"' + a[i] + '"';
+            } else { // assume number type
+                s += '"' + fieldName[i] + '"' + ":" + a[i];
+            }
+            if (i < a.length - 1) {
+                s += ',';
+            }
+        }
+        s += '}';
+        if (p) {
+            return '{"' + p + '":' + s + '}';
+        }
+        return s;
+    }
+    //開始做格式轉換
+    var dataSet = "";
+    var dataSet2 = "";
+    var dataSet_M = "";
+    var dataSet_CSV = "";
+    var data_statisInfoPM = "";
+    var data_statisInfoSM = "";
+    var data_statisInfoRM = "";
+    var data_evalTableM = "";
+    var data_statisInfoPCSV = "";
+    var data_statisInfoSCSV = "";
+    var data_statisInfoRCSV = "";
+    var data_evalTableCSV = "";
+
+    function saveJSON() {
+        //data format transformation
+        //dataSet = array2dToJson(playRecord, idName, '');
+        //dataSet2 = array2dToJson2(playRecord, '');
+        dataSet_M = arrayToJson(playRecord, fieldNameE, idName);
+        dataSet_CSV = arrayToCSV(playRecord, fieldNameE);
+        data_statisInfoPM = arrayToJson(plyActionSumT, FN_StatisInfo, idName);
+        data_statisInfoPCSV = arrayToCSV(plyActionSumT, FN_StatisInfo);
+        data_statisInfoSM = arrayToJson_trans(totalSum, FN_StatisInfoSum, idName);
+        data_statisInfoSCSV = arrayToCSV_trans(totalSum, FN_StatisInfoSum);
+        data_statisInfoRM = arrayToJson(plyActionRatio, FN_StatisInfo, idName);
+        data_statisInfoRCSV = arrayToCSV(plyActionRatio, FN_StatisInfo);
+        data_evalTableM = arrayToJson_trans(evalInfo, FN_EvalTable, idName);
+        data_evalTableCSV = arrayToCSV_trans(evalInfo, FN_EvalTable);
+        //showJSON.innerHTML = "have key json" + "</br>" + dataSet + "</br> " + "no key json" + " </br>" + dataSet2 + "</br > " + "complete json" + " < /br>" + dataSet_M + "</br> " + "complete csv" + " </br>" + dataSet_CSV;
+        showJSON.innerHTML = "complete json" + " < /br>" + dataSet_M + "</br> " + "complete csv" + " </br>" + dataSet_CSV;
+        //讀取資料庫 (前面已讀取) DATAbase
+        //尋找是否有同樣名稱 (前面已尋找) idEqual : 0 or 1
+        if (idEqual == 1) {
+            //若沒有新增置資料庫中 (格式搞不定==......)
+            DATAbase[idName] = dataSet_M;
+            //上傳資料庫資料庫
+            var formData = new FormData();
+            dataSet_M = dataSet_M["dataType"] = [{
+                type: 'plain/text'
+            }];
+            formData.append('file', dataSet_M, "test.json");
+
+            var request = new XMLHttpRequest();
+            request.open("POST", "http://homepage.ntu.edu.tw/~d04228002/volleyball/volley/");
+            request.send(formData);
+        } else {
+            //若有讀取原檔案，cat兩個檔案;
+
+        }
+
+    }
+    //下載檔案
+    var downloadName = "";
+    //format download file name
+    function fileNameConstruct() {
+        downloadName = idName + ".json";
+        return downloadName;
+    }
+
+    function fileNameConstructCSV() {
+        downloadName = idName + ".csv";
+        return downloadName;
+    }
+    //download function
+    function download(filename, text) {
+        var pom = document.createElement('a');
+        pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        pom.setAttribute('download', filename);
+
+        if (document.createEvent) {
+            var event = document.createEvent('MouseEvents');
+            event.initEvent('click', true, true);
+            pom.dispatchEvent(event);
+        } else {
+            pom.click();
+        }
+    }
+    //宣告變數-儲存至local or internet
+    //宣告變數-統計圖表
+    </script>
+    <!--呈現JSON資料-->
+    <h3>Display JSON File</h3>
+    <div id="showJSON"></div>
+    <div>
+        <input type="button" value="save as json data" onclick="saveJSON()">
+    </div>
+    <!--檔案下載-->
+    <h3>Download File</h3>
+    <div>
+        <button onclick="fileNameConstruct();download(downloadName, dataSet_M);">Detailed Board Record (JSON)</button>
+        <button onclick="fileNameConstructCSV();download(downloadName, dataSet_CSV);">Detailed Board Record (CSV)</button>
+        <br/>
+        <button onclick="fileNameConstruct();download(downloadName, data_statisInfoPM);">Player-based Counting Record (JSON)</button>
+        <button onclick="fileNameConstructCSV();download(downloadName, data_statisInfoPCSV);">Player-based Counting Record (CSV)</button>
+        <br/>
+        <button onclick="fileNameConstruct();download(downloadName, data_statisInfoSM);">Team-based Counting Record (JSON)</button>
+        <button onclick="fileNameConstructCSV();download(downloadName, data_statisInfoSCSV);">Team-based Counting Record (CSV)</button>
+        <br/>
+        <button onclick="fileNameConstruct();download(downloadName, data_statisInfoRM);">Player-based Counting in % Record (JSON)</button>
+        <button onclick="fileNameConstructCSV();download(downloadName, data_statisInfoRCSV);">Player-based Counting in % Record (CSV)</button>
+        <br/>
+        <button onclick="fileNameConstruct();download(downloadName, data_evalTableM);">Player Evaluation Record (JSON)</button>
+        <button onclick="fileNameConstructCSV();download(downloadName, data_evalTableCSV);">Player Evaluation Record (CSV)</button>
+        <br/>
+    </div>
+    <!-- Copyright -->
+    <div>
+        <img src="images/VolleyICONs.png" alt="Toodou :: VolleyRecord" style="width:10%;">
+        <li>&copy; TooDou. All rights reserved</li>
+        <li>Design: <a href="http://homepage.ntu.edu.tw/~d04228002/index.html">TooDou</a></li>
+    </div>
+</body>
+
+</html>
