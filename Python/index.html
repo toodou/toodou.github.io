@@ -16,35 +16,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="../assets/css/main.css" />
-    <script>
-        function includeHTML() {
-          var z, i, elmnt, file, xhttp;
-          /* Loop through a collection of all HTML elements: */
-          z = document.getElementsByTagName("*");
-          for (i = 0; i < z.length; i++) {
-            elmnt = z[i];
-            /*search for elements with a certain atrribute:*/
-            file = elmnt.getAttribute("nav-html");
-            if (file) {
-              /* Make an HTTP request using the attribute value as the file name: */
-              xhttp = new XMLHttpRequest();
-              xhttp.onreadystatechange = function() {
-                if (this.readyState == 4) {
-                  if (this.status == 200) {elmnt.innerHTML = this.responseText;}
-                  if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
-                  /* Remove the attribute, and call this function once more: */
-                  elmnt.removeAttribute("nav-html");
-                  includeHTML();
-                }
-              }
-              xhttp.open("GET", file, true);
-              xhttp.send();
-              /* Exit the function: */
-              return;
-            }
-          }
-        }
-    </script>
 </head>
 
 <body class="is-preload">
@@ -73,7 +44,7 @@
                     <div class="row">
                         <div class="col-4 col-12-medium">
                             <h3>Course Intro.</h3>
-                            <img width=100% height=33% src="images/probStats_cover.png" style="object-fit:cover;">
+                            <img width=100% height=33% src="images/python.png" style="object-fit:cover;">
                             01 :: Course Introduction
                             <blockquote align="justify">
                                 Contents: (1) Course intro. (2) Grading policy (3) What is the probabilities (4) What is the statistics (5) Why you need to take this course? (6) What you will learn from this course?</blockquote>
@@ -83,6 +54,7 @@
                         </div>
                         <div class="col-4 col-12-medium">
                             <h3>Environ Settings</h3>
+                            <img width=100% height=33% src="images/python.png" style="object-fit:cover;">
                             02 :: Environ Settings
                             <blockquote align="justify">
                                 Contents: (1) Anaconda Install (2) Hello World (3) Terminal/ Windows Powershell (4) Git</blockquote>
@@ -92,6 +64,7 @@
                         </div>
                         <div class="col-4 col-12-medium">
                             <h3>Variables & Operations</h3>
+                            <img width=100% height=33% src="images/python.png" style="object-fit:cover;">
                             03 :: Variables & Operations
                             <blockquote align="justify">
                                 Content: (1) Variables (2) Data Types (3) Strings (4) Booleans (5) Operators (6) Assignments</blockquote>
@@ -101,6 +74,7 @@
                         </div>
                         <div class="col-4 col-12-medium">
                             <h3>Comments & Markdown</h3>
+                            <img width=100% height=33% src="images/python.png" style="object-fit:cover;">
                             04 :: Comments & Markdown
                             <blockquote align="justify">
                                 Content: (1) Comments (2) Markdown (2-1) Web Mode (2-2) LaTeX<br /><br /></blockquote>
@@ -110,6 +84,7 @@
                         </div>
                         <div class="col-4 col-12-medium">
                             <h3>Collections</h3>
+                            <img width=100% height=33% src="images/python.png" style="object-fit:cover;">
                             05 :: Collections
                             <blockquote align="justify">
                                 Content: (1) List (2) Tuple (3) Set (4) Dictionary (5) Assignments<br /><br /></blockquote>
@@ -119,6 +94,7 @@
                         </div>
                         <div class="col-4 col-12-medium">
                             <h3>Flow Control</h3>
+                            <img width=100% height=33% src="images/python.png" style="object-fit:cover;">
                             06 :: Flow Control
                             <blockquote align="justify">
                                 Content: (1) Conditions (2) If… Else… (3) For Loop (4) While Loop (5) Pass, Continue, Break (6) Try… Except…</blockquote>
@@ -128,7 +104,7 @@
                         </div>
                         <div class="col-4 col-12-medium">
                             <h3>Function</h3>
-                            <img width=100% height=33% src="images/probStats_cover.png" style="object-fit:cover;">
+                            <iframe width="100%" height="33%" src="https://www.youtube.com/embed/3CsfRr4zjBQ?si=mTGpt2i051cSeJRM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                             07 :: Function
                             <blockquote align="justify">
                                 Content: (1) Distribution (2) Grading policy<br /><br /></blockquote>
@@ -138,7 +114,7 @@
                         </div>
                         <div class="col-4 col-12-medium">
                             <h3>Numpy</h3>
-                            <iframe width="100%" height="33%" src="https://www.youtube.com/embed/CNwRRFdH-YY?si=qStMzDdlRG77h6x_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            <iframe width="100%" height="33%" src="https://www.youtube.com/embed/_bS9DYqtAEk?si=KBH8M8bBGfM0oe0I" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                             08 :: Numpy
                             <blockquote align="justify">
                                 Content: (1) Independent events (2) P(.|F) is a probability</blockquote>
@@ -148,7 +124,7 @@
                         </div>
                         <div class="col-4 col-12-medium">
                             <h3>Pandas</h3>
-                            <iframe width="100%" height="33%" src="https://www.youtube.com/embed/9mDf3ZPLbMU?si=62qzh1vljQvF_rHY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            <img width=100% height=33% src="images/python.png" style="object-fit:cover;">
                             09 :: Pandas
                             <blockquote align="justify">
                                 Content: (1) Random variables (2) Discrete random variables (3) Expected values (4) Expectation of a function of a random variable (5) Variance (6) The Bernoulli and binomial random variables</blockquote>
@@ -158,7 +134,7 @@
                         </div>
                         <div class="col-4 col-12-medium">
                             <h3>Bernoulli Distribution</h3>
-                            <iframe width="100%" height="33%" src="https://www.youtube.com/embed/7moKSi4JikI?si=GTZ7jvisLJ6aYy5o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            <img width=100% height=33% src="images/python.png" style="object-fit:cover;">
                             09-1 :: Bernoulli Distribution
                             <blockquote align="justify">
                                 Content: (1) Expected value (2) Variance</blockquote>
@@ -168,7 +144,7 @@
                         </div>
                         <div class="col-4 col-12-medium">
                             <h3>Binomial Distribution (I)</h3>
-                            <iframe width="100%" height="33%" src="https://www.youtube.com/embed/adSelnzSMGI?si=qNKAYXfwX_KHSRRU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            <img width=100% height=33% src="images/python.png" style="object-fit:cover;">
                             09-2 :: Binomial Distribution - Expected Value
                             <blockquote align="justify">
                                 Content: The expected value of binomial distribution</blockquote>
@@ -178,7 +154,7 @@
                         </div>
                         <div class="col-4 col-12-medium">
                             <h3>Binomial Distribution (II)</h3>
-                            <iframe width="100%" height="33%" src="https://www.youtube.com/embed/6DuhUcc81K4?si=-IV1RprB_yiqBa0G" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            <img width=100% height=33% src="images/python.png" style="object-fit:cover;">
                             09-3 :: Binomial Distribution - Variance
                             <blockquote align="justify">
                                 Content: The variance of binomial distribution</blockquote>
@@ -188,7 +164,7 @@
                         </div>
                         <div class="col-4 col-12-medium">
                             <h3>Random Variables (II)</h3>
-                            <iframe width="100%" height="33%" src="https://www.youtube.com/embed/jNSp2GdC-tI?si=qxvbhaF23nCbp69O" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            <img width=100% height=33% src="images/python.png" style="object-fit:cover;">
                             10 :: Random Variables (II)
                             <blockquote align="justify">
                                 Content: (1) The poisson random variable (2) Other discrete probability distribution (3) Expected value of sums of random varialbes (4) Expected value of sums of random variables (5) Properties of the cumulative distribution functions</blockquote>
@@ -198,7 +174,7 @@
                         </div>
                         <div class="col-4 col-12-medium">
                             <h3>Continuous Random Variables</h3>
-                            <iframe width="100%" height="33%" src="https://www.youtube.com/embed/8-c-Rb5QEHs?si=qub1nykABZHuuen1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            <img width=100% height=33% src="images/python.png" style="object-fit:cover;">
                             11 :: Continuous Random Variables
                             <blockquote align="justify">
                                 Content: (1) Introduction (2) Expectation and variance of Continuous random variables (3) The uniform random variables (4) Normal random variables (5) Exponential random variables (6) The Distribution of a Function of a Random Variable</blockquote>
@@ -208,7 +184,7 @@
                         </div>
                         <div class="col-4 col-12-medium">
                             <h3>Jointly Distributed Random Variables (I)</h3>
-                            <iframe width="100%" height="33%" src="https://www.youtube.com/embed/d5MRvwfiXZQ?si=zdbaRYIc4RBwHWJ-" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            <img width=100% height=33% src="images/python.png" style="object-fit:cover;">
                             12 :: Jointly Distributed Random Variables (I)
                             <blockquote align="justify">
                                 Content: (1) Joint distribution functions (2) Independent random variables</blockquote>
@@ -260,9 +236,25 @@
                     </form>
                 </section>
                 <!-- Menu -->
-                <div nav-html="../nav.html"></div> 
+                <nav id="menu2"></nav>
                 <script>
-                    includeHTML();
+                    fetch('../nav.html')
+                        .then(res => res.text())
+                        .then(html => {
+                            document.getElementById('menu2').innerHTML = html;
+
+                            // re-activate the .opener behavior
+                            const openers = document.querySelectorAll('#menu2 .opener');
+                            openers.forEach(opener => {
+                                opener.addEventListener('click', function() {
+                                    this.classList.toggle('active');
+                                    const submenu = this.nextElementSibling;
+                                    if (submenu && submenu.tagName === 'UL') {
+                                        submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+                                    }
+                                });
+                            });
+                        });
                 </script>
                 <section>
                     <header class="major">
