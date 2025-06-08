@@ -16,6 +16,35 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="../assets/css/main.css" />
+    <script>
+        function includeHTML() {
+          var z, i, elmnt, file, xhttp;
+          /* Loop through a collection of all HTML elements: */
+          z = document.getElementsByTagName("*");
+          for (i = 0; i < z.length; i++) {
+            elmnt = z[i];
+            /*search for elements with a certain atrribute:*/
+            file = elmnt.getAttribute("nav-html");
+            if (file) {
+              /* Make an HTTP request using the attribute value as the file name: */
+              xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+                if (this.readyState == 4) {
+                  if (this.status == 200) {elmnt.innerHTML = this.responseText;}
+                  if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
+                  /* Remove the attribute, and call this function once more: */
+                  elmnt.removeAttribute("nav-html");
+                  includeHTML();
+                }
+              }
+              xhttp.open("GET", file, true);
+              xhttp.send();
+              /* Exit the function: */
+              return;
+            }
+          }
+        }
+    </script>
 </head>
 
 <body class="is-preload">
@@ -53,83 +82,78 @@
                             </ul>
                         </div>
                         <div class="col-4 col-12-medium">
-                            <h3>Variables and Operations</h3>
-                            <iframe width=100% height=33% src="https://www.youtube.com/embed/OPKXaWbrKZo?si=TNeOeP7tiN6dzGtT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            <h3>Environ Settings</h3>
                             02 :: Environ Settings
                             <blockquote align="justify">
-                                Contents: (1) Review (2) Introduction (3) Counting principle (4) Permutations (5) Combinations</blockquote>
+                                Contents: (1) Anaconda Install (2) Hello World (3) Terminal/ Windows Powershell (4) Git</blockquote>
+                            <ul class="actions">
+                                <li><a href="Files/Slides/Python 00 - Environ Settings.pdf" class="button primary icon solid fa-search">Slide</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-4 col-12-medium">
+                            <h3>Variables & Operations</h3>
+                            03 :: Variables & Operations
+                            <blockquote align="justify">
+                                Content: (1) Variables (2) Data Types (3) Strings (4) Booleans (5) Operators (6) Assignments</blockquote>
                             <ul class="actions">
                                 <li><a href="Files/Slides/Python 01 - Variables and Operations.pdf" class="button primary icon solid fa-search">Slide</a></li>
                             </ul>
                         </div>
                         <div class="col-4 col-12-medium">
-                            <h3>Comment and Markdown</h3>
-                            <iframe width="100%" height="33%" src="https://www.youtube.com/embed/HVnlKqtrwgw?si=va6XEIQa8XkhpeRk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                            03 :: Combinatorial Analysis (II)
+                            <h3>Comments & Markdown</h3>
+                            04 :: Comments & Markdown
                             <blockquote align="justify">
-                                Content: (1) Review (2) Multinominal coefficient (3) The number of integer solutions of equations</blockquote>
+                                Content: (1) Comments (2) Markdown (2-1) Web Mode (2-2) LaTeX<br /><br /></blockquote>
                             <ul class="actions">
                                 <li><a href="Files/Slides/Python 02 - Comment and Markdown.pdf" class="button primary icon solid fa-search">Slide</a></li>
                             </ul>
                         </div>
                         <div class="col-4 col-12-medium">
-                            <h3>ACollections</h3>
-                            <iframe width="100%" height="33%" src="https://www.youtube.com/embed/6u3lOua6N6w?si=-T0pFM-Uiy4hj9Zm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                            04 :: Axioms of Probability (I)
+                            <h3>Collections</h3>
+                            05 :: Collections
                             <blockquote align="justify">
-                                Content: (1) Introduction (2) Sample space and events (3) Axioms of probabilities (4) Some simple propositions<br /><br /></blockquote>
+                                Content: (1) List (2) Tuple (3) Set (4) Dictionary (5) Assignments<br /><br /></blockquote>
                             <ul class="actions">
-                                <li><a href="Files/Slides/Python 03 - Collections.pdf" class="button primary icon solid fa-search">Slide</a></li>
+                                <li><a href="Files/Slides/Python 03 - Collections" class="button primary icon solid fa-search">Slide</a></li>
                             </ul>
                         </div>
                         <div class="col-4 col-12-medium">
-                            <h3>Axioms of Probability (II)</h3>
-                            <iframe width="100%" height="33%" src="https://www.youtube.com/embed/u2SvYW6u1jw?si=JBftg7j4z0MRghVp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                            05 :: Axioms of Probability (II)
+                            <h3>Flow Control</h3>
+                            06 :: Flow Control
                             <blockquote align="justify">
-                                Content: (1) Sample Spaces Having Equally Likely Outcomes (2) Probability as a Continuous Set Function (3) Probability as a Measure of Belief<br /><br /></blockquote>
-                            <ul class="actions">
-                                <li><a href="Files/Slides/20221017 Prob and Stats.pdf" class="button primary icon solid fa-search">Slide</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-4 col-12-medium">
-                            <h3>Conditional Probability and Independence (I)</h3>
-                            <iframe width="100%" height="33%" src="https://www.youtube.com/embed/InGiHKztpVY?si=7DIj3f2-rV5hUdAT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                            06 :: Conditional Probability and Independence (I)
-                            <blockquote align="justify">
-                                Content: (1) Introduction (2) Conditional probabilities (3) Bayes' formula</blockquote>
+                                Content: (1) Conditions (2) If… Else… (3) For Loop (4) While Loop (5) Pass, Continue, Break (6) Try… Except…</blockquote>
                             <ul class="actions">
                                 <ul class="actions">
-                                    <li><a href="Files/Slides/20221024 Prob and Stats.pdf" class="button primary icon solid fa-search">Slide</a></li>
+                                    <li><a href="Files/Slides/Python 04 - Flow Control.pdf" class="button primary icon solid fa-search">Slide</a></li>
                         </div>
                         <div class="col-4 col-12-medium">
-                            <h3>Midterm Exam</h3>
+                            <h3>Function</h3>
                             <img width=100% height=33% src="images/probStats_cover.png" style="object-fit:cover;">
-                            07 :: Midterm Exam
+                            07 :: Function
                             <blockquote align="justify">
                                 Content: (1) Distribution (2) Grading policy<br /><br /></blockquote>
                             <ul class="actions">
-                                <li><a href="Files/Slides/20221107 Midterm Exam.pdf" class="button primary icon solid fa-search">Slide</a></li>
+                                <li><a href="Files/Slides/Python 05 - Function.pdf" class="button primary icon solid fa-search">Slide</a></li>
                             </ul>
                         </div>
                         <div class="col-4 col-12-medium">
-                            <h3>Conditional Probability and Independence (II)</h3>
+                            <h3>Numpy</h3>
                             <iframe width="100%" height="33%" src="https://www.youtube.com/embed/CNwRRFdH-YY?si=qStMzDdlRG77h6x_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                            08 :: Conditional Probability and Independence (II)
+                            08 :: Numpy
                             <blockquote align="justify">
                                 Content: (1) Independent events (2) P(.|F) is a probability</blockquote>
                             <ul class="actions">
-                                <li><a href="Files/Slides/20221114 Prob and Stats.pdf" class="button primary icon solid fa-search">Slide</a></li>
+                                <li><a href="Files/Slides/Python 06 - Numpy.pdf" class="button primary icon solid fa-search">Slide</a></li>
                             </ul>
                         </div>
                         <div class="col-4 col-12-medium">
-                            <h3>Random Variables (I)</h3>
+                            <h3>Pandas</h3>
                             <iframe width="100%" height="33%" src="https://www.youtube.com/embed/9mDf3ZPLbMU?si=62qzh1vljQvF_rHY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                            09 :: Random Variables (I)
+                            09 :: Pandas
                             <blockquote align="justify">
                                 Content: (1) Random variables (2) Discrete random variables (3) Expected values (4) Expectation of a function of a random variable (5) Variance (6) The Bernoulli and binomial random variables</blockquote>
                             <ul class="actions">
-                                <li><a href="Files/Slides/20221121 Prob and Stats.pdf" class="button primary icon solid fa-search">Slide</a></li>
+                                <li><a href="Files/Slides/Python 07 - Pandas.pdf" class="button primary icon solid fa-search">Slide</a></li>
                             </ul>
                         </div>
                         <div class="col-4 col-12-medium">
@@ -236,14 +260,9 @@
                     </form>
                 </section>
                 <!-- Menu -->
-                <div id="nav-placeholder"></div>
+                <div nav-html="../nav.html"></div> 
                 <script>
-                // Load the shared nav.html into this page
-                fetch('nav.html')
-                    .then(res => res.text())
-                    .then(html => {
-                        document.getElementById('nav-placeholder').innerHTML = html;
-                    });
+                    includeHTML();
                 </script>
                 <section>
                     <header class="major">
