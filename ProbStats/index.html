@@ -1,8 +1,8 @@
 <!DOCTYPE HTML>
 <!--
-	Editorial by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+    Editorial by HTML5 UP
+    html5up.net | @ajlkn
+    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
 
@@ -38,7 +38,7 @@
                 <!-- Content -->
                 <section>
                     <header class="main">
-                        <h1>Probability and Statistics @ CYCU<br/>Course Content</h1>
+                        <h1>Probability and Statistics @ CYCU<br />Course Content</h1>
                     </header>
                     <p align="justify">Everything surrounding us can be expressed by probability, and statistics are used to compare one thing to another. This course will cover combinatorial analysis, axiom, conditional probability, distribution, random variable, expectations, and variances. To enhance the memory and learning curve, we have mathematical assignments and programming homework.</p>
                     <div class="row">
@@ -100,7 +100,7 @@
                                 Content: (1) Introduction (2) Conditional probabilities (3) Bayes' formula</blockquote>
                             <ul class="actions">
                                 <ul class="actions">
-                                <li><a href="Files/Slides/20221024 Prob and Stats.pdf" class="button primary icon solid fa-search">Slide</a></li>
+                                    <li><a href="Files/Slides/20221024 Prob and Stats.pdf" class="button primary icon solid fa-search">Slide</a></li>
                         </div>
                         <div class="col-4 col-12-medium">
                             <h3>Midterm Exam</h3>
@@ -236,69 +236,26 @@
                     </form>
                 </section>
                 <!-- Menu -->
-                <nav id="menu">
-                    <header class="major">
-                        <h2>Menu</h2>
-                    </header>
-                    <ul>
-                        <li><a href="../index.html">Homepage</a></li>
-                        <li>
-                            <span class="opener">CCH Profile</span>
-                            <ul>
-                                <li><a href="../EN-exp-education.html">Education</a></li>
-                                <li><a href="../EN-exp-working.html">Working Experience</a></li>
-                                <li><a href="../EN-exp-academic.html">Projects & Academic Service</a></li>
-                                <li><a href="../EN-exp-award.html">Awards & Certificates</a></li>
-                                <li><a href="../EN-exp-skill.html">Skills & Interests</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="../EN-res-overview.html">Research Interests</a>
-                            <!--<span class="opener">Research Interests</span>
-                            <ul>
-                                <li><a href="EN-res-mobility.html">Human Mobility</a></li>
-                                <li><a href="EN-res-osteoporosis.html">Osteoporosis</a></li>
-                                <li><a href="EN-res-socialMedia.html">Social Media Behavior</a></li>
-                                <li><a href="EN-res-starch.html">Starch Chemistry</a></li>
-                            </ul>-->
-                        </li>
-                        <li><a href="../EN-lab-member.html">Lab Members</a></li>
-                        <li>
-                            <span class="opener">Publications</span>
-                            <ul>
-                                <li><a href="../EN-pub-thesis.html">Dissertations</a></li>
-                                <li><a href="../EN-pub-journal.html">Journal Articles</a></li>
-                                <li><a href="../EN-pub-conference.html">Conference Papers</a></li>
-                                <li><a href="../EN-pub-bookNews.html">Books & Reports & News</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <span class="opener">Courses</span>
-                            <ul>
-                                <li><a href="../CAPP/index.html">Advanced C Programming and It's Applications</a></li>
-                                <li><a href="../ProbStats/index.html">Probability and Statistics</a></li>
-                                <li><a href="../BigData/index.html">Big Data Fundamentals and Applications</a></li>
-                                <li><a href="../DL/index.html">Deep Learning</a></li>
-                                <li><a href="../MedGeo/index.html">Studies in Medical Geography</a></li>
-                                <li><a href="../UrbanGIS/index.html">Urban Geographic Information System (Python)</a></li>
-                                <li><a href="../WebCrawler/index.html">Web Crawler Practice</a></li>
-                                <li><a href="../SNA/index.html">Social Network Analysis</a></li>
-                                <li><a href="../GIS/index.html">Geographic Information System</a></li>
-                                <li><a href="../AI_workshop2024ntue/index.html">2024 AI Workshop @ NTUE</a></li>
-                                <li><a href="../RussianTest/index.html">Russian Vocabulary Test</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <span class="opener">Resources</span>
-                            <ul>
-                                <li><a href="../EN-sor-dataset.html">Datasets</a></li>
-                                <li><a href="../EN-sor-programming.html">Programming</a></li>
-                                <li><a href="../EN-sor-webDesign.html">Web Design</a></li>
-                                <li><a href="../EN-sor-teacher.html">Teacher Certificate</a></li>
-                                <li><a href="../EN-sor-language.html">Language Learning</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
+                <nav id="menu2"></nav>
+                <script>
+                fetch('../nav.html')
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('menu2').innerHTML = html;
+
+                        // re-activate the .opener behavior
+                        const openers = document.querySelectorAll('#menu2 .opener');
+                        openers.forEach(opener => {
+                            opener.addEventListener('click', function() {
+                                this.classList.toggle('active');
+                                const submenu = this.nextElementSibling;
+                                if (submenu && submenu.tagName === 'UL') {
+                                    submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+                                }
+                            });
+                        });
+                    });
+                </script>
                 <section>
                     <header class="major">
                         <h2>Get in touch</h2>
