@@ -9,10 +9,10 @@
 <head>
     <link rel="shortcut icon" href="images/CAPP.ico" />
     <title>Chun-Hsiang Chan</title>
-    <meta charset="utf-8" property="og:title" content="Chun-Hsiang Chan Ph.D."/>
-    <meta charset="utf-8" property="og:description" content="A Spatiotemporal Data Scientist Skilled With Interdisciplinary Expertise & Multidisciplinary Experience"/>
-    <meta charset="utf-8" property="og:type" content="website"/>
-    <meta charset="utf-8" property="og:image" content="/images/IMGL4992.jpg"/>
+    <meta charset="utf-8" property="og:title" content="Chun-Hsiang Chan Ph.D." />
+    <meta charset="utf-8" property="og:description" content="A Spatiotemporal Data Scientist Skilled With Interdisciplinary Expertise & Multidisciplinary Experience" />
+    <meta charset="utf-8" property="og:type" content="website" />
+    <meta charset="utf-8" property="og:image" content="/images/IMGL4992.jpg" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
@@ -169,69 +169,26 @@
                     </form>
                 </section>
                 <!-- Menu -->
-                <nav id="menu">
-                    <header class="major">
-                        <h2>Menu</h2>
-                    </header>
-                    <ul>
-                        <li><a href="index.html">Homepage</a></li>
-                        <li>
-                            <span class="opener">CCH Profile</span>
-                            <ul>
-                                <li><a href="EN-exp-education.html">Education</a></li>
-                                <li><a href="EN-exp-working.html">Working Experience</a></li>
-                                <li><a href="EN-exp-academic.html">Projects & Academic Service</a></li>
-                                <li><a href="EN-exp-award.html">Awards & Certificates</a></li>
-                                <li><a href="EN-exp-skill.html">Skills & Interests</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="EN-res-overview.html">Research Interests</a>
-                            <!--<span class="opener">Research Interests</span>
-                            <ul>
-                                <li><a href="EN-res-mobility.html">Human Mobility</a></li>
-                                <li><a href="EN-res-osteoporosis.html">Osteoporosis</a></li>
-                                <li><a href="EN-res-socialMedia.html">Social Media Behavior</a></li>
-                                <li><a href="EN-res-starch.html">Starch Chemistry</a></li>
-                            </ul>-->
-                        </li>
-                        <li><a href="EN-lab-member.html">Lab Members</a></li>
-                        <li>
-                            <span class="opener">Publications</span>
-                            <ul>
-                                <li><a href="EN-pub-thesis.html">Dissertations</a></li>
-                                <li><a href="EN-pub-journal.html">Journal Articles</a></li>
-                                <li><a href="EN-pub-conference.html">Conference Papers</a></li>
-                                <li><a href="EN-pub-bookNews.html">Books & Reports & News</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <span class="opener">Courses</span>
-                            <ul>
-                                <li><a href="CAPP/index.html">Advanced C Programming and It's Applications</a></li>
-                                <li><a href="ProbStats/index.html">Probability and Statistics</a></li>
-                                <li><a href="BigData/index.html">Big Data Fundamentals and Applications</a></li>
-                                <li><a href="DL/index.html">Deep Learning</a></li>
-                                <li><a href="MedGeo/index.html">Studies in Medical Geography</a></li>
-                                <li><a href="UrbanGIS/index.html">Urban Geographic Information System (Python)</a></li>
-                                <li><a href="WebCrawler/index.html">Web Crawler Practice</a></li>
-                                <li><a href="SNA/index.html">Social Network Analysis</a></li>
-                                <li><a href="GIS/index.html">Geographic Information System</a></li>
-                                <li><a href="AI_workshop2024ntue/index.html">2024 AI Workshop @ NTUE</a></li>
-                                <li><a href="RussianTest/index.html">Russian Vocabulary Test</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <span class="opener">Resources</span>
-                            <ul>
-                                <li><a href="EN-sor-dataset.html">Datasets</a></li>
-                                <li><a href="EN-sor-programming.html">Programming</a></li>
-                                <li><a href="EN-sor-webDesign.html">Web Design</a></li>
-                                <li><a href="EN-sor-teacher.html">Teacher Certificate</a></li>
-                                <li><a href="EN-sor-language.html">Language Learning</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
+                <nav id="menu2"></nav>
+                <script>
+                fetch('nav.html')
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('menu2').innerHTML = html;
+
+                        // re-activate the .opener behavior
+                        const openers = document.querySelectorAll('#menu2 .opener');
+                        openers.forEach(opener => {
+                            opener.addEventListener('click', function() {
+                                this.classList.toggle('active');
+                                const submenu = this.nextElementSibling;
+                                if (submenu && submenu.tagName === 'UL') {
+                                    submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+                                }
+                            });
+                        });
+                    });
+                </script>
                 <section>
                     <header class="major">
                         <h2>Get in touch</h2>

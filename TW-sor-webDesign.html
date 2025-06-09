@@ -9,10 +9,10 @@
 <head>
     <link rel="shortcut icon" href="images/CAPP.ico" />
     <title>Chun-Hsiang Chan</title>
-    <meta charset="utf-8" property="og:title" content="Chun-Hsiang Chan Ph.D."/>
-    <meta charset="utf-8" property="og:description" content="A Spatiotemporal Data Scientist Skilled With Interdisciplinary Expertise & Multidisciplinary Experience"/>
-    <meta charset="utf-8" property="og:type" content="website"/>
-    <meta charset="utf-8" property="og:image" content="/images/IMGL4992.jpg"/>
+    <meta charset="utf-8" property="og:title" content="Chun-Hsiang Chan Ph.D." />
+    <meta charset="utf-8" property="og:description" content="A Spatiotemporal Data Scientist Skilled With Interdisciplinary Expertise & Multidisciplinary Experience" />
+    <meta charset="utf-8" property="og:type" content="website" />
+    <meta charset="utf-8" property="og:image" content="/images/IMGL4992.jpg" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
@@ -169,69 +169,26 @@
                     </form>
                 </section>
                 <!-- Menu -->
-                <nav id="menu">
-                    <header class="major">
-                        <h2>目錄</h2>
-                    </header>
-                    <ul>
-                        <li><a href="index.html">首頁</a></li>
-                        <li>
-                            <span class="opener">主持人介紹</span>
-                            <ul>
-                                <li><a href="TW-exp-education.html">主要學歷</a></li>
-                                <li><a href="TW-exp-working.html">工作經歷</a></li>
-                                <li><a href="TW-exp-academic.html">研究計畫與學術服務</a></li>
-                                <li><a href="TW-exp-award.html">獲獎與證照</a></li>
-                                <li><a href="TW-exp-skill.html">技能與興趣</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="TW-res-overview.html">研究興趣</a>
-                            <!--<span class="opener">Research Interests</span>
-                            <ul>
-                                <li><a href="TW-res-mobility.html">Human Mobility</a></li>
-                                <li><a href="TW-res-osteoporosis.html">Osteoporosis</a></li>
-                                <li><a href="TW-res-socialMedia.html">Social Media Behavior</a></li>
-                                <li><a href="TW-res-starch.html">Starch Chemistry</a></li>
-                            </ul>-->
-                        </li>
-                        <li><a href="TW-lab-member.html">成員介紹</a></li>
-                        <li>
-                            <span class="opener">論文著作</span>
-                            <ul>
-                                <li><a href="TW-pub-thesis.html">學位論文</a></li>
-                                <li><a href="TW-pub-journal.html">期刊論文</a></li>
-                                <li><a href="TW-pub-conference.html">研討會論文</a></li>
-                                <li><a href="TW-pub-bookNews.html">專書｜報告｜新聞採訪</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <span class="opener">教學課程</span>
-                            <ul>
-                                <li><a href="CAPP/index.html">進階C語言應用</a></li>
-                                <li><a href="ProbStats/index.html">機率與統計</a></li>
-                                <li><a href="BigData/index.html">大數據基礎與應用</a></li>
-                                <li><a href="DL/index.html">深度學習</a></li>
-                                <li><a href="MedGeo/index.html">醫學地理研討</a></li>
-                                <li><a href="UrbanGIS/index.html">都市地理資訊系統(Python)</a></li>
-                                <li><a href="WebCrawler/index.html">網頁爬蟲實務</a></li>
-                                <li><a href="SNA/index.html">社會網路分析</a></li>
-                                <li><a href="GIS/index.html">地理資訊系統</a></li>
-                                <li><a href="AI_workshop2024ntue/index.html">2024 數位人文跨域學習工作坊 @ NTUE</a></li>
-                                <li><a href="RussianTest/index.html">俄文單字學習</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <span class="opener">參考資源</span>
-                            <ul>
-                                <li><a href="TW-sor-dataset.html">資料集</a></li>
-                                <li><a href="TW-sor-programming.html">程式設計</a></li>
-                                <li><a href="TW-sor-webDesign.html">網頁設計</a></li>
-                                <li><a href="TW-sor-teacher.html">教師檢定筆記</a></li>
-                                <li><a href="TW-sor-language.html">語言學習</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
+                <nav id="menu2"></nav>
+                <script>
+                fetch('nav_tw.html')
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('menu2').innerHTML = html;
+
+                        // re-activate the .opener behavior
+                        const openers = document.querySelectorAll('#menu2 .opener');
+                        openers.forEach(opener => {
+                            opener.addEventListener('click', function() {
+                                this.classList.toggle('active');
+                                const submenu = this.nextElementSibling;
+                                if (submenu && submenu.tagName === 'UL') {
+                                    submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+                                }
+                            });
+                        });
+                    });
+                </script>
                 <section>
                     <header class="major">
                         <h2>聯繫方式</h2>
