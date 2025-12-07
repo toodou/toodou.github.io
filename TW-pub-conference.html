@@ -49,6 +49,50 @@
                         <!-- Auto bold names in publication list -->
                         <ul class="alt" id="conference-list">
                         </ul>
+                        <script>
+                            // 自動把你的名字變粗體
+                function highlightAuthors(text) {
+                    return text
+                        .replace(/Chun[- ]?Hsiang Chan/gi, "<b>Chun-Hsiang Chan</b>")
+                        .replace(/C[-\.]?H[-\.]? Chan/gi, "<b>C-H Chan</b>")
+                        .replace(/詹竣翔/g, "<b>詹竣翔</b>");
+                }
+
+                window.addEventListener("DOMContentLoaded", function() {
+                    var listEl = document.getElementById("conference-list");
+                    if (!listEl) return;
+
+                    fetch("conference-papers.json")
+                        .then(function(res) {
+                            if (!res.ok) throw new Error("network error");
+                            return res.json();
+                        })
+                        .then(function(papers) {
+                            // 更新標題：XX Conference Papers
+                            var headerEl = document.getElementById("elements");
+                            if (headerEl) {
+                                headerEl.textContent = papers.length + " Conference Papers";
+                            }
+
+                            papers.forEach(function(p, idx) {
+                                var li = document.createElement("li");
+                                li.setAttribute("align", "justify");
+
+                                li.innerHTML =
+                                    "[" + (idx + 1) + "] " +
+                                    highlightAuthors(p.authors) + " (" + p.date + "). " +
+                                    p.title + ". " +
+                                    "<i>" + p.conference + "</i>. " +
+                                    p.location + ".";
+
+                                listEl.appendChild(li);
+                            });
+                        })
+                        .catch(function(err) {
+                            console.error("load conference-papers.json error:", err);
+                        });
+                });
+                </script>
                     </div>
                 </section>
             </div>
@@ -82,50 +126,6 @@
                             });
                         });
                     });
-                </script>
-                <script>
-                // 自動把你的名字變粗體
-                function highlightAuthors(text) {
-                    return text
-                        .replace(/Chun[- ]?Hsiang Chan/gi, "<b>Chun-Hsiang Chan</b>")
-                        .replace(/C[-\.]?H[-\.]? Chan/gi, "<b>C-H Chan</b>")
-                        .replace(/詹竣翔/g, "<b>詹竣翔</b>");
-                }
-
-                window.addEventListener("DOMContentLoaded", function() {
-                    var listEl = document.getElementById("conference-list");
-                    if (!listEl) return;
-
-                    fetch("data/conference-papers.json")
-                        .then(function(res) {
-                            if (!res.ok) throw new Error("network error");
-                            return res.json();
-                        })
-                        .then(function(papers) {
-                            // 更新標題：XX Conference Papers
-                            var headerEl = document.getElementById("elements");
-                            if (headerEl) {
-                                headerEl.textContent = papers.length + " Conference Papers";
-                            }
-
-                            papers.forEach(function(p, idx) {
-                                var li = document.createElement("li");
-                                li.setAttribute("align", "justify");
-
-                                li.innerHTML =
-                                    "[" + (idx + 1) + "] " +
-                                    highlightAuthors(p.authors) + " (" + p.date + "). " +
-                                    p.title + ". " +
-                                    "<i>" + p.conference + "</i>. " +
-                                    p.location + ".";
-
-                                listEl.appendChild(li);
-                            });
-                        })
-                        .catch(function(err) {
-                            console.error("load conference-papers.json error:", err);
-                        });
-                });
                 </script>
                 <section>
                     <header class="major">
