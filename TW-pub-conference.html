@@ -39,9 +39,9 @@
                 <!-- Content -->
                 <section>
                     <header class="main">
-                        <h1>研討會論文</h1>
+                        <h1>論文著作</h1>
                     </header>
-                    <h2 id="elements">51篇學術研討會論文</h2>
+                    <h2 id="elements">研討會論文</h2>
                     <div class="row gtr-200">
                         <blockquote align="justify">
                             <h3>複雜網路分析, 時空巨量資料分析, 人工智慧, 臨床資料分析, 社群媒體分析, 澱粉化學</h3>
@@ -50,49 +50,47 @@
                         <ul class="alt" id="conference-list">
                         </ul>
                         <script>
-                            // 自動把你的名字變粗體
-                function highlightAuthors(text) {
-                    return text
-                        .replace(/Chun[- ]?Hsiang Chan/gi, "<b>Chun-Hsiang Chan</b>")
-                        .replace(/C[-\.]?H[-\.]? Chan/gi, "<b>C-H Chan</b>")
-                        .replace(/詹竣翔/g, "<b>詹竣翔</b>");
-                }
-
-                window.addEventListener("DOMContentLoaded", function() {
-                    var listEl = document.getElementById("conference-list");
-                    if (!listEl) return;
-
-                    fetch("conference-papers.json")
-                        .then(function(res) {
-                            if (!res.ok) throw new Error("network error");
-                            return res.json();
-                        })
-                        .then(function(papers) {
-                            // 更新標題：XX Conference Papers
-                            var headerEl = document.getElementById("elements");
-                            if (headerEl) {
-                                headerEl.textContent = papers.length + " Conference Papers";
+                            function highlightAuthors(text) {
+                                return text
+                                    .replace(/Chun[- ]?Hsiang Chan/gi, "<b>Chun-Hsiang Chan</b>")
+                                    .replace(/C[-\.]?H[-\.]? Chan/gi, "<b>C-H Chan</b>")
+                                    .replace(/詹竣翔/g, "<b>詹竣翔</b>");
                             }
 
-                            papers.forEach(function(p, idx) {
-                                var li = document.createElement("li");
-                                li.setAttribute("align", "justify");
+                            window.addEventListener("DOMContentLoaded", function() {
+                                var listEl = document.getElementById("conference-list");
+                                if (!listEl) return;
 
-                                li.innerHTML =
-                                    "[" + (idx + 1) + "] " +
-                                    highlightAuthors(p.authors) + " (" + p.date + "). " +
-                                    p.title + ". " +
-                                    "<i>" + p.conference + "</i>. " +
-                                    p.location + ".";
+                                fetch("data/conference-papers.json")
+                                    .then(function(res) {
+                                        if (!res.ok) throw new Error("network error");
+                                        return res.json();
+                                    })
+                                    .then(function(papers) {
+                                        var headerEl = document.getElementById("elements");
+                                        if (headerEl) {
+                                            headerEl.textContent = papers.length + " Conference Papers";
+                                        }
 
-                                listEl.appendChild(li);
-                            });
-                        })
-                        .catch(function(err) {
+                                        papers.forEach(function(p, idx) {
+                                            var li = document.createElement("li");
+                                            li.setAttribute("align", "justify");
+
+                                            li.innerHTML =
+                                                "[" + (idx + 1) + "] " +
+                                                highlightAuthors(p.authors) + " (" + p.date + "). " +
+                                                p.title + ". " +
+                                                "<i>" + p.conference + "</i>. " +
+                                                p.location + ".";
+
+                                            listEl.appendChild(li);
+                                        });
+                                    })
+                                    .catch(function(err) {
                             console.error("load conference-papers.json error:", err);
+                                });
                         });
-                });
-                </script>
+                        </script>
                     </div>
                 </section>
             </div>
