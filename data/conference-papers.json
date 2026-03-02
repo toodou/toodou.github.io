@@ -8,7 +8,21 @@
 },
 {
     "date": "Mar. 2026",
-    "authors": "Chun-Hsiang Chan, Chia-Hsun Lee",
+    "authors": "Tzu-Cheng Chang, Chun-Hsiang Chan",
+    "title": "Graph-Based Feature Selection for Spatially Autocorrelated Geographic Data: A Subgraph Similarity Approach",
+    "conference": "2026 Association of American Geographers' Annual Meeting",
+    "location": "San Francisco, California, United States"
+},
+{
+    "date": "Mar. 2026",
+    "authors": "Peng-Hsiang Jen, Chun-Hsiang Chan",
+    "title": "Modeling Dynamic Carbon Emissions and Optimizing Urban Greening for Post-Renewal Carbon Neutrality",
+    "conference": "2026 Association of American Geographers' Annual Meeting",
+    "location": "San Francisco, California, United States"
+},
+{
+    "date": "Mar. 2026",
+    "authors": "Chun-Hsiang Chan, Chia-Hsun Lei",
     "title": "A 4D Trajectory Correction Algorithm with Three-Dimensional Acceleration Data",
     "conference": "2026 Association of American Geographers' Annual Meeting",
     "location": "San Francisco, California, United States"
