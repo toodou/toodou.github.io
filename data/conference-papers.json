@@ -7,6 +7,13 @@
     "location": "Naples, Italy"
 },
 {
+    "date": "May 2026",
+    "authors": "Chung-Ray Chu, Chun-Hsiang Chan, Yu-Chiung Lin, Sheng-Chi Lin, Chih-Hsin Chang, Hongey Chen",
+    "title": "Expert-Interpreted Geomorphological Maps Enhanced Machine Learning for Landslide Susceptibility Mapping in Southern Taiwan",
+    "conference": "EGU General Assembly 2026",
+    "location": "Vienna, Austria"
+},
+{
     "date": "Mar. 2026",
     "authors": "Tzu-Cheng Chang, Chun-Hsiang Chan",
     "title": "Graph-Based Feature Selection for Spatially Autocorrelated Geographic Data: A Subgraph Similarity Approach",
