@@ -14,6 +14,27 @@
     "location": "Vienna, Austria"
 },
 {
+    "date": "Apr. 2026",
+    "authors": "Chia-Hsun Li, Chun-Hsiang Chan",
+    "title": "Algorithm Development for Vehicle Spatiotemporal Trajectory Correction Using 3D Acceleration Data",
+    "conference": "30th International Geographical Conference of Taiwan (IGCT)",
+    "location": "Taipei, Taiwan"
+},
+{
+    "date": "Apr. 2026",
+    "authors": "Shao-Hong Lai, Chun-Hsiang Chan",
+    "title": "Demystifying the Impact of Digital Infrastructure, Cargo and Airline Aviation Networks on Global Trading Network",
+    "conference": "30th International Geographical Conference of Taiwan (IGCT)",
+    "location": "Taipei, Taiwan"
+},
+{
+    "date": "Apr. 2026",
+    "authors": "Po-Yu Yeh, Tzu-Cheng Chang, Peng-Hsiang Jen, Chun-Hsiang Chan",
+    "title": "Are We Willing to Pay for Everyday Landscapes? A Spatial Analysis of Sunlight Exposure, Skyline Visibility, and Housing Prices",
+    "conference": "30th International Geographical Conference of Taiwan (IGCT)",
+    "location": "Taipei, Taiwan"
+},
+{
     "date": "Mar. 2026",
     "authors": "Tzu-Cheng Chang, Chun-Hsiang Chan",
     "title": "Graph-Based Feature Selection for Spatially Autocorrelated Geographic Data: A Subgraph Similarity Approach",
@@ -29,7 +50,7 @@
 },
 {
     "date": "Mar. 2026",
-    "authors": "Chun-Hsiang Chan, Chia-Hsun Lei",
+    "authors": "Chun-Hsiang Chan, Chia-Hsun Li",
     "title": "A 4D Trajectory Correction Algorithm with Three-Dimensional Acceleration Data",
     "conference": "2026 Association of American Geographers' Annual Meeting",
     "location": "San Francisco, California, United States"
