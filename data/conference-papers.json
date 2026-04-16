@@ -1,5 +1,19 @@
 [
 {
+    "date": "Jul. 2026",
+    "authors": "Peng-Hsiang Jen, Po-Yu Yeh, Tzu-Cheng Chang, Tzu-Cheng Chang, Chun-Hsiang Chan",
+    "title": "Paying for 3D: When Representation Complexity Yields Little Gain",
+    "conference": "33rd International Conference on Geoinformatics 2026",
+    "location": "Singapore"
+},
+{
+    "date": "Jul. 2026",
+    "authors": "Chun-Hsiang Chan, Chia-Hsun Li, Po-Yu Yeh, Tzu-Cheng Chang",
+    "title": "Reassessing Urban Vibrancy: Discrepancies Between Nighttime Light– and Mobility-Based Estimates",
+    "conference": "33rd International Conference on Geoinformatics 2026",
+    "location": "Singapore"
+},
+{
     "date": "Jun. 2026",
     "authors": "Yao-Feng Liu, Yi-Shih Chung, Chun-Hsiang Chan, Tzu-Cheng Chang",
     "title": "Cohort-based Modeling of ADAS Warning Events: Insights from In-vehicle and Driver Monitoring Video Data",
