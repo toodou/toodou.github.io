@@ -1,6 +1,15 @@
 [
 {
     "year": "2026",
+    "authors": "Shan-Yin Yang, Wei Chien Benny Chin, Tzai-Hung Wen, Pei-Fen Kuo, Chun-Hsiang Chan*",
+    "title": "Understanding the Role of International Flight Networks in Disease Spread: Spatial Epidemic Prevention Zones and Hierarchical Disease Control Policies",
+    "journal": "International Journal of Health Geographics",
+    "vol": "",
+    "index": "(SSCI IF: 3.2; Q1 91/421 in Public, Environmental & Occupational Health)",
+    "doi": "doi"
+},
+{
+    "year": "2026",
     "authors": "Sheng-En Chu, Chiao-Yin Cheng, Chih-Jung Chang, Hua Ho, Hsuan-An Chen, Chun-Hsiang Chan, Matthew H. Ma, Chin-Ho Chang,  Kuang-Chau Tsai, Kuan-Ming Chiu, Lee-Wei Chen, Wen-Chu Chiang, Jen-Tang Sun",
     "title": "Transesophageal Echocardiography During CPR in Patients With Out-of-Hospital Cardiac Arrest: The EXECT-CPR Randomized Clinical Trial",
     "journal": "JAMA Internal Medicine",
@@ -13,7 +22,7 @@
     "authors": "Chun-Hsiang Chan, Hao-Yang Wu, Li-Heng Chen, Vu Pham Thao Vy, Chia-Hao Liang, Yen-Wen Ting, Yi-Chien Lu, Wing P. Chan",
     "title": "Vertebral trabecular microarchitecture changes in the normally ageing population",
     "journal": "Quantitative Imaging in Medicine and Surgery",
-    "vol": "",
+    "vol": "Vol.16(1), 79",
     "index": "(SCI IF: 2.3; Q2 92/213 in Radiology, Nuclear Medicine & Medical Imaging)",
     "doi": "https://dx.doi.org/10.21037/qims-2025-1453"
 },
@@ -22,7 +31,7 @@
     "authors": "Vu Pham Thao Vy, Yi-Chien Lu, James F Griffith, Ying Chin Lin, Chun-Hsiang Chan, John J Carey, Wing P Chan",
     "title": "Medium-term transition rates to osteoporosis: DXA analysis in older Asians",
     "journal": "Archives of Osteoporosis",
-    "vol": "",
+    "vol": "Vol.20(1), 123",
     "index": "(SCI IF: 2.8; Q1 30/140 in Orthopedics)",
     "doi": "https://doi.org/10.1007/s11657-025-01605-5"
 },
@@ -31,7 +40,7 @@
     "authors": "Chun-Hsiang Chan, Tzai-Hung Wen",
     "title": "Timely Personalized Exposure Risk Estimation for Air Travelers",
     "journal": "IEEE Transactions on Computational Social Systems",
-    "vol": "",
+    "vol": "Vol.12(5), 2713-2725",
     "index": "(SSCI IF: 4.5; Q1 6/32 in Computer Science)",
     "doi": "https://doi.org/10.1109/TCSS.2024.3523336"
 },
@@ -40,7 +49,7 @@
     "authors": "Chun-Hsiang Chan, Wei-Hsian Chi*, Fei-Ying Kuo, Yi-Yun Chen",
     "title": "Spatiotemporal topology of religious spread in a multi‐religious metropolis: A historical religious profile of Taipei City in Taiwan from 1660 to 2020",
     "journal": "The Geographical Journal",
-    "vol": "",
+    "vol": "Vol.191(1), e12609",
     "index": "(SSCI IF: 3.6; Q1 16/171 in Geography)",
     "doi": "https://doi.org/10.1111/geoj.12609"
 },
@@ -49,7 +58,7 @@
     "authors": "Sheng-En Chu, Chun-Yen Huang, Chiao-Yin Lan, Chun-Hsiang Chan, Hsuan-An Chen, Chin-Ho Chang, Kuang-Chau Tsai, Kuan-Ming Chiu, Matthew Huei-Ming Ma, Wen-Chu Chiang*, Jen-Tang Sun*",
     "title": "Cardiopulmonary Resuscitation Without Aortic Valve Compression Increases the Chances of Return of Spontaneous Circulation in Out-of-Hospital Cardiac Arrest: A Prospective Observational Cohort Study",
     "journal": "Critical Care Medicine",
-    "vol": "",
+    "vol": "Vol.52(9), 1367-1379",
     "index": "(SCI IF: 8.8; Q1 6/35 in Critical Care Medicine)",
     "doi": "https://doi.org/10.1097/CCM.0000000000006336"
 },
@@ -58,7 +67,7 @@
     "authors": "Wei Chien Benny Chin, Chun-Hsiang Chan*",
     "title": "Analyzing the Trends of COVID-19 and Human Activity Intensity in Malaysia",
     "journal": "Tropical Medicine and Infectious Disease",
-    "vol": "Vol.8(2), 72.",
+    "vol": "Vol.8(2), 72",
     "index": "(SCI IF: 3.711; Q1 6/24 in Tropical Medicine)",
     "doi": "https://doi.org/10.3390/tropicalmed8020072"
 },
