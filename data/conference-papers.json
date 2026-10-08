@@ -1,14 +1,21 @@
 [
-    {
+{
+    "date": "Nov. 2026",
+    "authors": "Po-Yu Yeh, Tzu-Cheng Chang, Xiao Huang, Chun-Hsiang Chan",
+    "title": "The Hidden Cost of Quantum Spatial Computing: From Oracle Complexity to Circuit Complexity",
+    "conference": "2nd ACM SIGSPATIAL International Workshop on Quantum Computing and Quantum-Inspired Technologies for Spatial Data Systems and Applications",
+    "location": "Riverside, California, United States"
+},
+{
     "date": "Sep. 2026",
     "authors": "Wei Chien Benny Chin, Chun-Hsiang Chan",
     "title": "Rank-Structured Compositional Heterogeneity in Spatial Amenity Structures",
     "conference": "The 17th Conference on Spatial Information Theory (COSIT)",
-    "location": "York, UK"
+    "location": "York, UK (acceptance rate: 36%; top 3 best poster awardees)"
 },
 {
     "date": "Jul. 2026",
-    "authors": "Peng-Hsiang Jen, Po-Yu Yeh, Tzu-Cheng Chang, Tzu-Cheng Chang, Chun-Hsiang Chan",
+    "authors": "Po-Yu Yeh, Peng-Hsiang Jen, Tzu-Cheng Chang, Tzu-Cheng Chang, Chun-Hsiang Chan",
     "title": "Paying for 3D: When Representation Complexity Yields Little Gain",
     "conference": "33rd International Conference on Geoinformatics 2026",
     "location": "Singapore"
