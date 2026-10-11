@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Optimization Playground</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--text:#24262b;--muted:#6b7280;--border:#dfe3ea;--accent:#6d75ff;--panel:#f1f3f7}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:1180px;margin:auto;padding:24px}.head{margin-bottom:18px}.head h1{margin:0 0 6px;font-size:30px}.head p{margin:0;color:var(--muted)}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:18px}.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px}
+.top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.title{font-weight:700}.sub,.status,.hint{font-size:13px;color:var(--muted)}
+.views,.actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+button,select,input{font:inherit}button,select{min-height:42px;border:1px solid var(--border);border-radius:10px;background:#fff;padding:8px 11px;color:var(--text)}
+button{cursor:pointer}.views button.active,.primary{background:#eef0ff;border-color:var(--accent);outline:1px solid var(--accent)}
+canvas{width:100%;height:auto;display:block;background:var(--panel);border-radius:12px;touch-action:none}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.metric{background:var(--panel);border-radius:10px;padding:9px;text-align:center}.metric small{display:block;color:var(--muted);margin-bottom:3px}
+.control{margin-bottom:17px}.control label{display:flex;justify-content:space-between;font-size:14px;font-weight:650;margin-bottom:6px}.control select,.control input[type=range]{width:100%}.actions{display:grid;grid-template-columns:1fr 1fr}.note{background:var(--panel);padding:12px;border-radius:12px;font-size:13px;line-height:1.45}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:9px}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;background:#fff;border:1px solid #555}
+@media(max-width:800px){.grid{grid-template-columns:1fr}.wrap{padding:12px}.head h1{font-size:25px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head"><h1>Optimization Playground</h1><p>Explore loss landscapes and compare Gradient Descent, SGD, and Mini-Batch SGD.</p></div>
+  <div class="grid">
+    <main class="card">
+      <div class="top"><div><div class="title">Loss landscape & optimization trajectory</div><div class="sub">Click a 2D landscape to change the initial parameters. Drag the 3D surface to rotate.</div></div><div id="status" class="status"></div></div>
+      <div class="views">
+        <button data-view="heat">2D Heatmap</button>
+        <button data-view="contour" class="active">2D Contour</button>
+        <button data-view="3d">3D Surface</button>
+      </div>
+      <canvas id="cv" width="780" height="510"></canvas>
+      <div class="legend"><span><i class="dot"></i>Current parameter</span><span>White line = optimization path</span></div>
+      <div class="metrics">
+        <div class="metric"><small>Step</small><b id="stepN">0</b></div>
+        <div class="metric"><small>Loss</small><b id="lossN">—</b></div>
+        <div class="metric"><small>Parameters</small><b id="paramN">—</b></div>
+      </div>
+    </main>
+    <aside class="card">
+      <div class="control"><label>Optimizer</label><select id="optimizer"><option value="gd">Gradient Descent</option><option value="sgd">Stochastic Gradient Descent</option><option value="mini">Mini-Batch SGD</option></select><div id="optNote" class="hint">Uses the full gradient at every update.</div></div>
+      <div id="batchWrap" class="control" style="display:none"><label><span>Mini-batch size</span><span id="batchVal">16</span></label><input id="batch" type="range" min="2" max="64" step="2" value="16"></div>
+      <div class="control"><label>Loss function</label><select id="surface"><option value="convex">Convex bowl</option><option value="multi" selected>Multiple local minima</option><option value="valley">Narrow curved valley</option></select></div>
+      <div class="control"><label><span>Learning rate η</span><span id="lrVal">0.12</span></label><input id="lr" type="range" min=".01" max=".8" step=".01" value=".12"></div>
+      <div class="control"><label><span>Sample-gradient variability*</span><span id="noiseVal">0.60</span></label><input id="noise" type="range" min="0" max="1.5" step=".05" value=".60"><div class="hint">*Teaching simulation: controls variability in SGD gradient estimates; it is not a standard optimizer hyperparameter.</div></div>
+      <div class="control"><label>Initial condition</label><select id="start"><option value="-4.5,-3.5">A: (−4.5, −3.5)</option><option value="4.4,3.4">B: (4.4, 3.4)</option><option value="-1.8,4.5">C: (−1.8, 4.5)</option><option value="3,-4.5">D: (3.0, −4.5)</option></select></div>
+      <div class="actions"><button id="run" class="primary">▶ Run</button><button id="step">Step once</button><button id="pause">Pause</button><button id="reset">Reset</button></div>
+      <div class="note"><b>Teaching experiment</b><br>Keep the initial point and learning rate fixed. Switch GD → SGD → Mini-Batch SGD and compare path smoothness, convergence behavior, and final loss.</div>
+    </aside>
+  </div>
+</div>
+<script>
+(()=>{
+const $=s=>document.querySelector(s), C=$('#cv'),ctx=C.getContext('2d'),surface=$('#surface'),optimizer=$('#optimizer'),lr=$('#lr'),noise=$('#noise'),batch=$('#batch'),start=$('#start');
+let view='contour',path=[],p=[],running=false,timer=null,angle=-.75,elev=.55,drag=null,custom=null;
+const xmin=-6,xmax=6,ymin=-6,ymax=6,pad=46;
+function f(x,y){if(surface.value==='convex')return .45*(x-2)**2+.8*(y-1)**2;if(surface.value==='valley')return .025*(1-x)**2+.004*(y-x*x/4)**2;return .05*(x*x+y*y)-Math.cos(x)-Math.cos(y)}
+function g(x,y){if(surface.value==='convex')return [.9*(x-2),1.6*(y-1)];if(surface.value==='valley'){let q=y-x*x/4;return [.05*(x-1)-.004*x*q,.008*q]}return [.1*x+Math.sin(x),.1*y+Math.sin(y)]}
+const sx=x=>pad+(x-xmin)/(xmax-xmin)*(C.width-2*pad), sy=y=>C.height-pad-(y-ymin)/(ymax-ymin)*(C.height-2*pad);
+function palette(t){t=Math.max(0,Math.min(1,t));return `hsl(${250-210*t} 70% ${35+22*t}%)`}
+function range(){let mn=1e9,mx=-1e9;for(let j=0;j<45;j++)for(let i=0;i<55;i++){let z=f(xmin+i/54*12,ymin+j/44*12);mn=Math.min(mn,z);mx=Math.max(mx,z)}return[mn,mx]}
+function draw2(){
+ ctx.clearRect(0,0,C.width,C.height);let[mn,mx]=range(),nx=100,ny=70,cw=(C.width-2*pad)/nx,ch=(C.height-2*pad)/ny;
+ for(let j=0;j<ny;j++)for(let i=0;i<nx;i++){let x=xmin+(i+.5)/nx*12,y=ymax-(j+.5)/ny*12,z=f(x,y);ctx.fillStyle=palette((z-mn)/(mx-mn||1));ctx.fillRect(pad+i*cw,pad+j*ch,cw+1,ch+1)}
+ if(view==='contour'){ctx.globalAlpha=.55;ctx.strokeStyle='#fff';ctx.lineWidth=.7;for(let k=1;k<11;k++){let lev=mn+(mx-mn)*k/11;ctx.beginPath();for(let j=1;j<ny-1;j++)for(let i=1;i<nx-1;i++){let x=xmin+i/nx*12,y=ymax-j/ny*12,z=f(x,y);if(Math.abs(z-lev)<(mx-mn)/11*.075){ctx.moveTo(sx(x)-1,sy(y));ctx.lineTo(sx(x)+1,sy(y))}}ctx.stroke()}ctx.globalAlpha=1}
+ drawPath2();ctx.strokeStyle='rgba(255,255,255,.7)';ctx.strokeRect(pad,pad,C.width-2*pad,C.height-2*pad);ctx.fillStyle='#fff';ctx.font='16px sans-serif';ctx.fillText('w₁',C.width-30,C.height-pad+6);ctx.fillText('w₂',pad-31,pad-10)
+}
+function drawPath2(){if(!path.length)return;ctx.beginPath();path.forEach((q,i)=>i?ctx.lineTo(sx(q[0]),sy(q[1])):ctx.moveTo(sx(q[0]),sy(q[1])));ctx.strokeStyle='#fff';ctx.lineWidth=3;ctx.stroke();path.forEach((q,i)=>{ctx.beginPath();ctx.fillStyle=i===path.length-1?'#fff':'rgba(255,255,255,.65)';ctx.arc(sx(q[0]),sy(q[1]),i===path.length-1?6:2.4,0,Math.PI*2);ctx.fill()})}
+function proj(x,y,z,mn,mx){let X=x/6,Y=y/6,Z=(z-mn)/(mx-mn||1)*2-1,ca=Math.cos(angle),sa=Math.sin(angle),ce=Math.cos(elev),se=Math.sin(elev),xr=X*ca-Y*sa,yr=X*sa+Y*ca,yy=yr*ce-Z*se,zz=yr*se+Z*ce;return[C.width/2+xr*240,C.height*.55+yy*155,zz]}
+function draw3(){ctx.clearRect(0,0,C.width,C.height);ctx.fillStyle='#20232a';ctx.fillRect(0,0,C.width,C.height);let[mn,mx]=range(),n=32,cells=[];for(let j=0;j<n-1;j++)for(let i=0;i<n-1;i++){let x=xmin+i/(n-1)*12,y=ymin+j/(n-1)*12,x2=xmin+(i+1)/(n-1)*12,y2=ymin+(j+1)/(n-1)*12,pts=[[x,y],[x2,y],[x2,y2],[x,y2]].map(q=>{let z=f(q[0],q[1]);return [...proj(q[0],q[1],z,mn,mx),z]}),d=pts.reduce((s,q)=>s+q[2],0)/4,za=pts.reduce((s,q)=>s+q[3],0)/4;cells.push({pts,d,za})}cells.sort((a,b)=>a.d-b.d);for(const c of cells){ctx.beginPath();c.pts.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));ctx.closePath();ctx.fillStyle=palette((c.za-mn)/(mx-mn||1));ctx.fill();ctx.strokeStyle='rgba(255,255,255,.12)';ctx.stroke()}if(path.length){ctx.beginPath();path.forEach((q,i)=>{let r=proj(q[0],q[1],f(q[0],q[1]),mn,mx);i?ctx.lineTo(r[0],r[1]):ctx.moveTo(r[0],r[1])});ctx.strokeStyle='#fff';ctx.lineWidth=4;ctx.stroke();let q=path.at(-1),r=proj(q[0],q[1],f(q[0],q[1]),mn,mx);ctx.beginPath();ctx.arc(r[0],r[1],7,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill()}ctx.fillStyle='#fff';ctx.font='15px sans-serif';ctx.fillText('Drag to rotate 3D surface',18,28)}
+function draw(){view==='3d'?draw3():draw2()}
+function update(){ $('#stepN').textContent=Math.max(0,path.length-1);$('#lossN').textContent=f(p[0],p[1]).toFixed(4);$('#paramN').textContent=`(${p[0].toFixed(2)}, ${p[1].toFixed(2)})`}
+function stop(){running=false;if(timer){clearInterval(timer);timer=null}$('#status').textContent=path.length?`Stopped at step ${path.length-1}`:''}
+function reset(){stop();p=custom?custom.slice():start.value.split(',').map(Number);path=[p.slice()];update();draw()}
+function estGrad(base){let s=+noise.value;if(optimizer.value==='gd')return base;if(optimizer.value==='sgd')return[base[0]+(Math.random()*2-1)*s*2,base[1]+(Math.random()*2-1)*s*2];let z=s*2/Math.sqrt(+batch.value);return[base[0]+(Math.random()*2-1)*z,base[1]+(Math.random()*2-1)*z]}
+function once(){let gg=estGrad(g(p[0],p[1])),eta=+lr.value;p=[p[0]-eta*gg[0],p[1]-eta*gg[1]];if(!Number.isFinite(p[0])||Math.abs(p[0])>30||Math.abs(p[1])>30){stop();$('#status').textContent='Diverged — try a smaller learning rate.';return}path.push(p.slice());if(path.length>151)stop();update();draw()}
+function run(){if(running)return;running=true;$('#status').textContent='Optimizing…';timer=setInterval(()=>{once();if(optimizer.value==='gd'&&Math.hypot(...g(p[0],p[1]))<.003)stop()},90)}
+document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{view=b.dataset.view;document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x===b));draw()});
+optimizer.onchange=()=>{$('#batchWrap').style.display=optimizer.value==='mini'?'block':'none';$('#optNote').textContent=optimizer.value==='gd'?'Uses the full gradient at every update.':optimizer.value==='sgd'?'Uses one noisy sample-gradient estimate per update.':'Averages a mini-batch of gradient estimates.';reset()};
+surface.onchange=()=>{custom=null;reset()};start.onchange=()=>{custom=null;reset()};
+lr.oninput=()=>$('#lrVal').textContent=(+lr.value).toFixed(2);noise.oninput=()=>$('#noiseVal').textContent=(+noise.value).toFixed(2);batch.oninput=()=>$('#batchVal').textContent=batch.value;
+$('#run').onclick=run;$('#step').onclick=once;$('#pause').onclick=stop;$('#reset').onclick=()=>{custom=null;reset()};
+C.onclick=e=>{if(view==='3d'||drag)return;let r=C.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*C.width,py=(e.clientY-r.top)/r.height*C.height;if(px<pad||px>C.width-pad||py<pad||py>C.height-pad)return;custom=[xmin+(px-pad)/(C.width-2*pad)*12,ymax-(py-pad)/(C.height-2*pad)*12];reset()};
+C.onpointerdown=e=>{if(view!=='3d')return;drag={x:e.clientX,y:e.clientY};C.setPointerCapture(e.pointerId)};
+C.onpointermove=e=>{if(!drag||view!=='3d')return;angle+=(e.clientX-drag.x)*.008;elev=Math.max(-1.2,Math.min(1.2,elev+(e.clientY-drag.y)*.006));drag={x:e.clientX,y:e.clientY};draw()};
+C.onpointerup=C.onpointercancel=()=>drag=null;reset();
+})();
+</script>
+</body>
+</html>

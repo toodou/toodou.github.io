@@ -1,0 +1,42 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Activation Function Playground</title><style>
+body{font-family:Arial,sans-serif;margin:0;background:#f5f6fa;color:#222}.wrap{max-width:1150px;margin:auto;padding:22px}
+.grid{display:grid;grid-template-columns:1fr 280px;gap:18px}.card{background:white;border:1px solid #ddd;border-radius:14px;padding:16px}
+.flow{display:flex;align-items:center;gap:10px}.node{flex:1;text-align:center;background:#f0f2f6;padding:12px;border-radius:10px}.out{border:2px solid #6670ee;background:white}
+.funcs{display:flex;flex-wrap:wrap;gap:6px;margin:15px 0}button,select{padding:8px;border:1px solid #ccc;border-radius:8px;background:white}button{cursor:pointer}.active{background:#e9ebff;border-color:#6670ee}
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:12px}canvas{width:100%;height:auto;background:#f0f2f6;border-radius:9px}
+label{font-weight:bold;font-size:14px;display:flex;justify-content:space-between;margin-top:15px}input[type=range],select{width:100%}.box{background:#f0f2f6;padding:10px;border-radius:9px;margin-top:15px;font-size:13px}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}.metric{text-align:center;background:#f0f2f6;padding:8px;border-radius:8px}.warn{background:#fff6dc;padding:10px;border-radius:8px;margin-top:10px;font-size:13px}.hidden{display:none}
+@media(max-width:800px){.grid,.charts{grid-template-columns:1fr}.flow{flex-direction:column}.node{width:100%}}
+</style></head><body><div class="wrap"><h1>Activation Function Playground</h1><p>Adjust x, w, and b to see how activation functions transform z = wx + b and change its gradient.</p>
+<div class="grid"><main class="card"><div class="flow"><div class="node">Input<br><b id="nx">1.00</b></div><b>→</b><div class="node">z = wx + b<br><b id="nz">1.00</b></div><b>→</b><div class="node out">Output<br><b id="na">0.731</b><br><span id="nf">Sigmoid</span></div></div>
+<div class="funcs" id="buttons"></div><div class="charts"><div><b>Activation function</b><canvas id="c1" width="520" height="330"></canvas></div><div><b>Derivative</b><canvas id="c2" width="520" height="330"></canvas></div></div>
+<div id="warn" class="warn hidden"></div><div class="metrics"><div class="metric">z<br><b id="mz"></b></div><div class="metric">f(z)<br><b id="ma"></b></div><div class="metric">f′(z)<br><b id="md"></b></div><div class="metric">Range<br><b id="mr"></b></div></div></main>
+<aside class="card"><label>Input x <span id="xv">1.00</span></label><input id="x" type="range" min="-5" max="5" step=".05" value="1">
+<label>Weight w <span id="wv">1.00</span></label><input id="w" type="range" min="-4" max="4" step=".05" value="1">
+<label>Bias b <span id="bv">0.00</span></label><input id="b" type="range" min="-5" max="5" step=".05" value="0">
+<div class="box"><b>Current neuron</b><div id="eq"></div><div id="aeq"></div></div>
+<label>Compare with</label><select id="compare"></select><div class="box"><b>What students should notice</b><div id="lesson"></div></div><button id="reset" style="width:100%;margin-top:12px">Reset neuron</button></aside></div></div>
+<script>
+const D={
+sign:{n:"Sign (Signum)",r:"{-1, 0, 1}",f:z=>z>0?1:z<0?-1:0,d:z=>Math.abs(z)<1e-9?NaN:0,e:"sgn",hard:1,l:"Hard threshold to -1, 0, or +1. The derivative is zero away from z=0 and undefined at z=0."},
+step:{n:"Unit Step (Heaviside)",r:"{0, 1}",f:z=>z>=0?1:0,d:z=>Math.abs(z)<1e-9?NaN:0,e:"H",hard:1,l:"Hard binary threshold. Its zero/undefined derivative prevents useful standard backpropagation."},
+sigmoid:{n:"Sigmoid",r:"(0, 1)",f:z=>1/(1+Math.exp(-z)),d:z=>{let s=1/(1+Math.exp(-z));return s*(1-s)},e:"sigmoid",l:"Smooth threshold-like mapping into (0,1), but gradients become small in saturated tails."},
+tanh:{n:"Tanh",r:"(-1, 1)",f:z=>Math.tanh(z),d:z=>1-Math.tanh(z)**2,e:"tanh",l:"Zero-centered smooth alternative to Sign, but it also saturates at large |z|."},
+relu:{n:"ReLU",r:"[0, infinity)",f:z=>Math.max(0,z),d:z=>z>0?1:z<0?0:NaN,e:"ReLU",l:"Keeps positive inputs linear and clips negative inputs to zero; negative units can have zero gradient."},
+leaky:{n:"Leaky ReLU",r:"(-infinity, infinity)",f:z=>z>0?z:.1*z,d:z=>z>0?1:z<0?.1:NaN,e:"LReLU",l:"Retains a small negative slope, reducing the dying-ReLU problem."},
+elu:{n:"ELU",r:"(-1, infinity)",f:z=>z>=0?z:Math.exp(z)-1,d:z=>z>=0?1:Math.exp(z),e:"ELU",l:"Linear for positive values and smoothly approaches -1 for negative values."},
+gelu:{n:"GELU",r:"approx. (-0.17, infinity)",f:z=>.5*z*(1+Math.tanh(Math.sqrt(2/Math.PI)*(z+.044715*z**3))),d:null,e:"GELU",l:"Smoothly gates inputs rather than imposing a hard threshold; widely used in Transformers."},
+swish:{n:"Swish / SiLU",r:"approx. (-0.28, infinity)",f:z=>z/(1+Math.exp(-z)),d:z=>{let s=1/(1+Math.exp(-z));return s+z*s*(1-s)},e:"SiLU",l:"Smooth, allows small negative outputs, and becomes nearly linear for large positive inputs."},
+linear:{n:"Linear",r:"(-infinity, infinity)",f:z=>z,d:z=>1,e:"Linear",l:"Adds no nonlinearity; stacked linear layers collapse to one linear transformation."}};
+D.gelu.d=z=>{let h=1e-4;return(D.gelu.f(z+h)-D.gelu.f(z-h))/(2*h)};
+const order=["sign","step","sigmoid","tanh","relu","leaky","elu","gelu","swish","linear"],$=s=>document.querySelector(s);let active="sigmoid";
+$("#compare").innerHTML='<option value="none">None</option>'+order.map(k=>`<option value="${k}">${D[k].n}</option>`).join("");
+order.forEach(k=>{let b=document.createElement("button");b.textContent=D[k].n;b.className=k===active?"active":"";b.onclick=()=>{active=k;[...$("#buttons").children].forEach(q=>q.classList.toggle("active",q===b));update()};$("#buttons").appendChild(b)});
+function graph(canvas,der=false){let q=canvas.getContext("2d"),W=canvas.width,H=canvas.height,p=38,linear=["relu","leaky","elu","gelu","swish","linear"].includes(active),ymin=der?-1.2:(linear?-6:-2),ymax=der?1.5:(linear?6:2),X=z=>p+(z+6)/12*(W-2*p),Y=v=>H-p-(v-ymin)/(ymax-ymin)*(H-2*p);q.clearRect(0,0,W,H);q.fillStyle="#f0f2f6";q.fillRect(0,0,W,H);q.strokeStyle="#cbd0d8";q.beginPath();q.moveTo(p,Y(0));q.lineTo(W-p,Y(0));q.moveTo(X(0),p);q.lineTo(X(0),H-p);q.stroke();
+ function line(k,dash){q.save();q.strokeStyle=dash?"#d96c37":"#2563eb";q.lineWidth=3;q.setLineDash(dash?[8,6]:[]);q.beginPath();let begun=false,last=null;for(let i=0;i<=480;i++){let z=-6+i/40,v=der?D[k].d(z):D[k].f(z);if(!Number.isFinite(v)){begun=false;last=null;continue}let jump=last!==null&&Math.abs(v-last)>.8&&(k==="sign"||k==="step"),xx=X(z),yy=Y(Math.max(ymin,Math.min(ymax,v)));if(!begun||jump){q.moveTo(xx,yy);begun=true}else q.lineTo(xx,yy);last=v}q.stroke();q.restore()}
+ if($("#compare").value!=="none"&&$("#compare").value!==active)line($("#compare").value,true);line(active,false);let z=+$("#w").value*+$("#x").value+ +$("#b").value,v=der?D[active].d(z):D[active].f(z);if(z>=-6&&z<=6&&Number.isFinite(v)&&v>=ymin&&v<=ymax){q.beginPath();q.arc(X(z),Y(v),7,0,Math.PI*2);q.fillStyle="#6870ef";q.fill()}}
+function F(v,n=3){return Number(v).toFixed(n)}
+function update(){let x=+$("#x").value,w=+$("#w").value,b=+$("#b").value,z=w*x+b,a=D[active].f(z),d=D[active].d(z);$("#xv").textContent=F(x,2);$("#wv").textContent=F(w,2);$("#bv").textContent=F(b,2);$("#nx").textContent=F(x,2);$("#nz").textContent=F(z,2);$("#na").textContent=F(a);$("#nf").textContent=D[active].n;$("#mz").textContent=F(z);$("#ma").textContent=F(a);$("#md").textContent=Number.isFinite(d)?F(d):"Undefined";$("#mr").textContent=D[active].r;$("#eq").textContent=`z = ${F(w,2)} x ${F(x,2)} + ${F(b,2)} = ${F(z,2)}`;$("#aeq").textContent=`a = ${D[active].e}(${F(z,2)}) = ${F(a)}`;$("#lesson").textContent=D[active].l;$("#warn").classList.toggle("hidden",!D[active].hard);$("#warn").innerHTML="<b>Backpropagation note:</b> Hard-threshold activations provide no useful ordinary gradient for standard gradient-based weight learning.";graph($("#c1"));graph($("#c2"),true)}
+["x","w","b"].forEach(i=>$("#"+i).oninput=update);$("#compare").onchange=update;$("#reset").onclick=()=>{$("#x").value=1;$("#w").value=1;$("#b").value=0;$("#compare").value="none";active="sigmoid";[...$("#buttons").children].forEach((q,i)=>q.classList.toggle("active",order[i]===active));update()};update();
+</script></body></html>
