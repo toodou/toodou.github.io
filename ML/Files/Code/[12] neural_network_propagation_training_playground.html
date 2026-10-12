@@ -1,18 +1,10 @@
 <!doctype html>
 <html lang="zh-Hant">
-
 <head>
-    <link rel="shortcut icon" href="../../../images/CAPP.ico" />
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Neural Network Training Playground — Fixed</title>
-    <meta charset="utf-8" property="og:title" content="Chun-Hsiang Chan Ph.D." />
-    <meta charset="utf-8" property="og:description" content="ML機器學習" />
-    <meta charset="utf-8" property="og:type" content="website" />
-    <meta charset="utf-8" property="og:image" content="../images/IMGL4992.jpg" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <style>
-        :root{--bg:#f5f7fb;--card:#fff;--ink:#172033;--muted:#667085;--line:#d7dce5;--blue:#2563eb;--bluebg:#dbeafe;--orange:#ea580c;--green:#16a34a;--purple:#7c3aed}
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Neural Network Training Playground — Fixed</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--ink:#172033;--muted:#667085;--line:#d7dce5;--blue:#2563eb;--bluebg:#dbeafe;--orange:#ea580c;--green:#16a34a;--purple:#7c3aed}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Segoe UI,Arial,sans-serif}.wrap{max-width:1480px;margin:auto;padding:18px}
 .layout{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:16px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px;box-shadow:0 2px 9px #00000008}.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.between{justify-content:space-between}.muted{color:var(--muted)}.small{font-size:13px}.mono{font-family:Consolas,monospace}
 button,select,input{font:inherit}button{padding:9px 12px;border-radius:9px;border:1px solid var(--line);background:white;cursor:pointer}button.primary{background:var(--blue);color:white;border-color:var(--blue)}button:disabled{opacity:.45;cursor:not-allowed}
@@ -23,643 +15,195 @@ button,select,input{font:inherit}button{padding:9px 12px;border-radius:9px;borde
 @media(max-width:950px){.layout,.two{grid-template-columns:1fr}.samples{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
+<body><div class="wrap"><div class="layout"><main>
+<section class="card">
+<div class="row between"><div><h2 style="margin:0">Neural Network Training Playground</h2><div id="arch" class="small muted"></div></div><b id="status">READY</b></div>
+<div class="stats"><div class="stat">Epoch<br><b id="epoch">1</b></div><div class="stat">Batch<br><b id="batch">1/3</b></div><div class="stat">Update<br><b id="updates">0</b></div><div class="stat">Phase<br><b id="phase">READY</b></div></div>
+<div class="row">
+<button class="primary" id="forwardOnly">▶ Forward</button>
+<button id="backwardOnly">◀ Backward</button>
+<button id="updateOnly">↓ Update Weights</button>
+<button id="oneBatch">▶ Full Training Cycle</button>
+<button id="oneEpoch">Train 1 Epoch</button>
+<button id="tenEpoch">Train 10 Epochs</button>
+<button id="pause">Pause</button>
+</div>
+<div class="small muted" style="margin:8px 0">Teaching sequence: Forward → Backward → Update Weights. Full Training Cycle performs all three automatically.</div>
+<svg id="net" viewBox="0 0 920 420"></svg>
+<div id="formula" class="formula mono">Ready. Press “Train 1 Batch”.</div>
+</section>
 
-<body>
-    <div class="wrap">
-        <div class="layout">
-            <main>
-                <section class="card">
-                    <div class="row between">
-                        <div>
-                            <h2 style="margin:0">Neural Network Training Playground</h2>
-                            <div id="arch" class="small muted"></div>
-                        </div><b id="status">READY</b>
-                    </div>
-                    <div class="stats">
-                        <div class="stat">Epoch<br><b id="epoch">1</b></div>
-                        <div class="stat">Batch<br><b id="batch">1/3</b></div>
-                        <div class="stat">Update<br><b id="updates">0</b></div>
-                        <div class="stat">Phase<br><b id="phase">READY</b></div>
-                    </div>
-                    <div class="row">
-                        <button class="primary" id="forwardOnly">▶ Forward</button>
-                        <button id="backwardOnly">◀ Backward</button>
-                        <button id="updateOnly">↓ Update Weights</button>
-                        <button id="oneBatch">▶ Full Training Cycle</button>
-                        <button id="oneEpoch">Train 1 Epoch</button>
-                        <button id="tenEpoch">Train 10 Epochs</button>
-                        <button id="pause">Pause</button>
-                    </div>
-                    <div class="small muted" style="margin:8px 0">Teaching sequence: Forward → Backward → Update Weights. Full Training Cycle performs all three automatically.</div>
-                    <svg id="net" viewBox="0 0 920 420"></svg>
-                    <div id="formula" class="formula mono">Ready. Press “Train 1 Batch”.</div>
-                </section>
-                <section class="two" style="margin-top:16px">
-                    <div class="card"><b>Input data & current mini-batch</b>
-                        <div class="small muted">Easier teaching dataset: two clearly separated classes. Each default mini-batch contains both classes.</div><canvas id="scatter" width="600" height="350"></canvas>
-                        <div id="samples" class="samples"></div>
-                    </div>
-                    <div class="card"><b>Weight update inspector</b>
-                        <div id="inspect" class="formula mono" style="margin-top:10px">No update yet.</div>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Metric</th>
-                                    <th>Before</th>
-                                    <th>After</th>
-                                </tr>
-                            </thead>
-                            <tbody id="changes"></tbody>
-                        </table>
-                    </div>
-                </section>
-                <section class="two" style="margin-top:16px">
-                    <div class="card"><b>Prediction history</b>
-                        <div class="small muted">Full-dataset mean prediction by true class; one new point per parameter update.</div><canvas id="pred" width="600" height="320"></canvas>
-                        <div class="legend"><span><i class="dot" style="background:#2563eb"></i>ŷ | y=0</span><span><i class="dot" style="background:#ea580c"></i>ŷ | y=1</span></div>
-                    </div>
-                    <div class="card"><b>Loss history</b>
-                        <div class="small muted">Full-dataset BCE; one new point per parameter update.</div><canvas id="loss" width="600" height="320"></canvas>
-                    </div>
-                </section>
-            </main>
-            <aside>
-                <section class="card">
-                    <div class="control">
-                        <div class="label"><span>Hidden layers</span><span id="layerVal">2</span></div><input id="layers" type="range" min="1" max="3" value="2">
-                    </div>
-                    <div id="neurons"></div>
-                    <div class="control">
-                        <div class="label"><span>Activation</span></div><select id="activation">
-                            <option>Sigmoid</option>
-                            <option selected>Tanh</option>
-                            <option>ReLU</option>
-                        </select>
-                    </div>
-                    <div class="control">
-                        <div class="label"><span>Batch size</span></div><select id="batchSize">
-                            <option value="1">1 — SGD</option>
-                            <option value="2">2</option>
-                            <option value="4" selected>4 — Mini-batch</option>
-                            <option value="6">6</option>
-                            <option value="12">12 — Full batch</option>
-                        </select>
-                    </div>
-                    <div class="control">
-                        <div class="label"><span>Learning rate η</span><span id="etaVal">0.40</span></div><input id="eta" type="range" min=".01" max="1" step=".01" value=".40">
-                    </div>
-                    <div class="control">
-                        <div class="label"><span>Animation speed</span><span id="speedVal">450 ms</span></div><input id="speed" type="range" min="80" max="1200" step="20" value="450">
-                    </div>
-                    <div class="formula small"><b>Current model</b><br>Dataset loss: <b id="dLoss"></b><br>Mean ŷ | y=0: <b id="p0"></b><br>Mean ŷ | y=1: <b id="p1"></b><br>Current batch loss: <b id="bLoss"></b></div>
-                    <div class="formula small" style="margin-top:10px"><b>Training hierarchy</b>
-                        <div id="concept"></div>
-                    </div>
-                    <div class="row" style="margin-top:12px"><button id="random">Randomize W</button><button id="reset">Reset</button></div>
-                </section>
-            </aside>
-        </div>
-    </div>
-    <script>
-    "use strict";
-    (() => {
-        const $ = x => document.getElementById(x);
-        const D = [
-            [-1.8, -1.4, 0],
-            [1.7, 1.4, 1],
-            [-1.5, -.8, 0],
-            [1.4, .9, 1],
-            [-1.2, -1.5, 0],
-            [1.1, 1.6, 1],
-            [-.9, -.6, 0],
-            [.9, .7, 1],
-            [-.7, -1.1, 0],
-            [.7, 1.2, 1],
-            [-.4, -.5, 0],
-            [.5, .6, 1]
-        ];
-        let hidden = [3, 2, 2],
-            W = [],
-            B = [],
-            epoch = 1,
-            batchIndex = 0,
-            updateCount = 0,
-            history = [],
-            phase = "READY",
-            active = -1,
-            last = null,
-            running = false,
-            cancelled = false,
-            cachedBatch = null,
-            cachedGrads = null;
-        const sleep = ms => new Promise(r => setTimeout(r, ms));
-        const sig = z => 1 / (1 + Math.exp(-z));
+<section class="two" style="margin-top:16px">
+<div class="card"><b>Input data & current mini-batch</b><div class="small muted">Easier teaching dataset: two clearly separated classes. Each default mini-batch contains both classes.</div><canvas id="scatter" width="600" height="350"></canvas><div id="samples" class="samples"></div></div>
+<div class="card"><b>Weight update inspector</b><div id="inspect" class="formula mono" style="margin-top:10px">No update yet.</div><table class="table"><thead><tr><th>Metric</th><th>Before</th><th>After</th></tr></thead><tbody id="changes"></tbody></table></div>
+</section>
 
-        function af(z) { const a = $("activation").value; return a === "Sigmoid" ? sig(z) : a === "Tanh" ? Math.tanh(z) : Math.max(0, z) }
+<section class="two" style="margin-top:16px">
+<div class="card"><b>Prediction history</b><div class="small muted">Full-dataset mean prediction by true class; one new point per parameter update.</div><canvas id="pred" width="600" height="320"></canvas><div class="legend"><span><i class="dot" style="background:#2563eb"></i>ŷ | y=0</span><span><i class="dot" style="background:#ea580c"></i>ŷ | y=1</span></div></div>
+<div class="card"><b>Loss history</b><div class="small muted">Full-dataset BCE; one new point per parameter update.</div><canvas id="loss" width="600" height="320"></canvas></div>
+</section>
+</main>
 
-        function daf(z) { const a = $("activation").value; if (a === "Sigmoid") { const s = sig(z); return s * (1 - s) } if (a === "Tanh") return 1 - Math.tanh(z) ** 2; return z > 0 ? 1 : 0 }
+<aside><section class="card">
+<div class="control"><div class="label"><span>Hidden layers</span><span id="layerVal">2</span></div><input id="layers" type="range" min="1" max="3" value="2"></div>
+<div id="neurons"></div>
+<div class="control"><div class="label"><span>Activation</span></div><select id="activation"><option>Sigmoid</option><option selected>Tanh</option><option>ReLU</option></select></div>
+<div class="control"><div class="label"><span>Batch size</span></div><select id="batchSize"><option value="1">1 — SGD</option><option value="2">2</option><option value="4" selected>4 — Mini-batch</option><option value="6">6</option><option value="12">12 — Full batch</option></select></div>
+<div class="control"><div class="label"><span>Learning rate η</span><span id="etaVal">0.40</span></div><input id="eta" type="range" min=".01" max="1" step=".01" value=".40"></div>
+<div class="control"><div class="label"><span>Animation speed</span><span id="speedVal">450 ms</span></div><input id="speed" type="range" min="80" max="1200" step="20" value="450"></div>
+<div class="formula small"><b>Current model</b><br>Dataset loss: <b id="dLoss"></b><br>Mean ŷ | y=0: <b id="p0"></b><br>Mean ŷ | y=1: <b id="p1"></b><br>Current batch loss: <b id="bLoss"></b></div>
+<div class="formula small" style="margin-top:10px"><b>Training hierarchy</b><div id="concept"></div></div>
+<div class="row" style="margin-top:12px"><button id="random">Randomize W</button><button id="reset">Reset</button></div>
+</section></aside>
+</div></div>
 
-        function shape() { return [2, ...hidden.slice(0, +$("layers").value), 1] }
+<script>
+"use strict";
+(()=>{
+const $=x=>document.getElementById(x);
+const D=[[-1.8,-1.4,0],[1.7,1.4,1],[-1.5,-.8,0],[1.4,.9,1],[-1.2,-1.5,0],[1.1,1.6,1],[-.9,-.6,0],[.9,.7,1],[-.7,-1.1,0],[.7,1.2,1],[-.4,-.5,0],[.5,.6,1]];
+let hidden=[3,2,2],W=[],B=[],epoch=1,batchIndex=0,updateCount=0,history=[],phase="READY",active=-1,last=null,running=false,cancelled=false,cachedBatch=null,cachedGrads=null;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const sig=z=>1/(1+Math.exp(-z));
+function af(z){const a=$("activation").value;return a==="Sigmoid"?sig(z):a==="Tanh"?Math.tanh(z):Math.max(0,z)}
+function daf(z){const a=$("activation").value;if(a==="Sigmoid"){const s=sig(z);return s*(1-s)}if(a==="Tanh")return 1-Math.tanh(z)**2;return z>0?1:0}
+function shape(){return [2,...hidden.slice(0,+$("layers").value),1]}
+function BS(){return +$("batchSize").value} function NB(){return Math.ceil(D.length/BS())}
+function ids(){const st=batchIndex*BS();return D.slice(st,st+BS()).map((_,i)=>st+i)}
+function forward(row){
+ let A=[[row[0],row[1]]],Z=[];
+ for(let l=0;l<W.length;l++){Z[l]=[];A[l+1]=[];for(let j=0;j<W[l].length;j++){let z=B[l][j];for(let i=0;i<W[l][j].length;i++)z+=W[l][j][i]*A[l][i];Z[l][j]=z;A[l+1][j]=l===W.length-1?sig(z):af(z)}}
+ return {A,Z,y:row[2],yh:A[A.length-1][0]}
+}
+function grad(o){
+ let delta=new Array(W.length),gW=new Array(W.length),gB=new Array(W.length);delta[W.length-1]=[o.yh-o.y];
+ for(let l=W.length-2;l>=0;l--){delta[l]=[];for(let i=0;i<W[l].length;i++){let s=0;for(let j=0;j<W[l+1].length;j++)s+=W[l+1][j][i]*delta[l+1][j];delta[l][i]=s*daf(o.Z[l][i])}}
+ for(let l=0;l<W.length;l++){gW[l]=[];gB[l]=[];for(let j=0;j<W[l].length;j++){gW[l][j]=[];for(let i=0;i<W[l][j].length;i++)gW[l][j][i]=delta[l][j]*o.A[l][i];gB[l][j]=delta[l][j]}}
+ return {delta,gW,gB}
+}
+function evalRows(rows){
+ const out=rows.map(forward);let loss=0;for(const o of out)loss+=-(o.y*Math.log(o.yh+1e-12)+(1-o.y)*Math.log(1-o.yh+1e-12));return {out,loss:loss/out.length}
+}
+function metrics(){const e=evalRows(D),z=e.out.filter(o=>o.y===0),o=e.out.filter(o=>o.y===1);return {loss:e.loss,p0:z.reduce((s,v)=>s+v.yh,0)/z.length,p1:o.reduce((s,v)=>s+v.yh,0)/o.length}}
+function calcBatch(){
+ const ii=ids(),outs=ii.map(i=>forward(D[i])),gs=outs.map(grad);let loss=0;for(const o of outs)loss+=-(o.y*Math.log(o.yh+1e-12)+(1-o.y)*Math.log(1-o.yh+1e-12));loss/=outs.length;
+ const gW=W.map((m,l)=>m.map((r,j)=>r.map((_,i)=>gs.reduce((s,g)=>s+g.gW[l][j][i],0)/gs.length)));
+ const gB=B.map((r,l)=>r.map((_,j)=>gs.reduce((s,g)=>s+g.gB[l][j],0)/gs.length));return {ii,outs,gW,gB,loss}
+}
+function record(){const m=metrics();history.push({step:updateCount,epoch,loss:m.loss,p0:m.p0,p1:m.p1})}
+function applyUpdate(){
+ const c=calcBatch(),before=metrics(),eta=+$("eta").value,old=W[0][0][0],g=c.gW[0][0][0];
+ for(let l=0;l<W.length;l++)for(let j=0;j<W[l].length;j++){for(let i=0;i<W[l][j].length;i++)W[l][j][i]-=eta*c.gW[l][j][i];B[l][j]-=eta*c.gB[l][j]}
+ updateCount++;const after=metrics();last={old,newv:W[0][0][0],g,before,after};record()
+}
+function nextBatch(){batchIndex++;if(batchIndex>=NB()){batchIndex=0;epoch++}}
+function init(random){
+ cancelled=true;running=false;const s=shape();W=[];B=[];
+ for(let l=0;l<s.length-1;l++){W[l]=[];B[l]=[];for(let j=0;j<s[l+1];j++){W[l][j]=[];for(let i=0;i<s[l];i++)W[l][j][i]=random?(Math.random()*1.2-.6):Math.sin((l+1)*13+(j+1)*5+(i+1)*2)*.35;B[l][j]=0}}
+ epoch=1;batchIndex=0;updateCount=0;history=[];phase="READY";active=-1;last=null;cachedBatch=null;cachedGrads=null;record();setTimeout(()=>{cancelled=false;render()},0)
+}
+function el(n,a){const e=document.createElementNS("http://www.w3.org/2000/svg",n);for(const k in a)e.setAttribute(k,a[k]);return e}
+function drawNet(){
+ const v=$("net"),s=shape(),L=s.length,x=s.map((_,l)=>65+l*790/(L-1)),yy=s.map(n=>Array.from({length:n},(_,j)=>n===1?210:65+j*290/(n-1)));v.innerHTML="";
+ if(active>=0){const left=active===0?20:(x[active-1]+x[active])/2,right=active===L-1?900:(x[active]+x[active+1])/2;v.appendChild(el("rect",{x:left,y:38,width:right-left,height:350,rx:18,fill:phase==="BACKWARD"?"#7c3aed":"#2563eb",opacity:".13"}))}
+ for(let l=0;l<L-1;l++)for(let i=0;i<s[l];i++)for(let j=0;j<s[l+1];j++){const hot=(phase==="FORWARD"&&active===l+1)||(phase==="BACKWARD"&&active===l);v.appendChild(el("line",{x1:x[l]+29,y1:yy[l][i],x2:x[l+1]-29,y2:yy[l+1][j],stroke:hot?(phase==="BACKWARD"?"#7c3aed":"#2563eb"):"#cdd3dd","stroke-width":hot?3:1.2}))}
+ const first=ids()[0]??0,ex=forward(D[first]);
+ for(let l=0;l<L;l++){for(let j=0;j<s[l];j++){v.appendChild(el("circle",{cx:x[l],cy:yy[l][j],r:29,fill:l===active?"#dbeafe":"#fff",stroke:l===active?"#2563eb":"#64748b","stroke-width":l===active?4:2}));let t=el("text",{x:x[l],y:yy[l][j]-5,"text-anchor":"middle","font-size":"12","font-weight":"700",fill:"#172033"});t.textContent=l===0?"x"+(j+1):l===L-1?"ŷ":`h${l}.${j+1}`;v.appendChild(t);let z=el("text",{x:x[l],y:yy[l][j]+14,"text-anchor":"middle","font-size":"10",fill:"#667085"});z.textContent=(l===0?ex.A[0][j]:ex.A[l][j]).toFixed(3);v.appendChild(z)}let lab=el("text",{x:x[l],y:20,"text-anchor":"middle","font-size":"11","font-weight":"700",fill:"#667085"});lab.textContent=l===0?"INPUT":l===L-1?"OUTPUT":`HIDDEN ${l}`;v.appendChild(lab)}
+}
+function drawScatter(){
+ const c=$("scatter"),q=c.getContext("2d"),w=c.width,h=c.height,p=38;q.clearRect(0,0,w,h);q.strokeStyle="#d6dbe4";q.beginPath();q.moveTo(p,h/2);q.lineTo(w-p,h/2);q.moveTo(w/2,p);q.lineTo(w/2,h-p);q.stroke();const X=v=>p+(v+2.1)/4.2*(w-2*p),Y=v=>h-p-(v+1.8)/3.6*(h-2*p),ii=ids();
+ D.forEach((r,i)=>{q.beginPath();q.arc(X(r[0]),Y(r[1]),ii.includes(i)?9:6,0,Math.PI*2);q.fillStyle=r[2]?"#ea580c":"#2563eb";q.fill();if(ii.includes(i)){q.strokeStyle="#111827";q.lineWidth=2;q.stroke()}q.fillStyle="#4b5563";q.font="11px sans-serif";q.fillText("#"+(i+1),X(r[0])+8,Y(r[1])-8)})
+}
+function lineChart(c,series,fixed){
+ const q=c.getContext("2d"),w=c.width,h=c.height,p=42;q.clearRect(0,0,w,h);q.strokeStyle="#ccd2dc";q.lineWidth=1;q.beginPath();q.moveTo(p,18);q.lineTo(p,h-p);q.lineTo(w-12,h-p);q.stroke();
+ let lo,hi;if(fixed){lo=fixed[0];hi=fixed[1]}else{let a=[];history.forEach(d=>series.forEach(s=>a.push(d[s.k])));lo=Math.min(...a);hi=Math.max(...a);let pd=Math.max(.02,(hi-lo)*.2);lo=Math.max(0,lo-pd);hi+=pd;if(hi===lo)hi=lo+.1}
+ const X=i=>p+i/Math.max(10,history.length-1)*(w-p-18),Y=v=>h-p-(v-lo)/(hi-lo)*(h-p-22);q.font="11px sans-serif";q.fillStyle="#667085";q.fillText(hi.toFixed(2),5,24);q.fillText(lo.toFixed(2),5,h-p+3);
+ series.forEach(s=>{q.strokeStyle=s.c;q.lineWidth=2.5;q.beginPath();history.forEach((d,i)=>i?q.lineTo(X(i),Y(d[s.k])):q.moveTo(X(i),Y(d[s.k])));q.stroke();history.forEach((d,i)=>{q.beginPath();q.arc(X(i),Y(d[s.k]),3,0,Math.PI*2);q.fillStyle=s.c;q.fill()})});
+ for(let i=1;i<history.length;i++)if(history[i].epoch!==history[i-1].epoch){q.save();q.setLineDash([4,4]);q.strokeStyle="#9ca3af";q.beginPath();q.moveTo(X(i),18);q.lineTo(X(i),h-p);q.stroke();q.restore()}q.fillStyle="#667085";q.fillText("Weight update →",w-112,h-10)
+}
+function renderSamples(){const box=$("samples"),ii=ids();box.innerHTML="";D.forEach((r,i)=>{let d=document.createElement("div");d.className="sample"+(ii.includes(i)?" active":"");d.innerHTML=`<b>#${i+1}</b><br>(${r[0]}, ${r[1]})<br>y=${r[2]}`;box.appendChild(d)})}
+function render(){
+ const m=metrics(),bc=calcBatch();$("arch").textContent=shape().join(" → ");$("epoch").textContent=epoch;$("batch").textContent=`${batchIndex+1}/${NB()}`;$("updates").textContent=updateCount;$("phase").textContent=phase;$("status").textContent=running?"RUNNING":phase;$("dLoss").textContent=m.loss.toFixed(5);$("p0").textContent=m.p0.toFixed(4);$("p1").textContent=m.p1.toFixed(4);$("bLoss").textContent=bc.loss.toFixed(5);$("etaVal").textContent=(+$("eta").value).toFixed(2);$("speedVal").textContent=$("speed").value+" ms";$("concept").innerHTML=`<br>N = 12<br>Batch size = ${BS()}<br>Batches / epoch = ${NB()}<br>Updates / epoch = ${NB()}`;
+ if(last){$("inspect").innerHTML=`w₁₁⁽¹⁾: ${last.old.toFixed(6)} → <b>${last.newv.toFixed(6)}</b><br>gradient = ${last.g.toFixed(6)}<br>Δw = ${(last.newv-last.old).toFixed(6)}`;$("changes").innerHTML=`<tr><td>Dataset loss</td><td>${last.before.loss.toFixed(5)}</td><td>${last.after.loss.toFixed(5)}</td></tr><tr><td>ŷ | y=0</td><td>${last.before.p0.toFixed(4)}</td><td>${last.after.p0.toFixed(4)}</td></tr><tr><td>ŷ | y=1</td><td>${last.before.p1.toFixed(4)}</td><td>${last.after.p1.toFixed(4)}</td></tr>`}else{$("inspect").textContent="No update yet.";$("changes").innerHTML=""}
+ drawNet();drawScatter();renderSamples();lineChart($("pred"),[{k:"p0",c:"#2563eb"},{k:"p1",c:"#ea580c"}],[0,1]);lineChart($("loss"),[{k:"loss",c:"#16a34a"}],null)
+}
+async function show(p,l,msg){
+ phase=p;active=l;$("formula").innerHTML=msg;render();await sleep(+$("speed").value);if(cancelled)throw new Error("cancel")
+}
 
-        function BS() { return +$("batchSize").value }
+async function runForwardOnly(){
+ if(running)return;running=true;cancelled=false;setButtons(true);
+ try{
+  const L=shape().length;
+  cachedBatch=calcBatch(); cachedGrads=null;
+  await show("FORWARD",0,"Read the <b>current mini-batch</b>. No parameters are changed.");
+  for(let l=1;l<L;l++)await show("FORWARD",l,l===L-1?
+    `Output prediction computed. Mean batch BCE = <b>${cachedBatch.loss.toFixed(5)}</b>. Weights are still unchanged.`:
+    `Hidden ${l}: <b>z = Wa + b</b> → <b>a = f(z)</b>.`);
+  phase="FORWARD DONE";active=L-1;
+  $("formula").innerHTML="<b>Forward complete.</b> Activations, predictions and loss are cached. You can now press Backward.";
+  render();
+ }catch(e){if(e.message!=="cancel")throw e}
+ finally{running=false;setButtons(false);render()}
+}
+async function runBackwardOnly(){
+ if(running)return;
+ if(!cachedBatch){$("formula").innerHTML="<b>Backward requires a Forward pass first.</b> Press Forward to cache z, a, ŷ and loss.";phase="WAITING FOR FORWARD";render();return}
+ running=true;cancelled=false;setButtons(true);
+ try{
+  cachedGrads=calcBatch();
+  const L=shape().length;
+  for(let l=L-1;l>=0;l--)await show("BACKWARD",l,l===L-1?
+    "Output gradient: <b>δ = ŷ − y</b>. No weights have changed yet.":
+    l===0?"All gradients are now available. <b>Weights are still unchanged.</b> Press Update Weights to apply them.":
+    `Hidden ${l}: <b>δ = (Wᵀδ_next) ⊙ f′(z)</b>.`);
+  phase="BACKWARD DONE";active=0;$("formula").innerHTML="<b>Backward complete.</b> ∂L/∂W and ∂L/∂b are cached. No parameter update has occurred.";render();
+ }catch(e){if(e.message!=="cancel")throw e}
+ finally{running=false;setButtons(false);render()}
+}
+async function runUpdateOnly(){
+ if(running)return;
+ if(!cachedBatch){$("formula").innerHTML="Run <b>Forward</b> first.";phase="WAITING FOR FORWARD";render();return}
+ if(!cachedGrads){$("formula").innerHTML="Run <b>Backward</b> before updating weights.";phase="WAITING FOR BACKWARD";render();return}
+ running=true;cancelled=false;setButtons(true);
+ try{
+  applyUpdate();phase="UPDATE";active=-1;
+  $("formula").innerHTML="<b>W ← W − η∇W</b><br>Parameters have now changed. This is the moment a new point is added to the history charts.";
+  render();await sleep(+$("speed").value);
+  nextBatch();cachedBatch=null;cachedGrads=null;phase="READY";active=-1;
+  $("formula").innerHTML="Update complete. The next mini-batch is ready for a new Forward pass.";render();
+ }catch(e){if(e.message!=="cancel")throw e}
+ finally{running=false;setButtons(false);render()}
+}
 
-        function NB() { return Math.ceil(D.length / BS()) }
-
-        function ids() { const st = batchIndex * BS(); return D.slice(st, st + BS()).map((_, i) => st + i) }
-
-        function forward(row) {
-            let A = [
-                    [row[0], row[1]]
-                ],
-                Z = [];
-            for (let l = 0; l < W.length; l++) {
-                Z[l] = [];
-                A[l + 1] = [];
-                for (let j = 0; j < W[l].length; j++) {
-                    let z = B[l][j];
-                    for (let i = 0; i < W[l][j].length; i++) z += W[l][j][i] * A[l][i];
-                    Z[l][j] = z;
-                    A[l + 1][j] = l === W.length - 1 ? sig(z) : af(z)
-                }
-            }
-            return { A, Z, y: row[2], yh: A[A.length - 1][0] }
-        }
-
-        function grad(o) {
-            let delta = new Array(W.length),
-                gW = new Array(W.length),
-                gB = new Array(W.length);
-            delta[W.length - 1] = [o.yh - o.y];
-            for (let l = W.length - 2; l >= 0; l--) {
-                delta[l] = [];
-                for (let i = 0; i < W[l].length; i++) {
-                    let s = 0;
-                    for (let j = 0; j < W[l + 1].length; j++) s += W[l + 1][j][i] * delta[l + 1][j];
-                    delta[l][i] = s * daf(o.Z[l][i])
-                }
-            }
-            for (let l = 0; l < W.length; l++) {
-                gW[l] = [];
-                gB[l] = [];
-                for (let j = 0; j < W[l].length; j++) {
-                    gW[l][j] = [];
-                    for (let i = 0; i < W[l][j].length; i++) gW[l][j][i] = delta[l][j] * o.A[l][i];
-                    gB[l][j] = delta[l][j]
-                }
-            }
-            return { delta, gW, gB }
-        }
-
-        function evalRows(rows) {
-            const out = rows.map(forward);
-            let loss = 0;
-            for (const o of out) loss += -(o.y * Math.log(o.yh + 1e-12) + (1 - o.y) * Math.log(1 - o.yh + 1e-12));
-            return { out, loss: loss / out.length }
-        }
-
-        function metrics() {
-            const e = evalRows(D),
-                z = e.out.filter(o => o.y === 0),
-                o = e.out.filter(o => o.y === 1);
-            return { loss: e.loss, p0: z.reduce((s, v) => s + v.yh, 0) / z.length, p1: o.reduce((s, v) => s + v.yh, 0) / o.length }
-        }
-
-        function calcBatch() {
-            const ii = ids(),
-                outs = ii.map(i => forward(D[i])),
-                gs = outs.map(grad);
-            let loss = 0;
-            for (const o of outs) loss += -(o.y * Math.log(o.yh + 1e-12) + (1 - o.y) * Math.log(1 - o.yh + 1e-12));
-            loss /= outs.length;
-            const gW = W.map((m, l) => m.map((r, j) => r.map((_, i) => gs.reduce((s, g) => s + g.gW[l][j][i], 0) / gs.length)));
-            const gB = B.map((r, l) => r.map((_, j) => gs.reduce((s, g) => s + g.gB[l][j], 0) / gs.length));
-            return { ii, outs, gW, gB, loss }
-        }
-
-        function record() {
-            const m = metrics();
-            history.push({ step: updateCount, epoch, loss: m.loss, p0: m.p0, p1: m.p1 })
-        }
-
-        function applyUpdate() {
-            const c = calcBatch(),
-                before = metrics(),
-                eta = +$("eta").value,
-                old = W[0][0][0],
-                g = c.gW[0][0][0];
-            for (let l = 0; l < W.length; l++)
-                for (let j = 0; j < W[l].length; j++) {
-                    for (let i = 0; i < W[l][j].length; i++) W[l][j][i] -= eta * c.gW[l][j][i];
-                    B[l][j] -= eta * c.gB[l][j]
-                }
-            updateCount++;
-            const after = metrics();
-            last = { old, newv: W[0][0][0], g, before, after };
-            record()
-        }
-
-        function nextBatch() {
-            batchIndex++;
-            if (batchIndex >= NB()) {
-                batchIndex = 0;
-                epoch++
-            }
-        }
-
-        function init(random) {
-            cancelled = true;
-            running = false;
-            const s = shape();
-            W = [];
-            B = [];
-            for (let l = 0; l < s.length - 1; l++) {
-                W[l] = [];
-                B[l] = [];
-                for (let j = 0; j < s[l + 1]; j++) {
-                    W[l][j] = [];
-                    for (let i = 0; i < s[l]; i++) W[l][j][i] = random ? (Math.random() * 1.2 - .6) : Math.sin((l + 1) * 13 + (j + 1) * 5 + (i + 1) * 2) * .35;
-                    B[l][j] = 0
-                }
-            }
-            epoch = 1;
-            batchIndex = 0;
-            updateCount = 0;
-            history = [];
-            phase = "READY";
-            active = -1;
-            last = null;
-            cachedBatch = null;
-            cachedGrads = null;
-            record();
-            setTimeout(() => {
-                cancelled = false;
-                render()
-            }, 0)
-        }
-
-        function el(n, a) { const e = document.createElementNS("http://www.w3.org/2000/svg", n); for (const k in a) e.setAttribute(k, a[k]); return e }
-
-        function drawNet() {
-            const v = $("net"),
-                s = shape(),
-                L = s.length,
-                x = s.map((_, l) => 65 + l * 790 / (L - 1)),
-                yy = s.map(n => Array.from({ length: n }, (_, j) => n === 1 ? 210 : 65 + j * 290 / (n - 1)));
-            v.innerHTML = "";
-            if (active >= 0) {
-                const left = active === 0 ? 20 : (x[active - 1] + x[active]) / 2,
-                    right = active === L - 1 ? 900 : (x[active] + x[active + 1]) / 2;
-                v.appendChild(el("rect", { x: left, y: 38, width: right - left, height: 350, rx: 18, fill: phase === "BACKWARD" ? "#7c3aed" : "#2563eb", opacity: ".13" }))
-            }
-            for (let l = 0; l < L - 1; l++)
-                for (let i = 0; i < s[l]; i++)
-                    for (let j = 0; j < s[l + 1]; j++) {
-                        const hot = (phase === "FORWARD" && active === l + 1) || (phase === "BACKWARD" && active === l);
-                        v.appendChild(el("line", { x1: x[l] + 29, y1: yy[l][i], x2: x[l + 1] - 29, y2: yy[l + 1][j], stroke: hot ? (phase === "BACKWARD" ? "#7c3aed" : "#2563eb") : "#cdd3dd", "stroke-width": hot ? 3 : 1.2 }))
-                    }
-            const first = ids()[0] ? ? 0,
-                ex = forward(D[first]);
-            for (let l = 0; l < L; l++) {
-                for (let j = 0; j < s[l]; j++) {
-                    v.appendChild(el("circle", { cx: x[l], cy: yy[l][j], r: 29, fill: l === active ? "#dbeafe" : "#fff", stroke: l === active ? "#2563eb" : "#64748b", "stroke-width": l === active ? 4 : 2 }));
-                    let t = el("text", { x: x[l], y: yy[l][j] - 5, "text-anchor": "middle", "font-size": "12", "font-weight": "700", fill: "#172033" });
-                    t.textContent = l === 0 ? "x" + (j + 1) : l === L - 1 ? "ŷ" : `h${l}.${j+1}`;
-                    v.appendChild(t);
-                    let z = el("text", { x: x[l], y: yy[l][j] + 14, "text-anchor": "middle", "font-size": "10", fill: "#667085" });
-                    z.textContent = (l === 0 ? ex.A[0][j] : ex.A[l][j]).toFixed(3);
-                    v.appendChild(z)
-                }
-                let lab = el("text", { x: x[l], y: 20, "text-anchor": "middle", "font-size": "11", "font-weight": "700", fill: "#667085" });
-                lab.textContent = l === 0 ? "INPUT" : l === L - 1 ? "OUTPUT" : `HIDDEN ${l}`;
-                v.appendChild(lab)
-            }
-        }
-
-        function drawScatter() {
-            const c = $("scatter"),
-                q = c.getContext("2d"),
-                w = c.width,
-                h = c.height,
-                p = 38;
-            q.clearRect(0, 0, w, h);
-            q.strokeStyle = "#d6dbe4";
-            q.beginPath();
-            q.moveTo(p, h / 2);
-            q.lineTo(w - p, h / 2);
-            q.moveTo(w / 2, p);
-            q.lineTo(w / 2, h - p);
-            q.stroke();
-            const X = v => p + (v + 2.1) / 4.2 * (w - 2 * p),
-                Y = v => h - p - (v + 1.8) / 3.6 * (h - 2 * p),
-                ii = ids();
-            D.forEach((r, i) => {
-                q.beginPath();
-                q.arc(X(r[0]), Y(r[1]), ii.includes(i) ? 9 : 6, 0, Math.PI * 2);
-                q.fillStyle = r[2] ? "#ea580c" : "#2563eb";
-                q.fill();
-                if (ii.includes(i)) {
-                    q.strokeStyle = "#111827";
-                    q.lineWidth = 2;
-                    q.stroke()
-                }
-                q.fillStyle = "#4b5563";
-                q.font = "11px sans-serif";
-                q.fillText("#" + (i + 1), X(r[0]) + 8, Y(r[1]) - 8)
-            })
-        }
-
-        function lineChart(c, series, fixed) {
-            const q = c.getContext("2d"),
-                w = c.width,
-                h = c.height,
-                p = 42;
-            q.clearRect(0, 0, w, h);
-            q.strokeStyle = "#ccd2dc";
-            q.lineWidth = 1;
-            q.beginPath();
-            q.moveTo(p, 18);
-            q.lineTo(p, h - p);
-            q.lineTo(w - 12, h - p);
-            q.stroke();
-            let lo, hi;
-            if (fixed) {
-                lo = fixed[0];
-                hi = fixed[1]
-            } else {
-                let a = [];
-                history.forEach(d => series.forEach(s => a.push(d[s.k])));
-                lo = Math.min(...a);
-                hi = Math.max(...a);
-                let pd = Math.max(.02, (hi - lo) * .2);
-                lo = Math.max(0, lo - pd);
-                hi += pd;
-                if (hi === lo) hi = lo + .1
-            }
-            const X = i => p + i / Math.max(10, history.length - 1) * (w - p - 18),
-                Y = v => h - p - (v - lo) / (hi - lo) * (h - p - 22);
-            q.font = "11px sans-serif";
-            q.fillStyle = "#667085";
-            q.fillText(hi.toFixed(2), 5, 24);
-            q.fillText(lo.toFixed(2), 5, h - p + 3);
-            series.forEach(s => {
-                q.strokeStyle = s.c;
-                q.lineWidth = 2.5;
-                q.beginPath();
-                history.forEach((d, i) => i ? q.lineTo(X(i), Y(d[s.k])) : q.moveTo(X(i), Y(d[s.k])));
-                q.stroke();
-                history.forEach((d, i) => {
-                    q.beginPath();
-                    q.arc(X(i), Y(d[s.k]), 3, 0, Math.PI * 2);
-                    q.fillStyle = s.c;
-                    q.fill()
-                })
-            });
-            for (let i = 1; i < history.length; i++)
-                if (history[i].epoch !== history[i - 1].epoch) {
-                    q.save();
-                    q.setLineDash([4, 4]);
-                    q.strokeStyle = "#9ca3af";
-                    q.beginPath();
-                    q.moveTo(X(i), 18);
-                    q.lineTo(X(i), h - p);
-                    q.stroke();
-                    q.restore()
-                } q.fillStyle = "#667085";
-            q.fillText("Weight update →", w - 112, h - 10)
-        }
-
-        function renderSamples() {
-            const box = $("samples"),
-                ii = ids();
-            box.innerHTML = "";
-            D.forEach((r, i) => {
-                let d = document.createElement("div");
-                d.className = "sample" + (ii.includes(i) ? " active" : "");
-                d.innerHTML = `<b>#${i+1}</b><br>(${r[0]}, ${r[1]})<br>y=${r[2]}`;
-                box.appendChild(d)
-            })
-        }
-
-        function render() {
-            const m = metrics(),
-                bc = calcBatch();
-            $("arch").textContent = shape().join(" → ");
-            $("epoch").textContent = epoch;
-            $("batch").textContent = `${batchIndex+1}/${NB()}`;
-            $("updates").textContent = updateCount;
-            $("phase").textContent = phase;
-            $("status").textContent = running ? "RUNNING" : phase;
-            $("dLoss").textContent = m.loss.toFixed(5);
-            $("p0").textContent = m.p0.toFixed(4);
-            $("p1").textContent = m.p1.toFixed(4);
-            $("bLoss").textContent = bc.loss.toFixed(5);
-            $("etaVal").textContent = (+$("eta").value).toFixed(2);
-            $("speedVal").textContent = $("speed").value + " ms";
-            $("concept").innerHTML = `<br>N = 12<br>Batch size = ${BS()}<br>Batches / epoch = ${NB()}<br>Updates / epoch = ${NB()}`;
-            if (last) {
-                $("inspect").innerHTML = `w₁₁⁽¹⁾: ${last.old.toFixed(6)} → <b>${last.newv.toFixed(6)}</b><br>gradient = ${last.g.toFixed(6)}<br>Δw = ${(last.newv-last.old).toFixed(6)}`;
-                $("changes").innerHTML = `<tr><td>Dataset loss</td><td>${last.before.loss.toFixed(5)}</td><td>${last.after.loss.toFixed(5)}</td></tr><tr><td>ŷ | y=0</td><td>${last.before.p0.toFixed(4)}</td><td>${last.after.p0.toFixed(4)}</td></tr><tr><td>ŷ | y=1</td><td>${last.before.p1.toFixed(4)}</td><td>${last.after.p1.toFixed(4)}</td></tr>`
-            } else {
-                $("inspect").textContent = "No update yet.";
-                $("changes").innerHTML = ""
-            }
-            drawNet();
-            drawScatter();
-            renderSamples();
-            lineChart($("pred"), [{ k: "p0", c: "#2563eb" }, { k: "p1", c: "#ea580c" }], [0, 1]);
-            lineChart($("loss"), [{ k: "loss", c: "#16a34a" }], null)
-        }
-        async function show(p, l, msg) {
-            phase = p;
-            active = l;
-            $("formula").innerHTML = msg;
-            render();
-            await sleep(+$("speed").value);
-            if (cancelled) throw new Error("cancel")
-        }
-
-        async function runForwardOnly() {
-            if (running) return;
-            running = true;
-            cancelled = false;
-            setButtons(true);
-            try {
-                const L = shape().length;
-                cachedBatch = calcBatch();
-                cachedGrads = null;
-                await show("FORWARD", 0, "Read the <b>current mini-batch</b>. No parameters are changed.");
-                for (let l = 1; l < L; l++) await show("FORWARD", l, l === L - 1 ?
-                    `Output prediction computed. Mean batch BCE = <b>${cachedBatch.loss.toFixed(5)}</b>. Weights are still unchanged.` :
-                    `Hidden ${l}: <b>z = Wa + b</b> → <b>a = f(z)</b>.`);
-                phase = "FORWARD DONE";
-                active = L - 1;
-                $("formula").innerHTML = "<b>Forward complete.</b> Activations, predictions and loss are cached. You can now press Backward.";
-                render();
-            } catch (e) { if (e.message !== "cancel") throw e } finally {
-                running = false;
-                setButtons(false);
-                render()
-            }
-        }
-        async function runBackwardOnly() {
-            if (running) return;
-            if (!cachedBatch) {
-                $("formula").innerHTML = "<b>Backward requires a Forward pass first.</b> Press Forward to cache z, a, ŷ and loss.";
-                phase = "WAITING FOR FORWARD";
-                render();
-                return
-            }
-            running = true;
-            cancelled = false;
-            setButtons(true);
-            try {
-                cachedGrads = calcBatch();
-                const L = shape().length;
-                for (let l = L - 1; l >= 0; l--) await show("BACKWARD", l, l === L - 1 ?
-                    "Output gradient: <b>δ = ŷ − y</b>. No weights have changed yet." :
-                    l === 0 ? "All gradients are now available. <b>Weights are still unchanged.</b> Press Update Weights to apply them." :
-                    `Hidden ${l}: <b>δ = (Wᵀδ_next) ⊙ f′(z)</b>.`);
-                phase = "BACKWARD DONE";
-                active = 0;
-                $("formula").innerHTML = "<b>Backward complete.</b> ∂L/∂W and ∂L/∂b are cached. No parameter update has occurred.";
-                render();
-            } catch (e) { if (e.message !== "cancel") throw e } finally {
-                running = false;
-                setButtons(false);
-                render()
-            }
-        }
-        async function runUpdateOnly() {
-            if (running) return;
-            if (!cachedBatch) {
-                $("formula").innerHTML = "Run <b>Forward</b> first.";
-                phase = "WAITING FOR FORWARD";
-                render();
-                return
-            }
-            if (!cachedGrads) {
-                $("formula").innerHTML = "Run <b>Backward</b> before updating weights.";
-                phase = "WAITING FOR BACKWARD";
-                render();
-                return
-            }
-            running = true;
-            cancelled = false;
-            setButtons(true);
-            try {
-                applyUpdate();
-                phase = "UPDATE";
-                active = -1;
-                $("formula").innerHTML = "<b>W ← W − η∇W</b><br>Parameters have now changed. This is the moment a new point is added to the history charts.";
-                render();
-                await sleep(+$("speed").value);
-                nextBatch();
-                cachedBatch = null;
-                cachedGrads = null;
-                phase = "READY";
-                active = -1;
-                $("formula").innerHTML = "Update complete. The next mini-batch is ready for a new Forward pass.";
-                render();
-            } catch (e) { if (e.message !== "cancel") throw e } finally {
-                running = false;
-                setButtons(false);
-                render()
-            }
-        }
-
-        async function trainOneBatch() {
-            if (running) return false;
-            running = true;
-            cancelled = false;
-            setButtons(true);
-            try {
-                const L = shape().length;
-                await show("FORWARD", 0, "1. Read the observations in the <b>current mini-batch</b>.");
-                for (let l = 1; l < L; l++) await show("FORWARD", l, l === L - 1 ? "Compute <b>ŷ</b> with the output sigmoid." : `Hidden ${l}: <b>z = Wa + b</b> → <b>a = f(z)</b>.`);
-                await show("LOSS", L - 1, `Mean mini-batch BCE = <b>${calcBatch().loss.toFixed(5)}</b>.`);
-                for (let l = L - 1; l >= 0; l--) await show("BACKWARD", l, l === L - 1 ? "Output: <b>δ = ŷ − y</b>." : l === 0 ? "Gradients have propagated back to the input side." : `Hidden ${l}: <b>δ = (Wᵀδ_next) ⊙ f′(z)</b>.`);
-                applyUpdate();
-                phase = "UPDATE";
-                active = -1;
-                $("formula").innerHTML = `<b>W ← W − η∇W</b><br>A real parameter update has occurred. History charts now receive one new point.`;
-                render();
-                await sleep(+$("speed").value);
-                nextBatch();
-                cachedBatch = null;
-                cachedGrads = null;
-                phase = "READY";
-                active = -1;
-                $("formula").innerHTML = "Updated weights are retained. The next mini-batch is ready.";
-                render();
-            } catch (e) { if (e.message !== "cancel") throw e; } finally {
-                running = false;
-                setButtons(false);
-                render()
-            }
-            return !cancelled
-        }
-        async function trainMany(n) {
-            if (running) return;
-            for (let i = 0; i < n; i++) { if (cancelled) break; let ok = await trainOneBatch(); if (!ok) break }
-        }
-
-        function setButtons(on) {
-            ["forwardOnly", "backwardOnly", "updateOnly", "oneBatch", "oneEpoch", "tenEpoch", "random", "reset"].forEach(id => $(id).disabled = on)
-        }
-
-        function controls() {
-            let n = +$("layers").value;
-            $("layerVal").textContent = n;
-            let box = $("neurons");
-            box.innerHTML = "";
-            for (let l = 0; l < n; l++) {
-                let d = document.createElement("div");
-                d.className = "control";
-                d.innerHTML = `<div class="label"><span>Hidden ${l+1} neurons</span><span>${hidden[l]}</span></div><input type="range" min="1" max="5" value="${hidden[l]}">`;
-                let r = d.querySelector("input");
-                r.oninput = () => {
-                    hidden[l] = +r.value;
-                    d.querySelector("span:last-child").textContent = hidden[l];
-                    init(false)
-                };
-                box.appendChild(d)
-            }
-        }
-        $("forwardOnly").onclick = () => runForwardOnly();
-        $("backwardOnly").onclick = () => runBackwardOnly();
-        $("updateOnly").onclick = () => runUpdateOnly();
-        $("oneBatch").onclick = () => trainOneBatch();
-        $("oneEpoch").onclick = async () => {
-            cancelled = false;
-            await trainMany(NB() - batchIndex)
-        };
-        $("tenEpoch").onclick = async () => {
-            cancelled = false;
-            await trainMany(NB() * 10)
-        };
-        $("pause").onclick = () => {
-            cancelled = true;
-            running = false;
-            setButtons(false);
-            phase = "PAUSED";
-            active = -1;
-            $("formula").textContent = "Training paused.";
-            render()
-        };
-        $("random").onclick = () => init(true);
-        $("reset").onclick = () => init(false);
-        $("layers").oninput = () => {
-            controls();
-            init(false)
-        };
-        $("activation").onchange = () => init(false);
-        $("batchSize").onchange = () => init(false);
-        $("eta").oninput = render;
-        $("speed").oninput = render;
-        controls();
-        init(false);
-    })();
-    </script>
-</body>
-
-</html>
+async function trainOneBatch(){
+ if(running)return false;running=true;cancelled=false;setButtons(true);
+ try{
+  const L=shape().length;
+  await show("FORWARD",0,"1. Read the observations in the <b>current mini-batch</b>.");
+  for(let l=1;l<L;l++)await show("FORWARD",l,l===L-1?"Compute <b>ŷ</b> with the output sigmoid.":`Hidden ${l}: <b>z = Wa + b</b> → <b>a = f(z)</b>.`);
+  await show("LOSS",L-1,`Mean mini-batch BCE = <b>${calcBatch().loss.toFixed(5)}</b>.`);
+  for(let l=L-1;l>=0;l--)await show("BACKWARD",l,l===L-1?"Output: <b>δ = ŷ − y</b>.":l===0?"Gradients have propagated back to the input side.":`Hidden ${l}: <b>δ = (Wᵀδ_next) ⊙ f′(z)</b>.`);
+  applyUpdate();phase="UPDATE";active=-1;$("formula").innerHTML=`<b>W ← W − η∇W</b><br>A real parameter update has occurred. History charts now receive one new point.`;render();await sleep(+$("speed").value);
+  nextBatch();cachedBatch=null;cachedGrads=null;phase="READY";active=-1;$("formula").innerHTML="Updated weights are retained. The next mini-batch is ready.";render();
+ }catch(e){ if(e.message!=="cancel") throw e; }
+ finally{running=false;setButtons(false);render()}
+ return !cancelled
+}
+async function trainMany(n){
+ if(running)return;for(let i=0;i<n;i++){if(cancelled)break;let ok=await trainOneBatch();if(!ok)break}
+}
+function setButtons(on){["forwardOnly","backwardOnly","updateOnly","oneBatch","oneEpoch","tenEpoch","random","reset"].forEach(id=>$(id).disabled=on)}
+function controls(){let n=+$("layers").value;$("layerVal").textContent=n;let box=$("neurons");box.innerHTML="";for(let l=0;l<n;l++){let d=document.createElement("div");d.className="control";d.innerHTML=`<div class="label"><span>Hidden ${l+1} neurons</span><span>${hidden[l]}</span></div><input type="range" min="1" max="5" value="${hidden[l]}">`;let r=d.querySelector("input");r.oninput=()=>{hidden[l]=+r.value;d.querySelector("span:last-child").textContent=hidden[l];init(false)};box.appendChild(d)}}
+$("forwardOnly").onclick=()=>runForwardOnly();
+$("backwardOnly").onclick=()=>runBackwardOnly();
+$("updateOnly").onclick=()=>runUpdateOnly();
+$("oneBatch").onclick=()=>trainOneBatch();
+$("oneEpoch").onclick=async()=>{cancelled=false;await trainMany(NB()-batchIndex)};
+$("tenEpoch").onclick=async()=>{cancelled=false;await trainMany(NB()*10)};
+$("pause").onclick=()=>{cancelled=true;running=false;setButtons(false);phase="PAUSED";active=-1;$("formula").textContent="Training paused.";render()};
+$("random").onclick=()=>init(true);$("reset").onclick=()=>init(false);
+$("layers").oninput=()=>{controls();init(false)};$("activation").onchange=()=>init(false);$("batchSize").onchange=()=>init(false);$("eta").oninput=render;$("speed").oninput=render;
+controls();init(false);
+})();
+</script></body></html>
