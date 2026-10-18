@@ -1,0 +1,2808 @@
+<!doctype html>
+<html lang="en" data-visualize-standalone>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Convolution &amp; Pooling Playground</title>
+<style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
+
+</head>
+<body>
+<iframe id="codex-visualization" sandbox="allow-scripts" referrerpolicy="no-referrer" title="Convolution &amp; Pooling Playground" data-srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot; data-visualize-standalone&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#x27;none&#x27;; script-src &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; &#x27;wasm-unsafe-eval&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src &#x27;unsafe-inline&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;&quot;&gt;
+&lt;title&gt;Convolution &amp; Pooling Playground&lt;/title&gt;
+&lt;style&gt;:root {
+  color-scheme: light dark;
+  background-color: var(
+    --background,
+    var(--color-background-primary, light-dark(rgb(255 255 255), rgb(24 24 24)))
+  ) !important;
+
+  /* Agent-facing contract; keep in sync with SKILL.md. */
+  --background: var(
+    --color-background-primary,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --card: color-mix(in oklab, var(--foreground) 5%, var(--background));
+  --card-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --popover: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255), rgb(45 45 45))
+  );
+  --popover-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --primary: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --primary-foreground: var(
+    --color-text-inverse,
+    light-dark(rgb(255 255 255), rgb(13 13 13))
+  );
+  --secondary: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255 / 96%), rgb(54 54 54 / 96%))
+  );
+  --secondary-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --muted: color-mix(in srgb, var(--foreground) 10%, transparent);
+  --muted-foreground: var(
+    --color-text-secondary,
+    light-dark(rgb(26 28 31 / 49.4%), rgb(255 255 255 / 49.8%))
+  );
+  --accent: var(
+    --color-background-info,
+    light-dark(rgb(229 242 255), rgb(13 39 63))
+  );
+  --accent-foreground: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --destructive: var(
+    --color-text-warning,
+    light-dark(rgb(226 85 7), rgb(255 133 73))
+  );
+  --border: var(
+    --color-border-secondary,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+  --input: var(
+    --color-border-primary,
+    light-dark(
+      rgb(26 28 31 / 11.8%),
+      color-mix(in oklab, rgb(0 0 0) 10%, transparent)
+    )
+  );
+  --ring: var(
+    --color-ring-primary,
+    light-dark(rgb(51 156 255), rgb(131 195 255 / 76%))
+  );
+  --font-size-base: var(--font-text-md-size, 16px);
+  --blue: light-dark(rgb(51 156 255), rgb(51 156 255));
+  --orange: light-dark(rgb(226 85 7), rgb(251 106 34));
+  --green: light-dark(rgb(0 162 64), rgb(64 201 119));
+  --red: light-dark(rgb(224 46 42), rgb(255 103 100));
+  --purple: light-dark(rgb(146 79 247), rgb(173 123 249));
+  --yellow: light-dark(rgb(255 195 0), rgb(255 210 64));
+  --viz-series-1: var(--primary);
+  --viz-series-2: light-dark(rgb(243 136 59), rgb(245 154 86));
+  --viz-series-3: light-dark(rgb(93 201 119), rgb(116 213 139));
+  --viz-series-4: light-dark(rgb(235 119 177), rgb(240 143 192));
+  --viz-series-5: light-dark(rgb(155 121 236), rgb(170 145 239));
+  --viz-series-6: light-dark(rgb(58 185 177), rgb(90 203 194));
+
+  /* Internal implementation variables; not part of the agent contract. */
+  --font-sans:
+    -apple-system-body, ui-sans-serif, -apple-system, system-ui, &quot;Segoe UI&quot;,
+    Helvetica, &quot;Apple Color Emoji&quot;, Arial, sans-serif, &quot;Segoe UI Emoji&quot;,
+    &quot;Segoe UI Symbol&quot;;
+  --font-mono:
+    ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;,
+    monospace;
+  --font-size-normal: max(11px, var(--font-size-base));
+  --font-size-tooltip: calc(var(--font-size-base) - 1px);
+  --font-size-small: max(11px, calc(var(--font-size-base) - 2px));
+  --font-size-h1: calc(var(--font-size-normal) * 1.7142857143);
+  --font-size-h2: calc(var(--font-size-normal) * 1.4285714286);
+  --font-size-h3: calc(var(--font-size-normal) * 1.2857142857);
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --icon-size: 16px;
+  --line-height-normal: calc(var(--font-size-normal) * 1.5);
+  --line-height-tooltip: calc(var(--font-size-tooltip) * 1.4285714286);
+  --line-height-small: calc(var(--font-size-small) + 4px);
+  --corner-shape: round;
+  --radius: var(--border-radius-lg, 8px);
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px -1px rgb(0 0 0 / 8%);
+  --checkmark-image: url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 17 17&#x27;%3E%3Cpath d=&#x27;M12.8961 3.64101C13.1297 3.41418 13.4984 3.37523 13.7779 3.56581C14.0571 3.75635 14.1554 4.11331 14.0299 4.41347L13.9615 4.53847L7.71151 13.7045C7.59411 13.8767 7.4063 13.9877 7.19881 14.0072C6.99136 14.0267 6.78564 13.9533 6.63826 13.806L2.88826 10.056L2.79842 9.9457C2.6192 9.67407 2.64927 9.30496 2.88826 9.06581C3.12738 8.82669 3.49647 8.79676 3.76815 8.97597L3.8785 9.06581L7.03084 12.2182L12.8053 3.74941L12.8961 3.64101Z&#x27;/%3E%3C/svg%3E&quot;);
+
+  /* Legacy aliases; not part of the current agent contract. */
+  --viz-bg: transparent;
+  --viz-panel: var(--card);
+  --viz-border: var(--border);
+  --viz-text: var(--foreground);
+  --viz-muted: var(--muted-foreground);
+  --viz-accent: var(--primary);
+  --viz-accent-text: var(--primary-foreground);
+  --viz-accent-bg: var(--accent);
+  --viz-font-size: var(--font-size-base);
+  --viz-warning: var(--destructive);
+}
+
+:root[data-theme=&quot;light&quot;] {
+  color-scheme: light;
+}
+
+:root[data-theme=&quot;dark&quot;] {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html &gt; body {
+  /* Preserve MCP aliases for older inline renderers without creating :root cycles. */
+  --color-background-primary: var(
+    --background,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --color-text-primary: var(
+    --foreground,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --color-border-secondary: var(
+    --border,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+
+  margin: 0;
+  padding: var(--visualize-paint-gutter, 0px);
+  color: var(--foreground);
+  background: transparent !important;
+  font-family: var(--font-sans) !important;
+  -webkit-font-smoothing: antialiased;
+  font-size: var(--font-size-base);
+  line-height: calc(var(--font-size-base) * 1.625);
+  font-weight: var(--font-weight-normal);
+}
+
+.cursor-interaction {
+  cursor: var(--cursor-interaction, pointer);
+}
+
+a {
+  color: color-mix(in srgb, var(--viz-accent) 80%, var(--viz-text) 20%);
+  cursor: var(--cursor-interaction, pointer);
+  text-decoration: none;
+  text-underline-offset: 2px;
+  font-weight: inherit;
+}
+
+a:is(:hover, :focus-visible) {
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 0.5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-block: 0;
+}
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+li,
+.table {
+  font-family: var(--font-sans);
+}
+
+h1 {
+  font-size: calc(var(--font-size-base) * 1.5);
+  line-height: 1.3333333333;
+}
+
+h2 {
+  font-size: calc(var(--font-size-base) * 1.25);
+  line-height: 1.4;
+}
+h3 {
+  font-size: calc(var(--font-size-base) * 1.125);
+  line-height: 1.5555555556;
+}
+h4 {
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+}
+h5,
+h6 {
+  font-size: var(--font-size-base);
+  line-height: calc(var(--font-size-base) * 1.625);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+b,
+strong,
+th {
+  font-weight: 600;
+}
+
+code:not(pre code) {
+  display: inline;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  corner-shape: var(--corner-shape);
+  background: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  word-break: break-word;
+}
+pre,
+pre code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.table {
+  width: 100%;
+  color: var(--foreground);
+  font: inherit;
+  text-align: start;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: calc(var(--font-size-base) * 0.875);
+  line-height: calc(var(--font-size-base) * 1.625);
+  font-family: var(--font-sans);
+}
+
+.table :is(th, td) {
+  padding-block: 10px;
+  padding-inline: 0 24px;
+  overflow-wrap: anywhere;
+  border-bottom: 1px solid var(--border);
+  text-align: start;
+  vertical-align: top;
+  border-bottom-color: color-mix(in srgb, var(--foreground) 5%, transparent);
+}
+.table :is(th, td):not(:last-child) {
+  padding-inline-end: calc(var(--font-size-base) * 1.5);
+}
+
+.table-responsive &gt; .table :is(th, td) {
+  overflow-wrap: break-word;
+}
+
+.table :is(th, td):last-child {
+  padding-inline-end: 0;
+}
+
+.table :is(caption, thead th) {
+  font-weight: 600;
+}
+
+.table thead :is(th, td) {
+  border-bottom-color: var(--border-strong, var(--input));
+  padding-block: calc(var(--font-size-base) / 2);
+  line-height: var(--font-size-base);
+}
+
+.table tbody tr:last-child :is(th, td) {
+  border-bottom: 0;
+}
+.table tbody :is(th, td) {
+  padding-block: calc(var(--font-size-base) * 0.625);
+}
+
+.table.table-sm :is(th, td) {
+  padding-block: 8px;
+}
+
+.table.table-sm :is(th, td):not(:last-child) {
+  padding-inline-end: 16px;
+}
+
+.table :is(.text-end, [align=&quot;right&quot;]) {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.table :is(.text-center, [align=&quot;center&quot;]) {
+  text-align: center;
+}
+
+.table .text-nowrap {
+  white-space: nowrap;
+}
+
+#widget {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  background: transparent !important;
+}
+
+.card {
+  min-width: 0;
+  padding: 12px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  border-radius: var(--radius-2xl);
+  corner-shape: var(--corner-shape);
+  color: var(--card-foreground);
+  background: var(--card);
+}
+
+.widget {
+  min-width: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  box-shadow: 0 0 0 0.5px var(--border-strong, var(--border));
+  color: var(--foreground);
+  background: var(--background);
+}
+
+#widget &gt; :not(.card, .widget, .progress) {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  width: max-content;
+  max-width: min(
+    20rem,
+    var(--tooltip-available-width, calc(100vw - 10px)),
+    calc(100vw - 10px)
+  );
+  max-height: min(
+    var(--tooltip-available-height, calc(100vh - 10px)),
+    calc(100vh - 10px)
+  );
+  border: 1px solid var(--border);
+  corner-shape: var(--corner-shape);
+  overflow-wrap: break-word;
+  white-space: normal;
+  pointer-events: none;
+  user-select: none;
+  font-family: var(--font-sans);
+  padding: 5px 12px;
+  border-color: color-mix(
+    in oklab,
+    light-dark(var(--primary-foreground), var(--foreground)) 5%,
+    transparent
+  );
+  border-radius: var(--radius-2xl);
+  color: light-dark(var(--primary-foreground), var(--foreground));
+  background: light-dark(var(--foreground), var(--popover));
+  box-shadow: 0 8px 18px rgb(15 23 42 / 20%);
+  letter-spacing: -0.15px;
+  font-size: calc(var(--font-size-base) * 14 / 16);
+  font-size: round(nearest, calc(var(--font-size-base) * 14 / 16), 1px);
+  font-weight: 600;
+  line-height: 18px;
+  text-align: center;
+}
+
+.viz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(180px, 24%), 1fr));
+  gap: 10px;
+}
+
+.viz-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.viz-stat-value {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+.viz-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+hr {
+  width: 100%;
+  height: 1px;
+  margin-block: 6px;
+  border: 0;
+  background: var(--border);
+}
+
+.nav {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 4px;
+}
+
+.progress {
+  display: flex;
+  height: 8px;
+  margin-block: calc((var(--line-height-normal, 1.5em) - 8px) / 2);
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+}
+
+.progress-bar:only-child {
+  border-radius: var(--radius-full);
+}
+
+.progress-bar {
+  height: 100%;
+  flex-shrink: 0;
+  border: 0;
+  background: var(--viz-series-1);
+}
+
+.viz-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  color: color-mix(in srgb, var(--foreground) 40%, var(--muted-foreground));
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+  font-family: var(--font-sans);
+  font-size: calc(var(--font-size-base) * 14 / 16);
+  font-size: round(nearest, calc(var(--font-size-base) * 14 / 16), 1px);
+  font-weight: var(--font-weight-normal);
+  line-height: 1;
+}
+
+small,
+.text-small {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.viz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.viz-controls &gt; .form-label {
+  display: grid;
+  min-width: min(100%, 260px);
+  flex: 1 1 280px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 2px 12px;
+  margin-bottom: 0;
+}
+
+.viz-controls &gt; .form-label &gt; :is(.form-control, .form-range, .form-select) {
+  grid-column: 1 / -1;
+}
+
+.btn,
+.nav-link,
+.form-check-input,
+.form-control,
+.form-range,
+.form-select {
+  font: inherit;
+}
+
+/* Match inline alignment without overriding a containing flex or grid layout. */
+.btn,
+.nav-link,
+.form-control,
+.form-select,
+.form-range,
+.form-check {
+  vertical-align: middle;
+}
+
+.btn,
+.nav-link {
+  appearance: button;
+  display: inline-flex;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0 8px;
+  -webkit-app-region: no-drag;
+  border: 1px solid var(--input);
+  corner-shape: var(--corner-shape);
+  cursor: var(--cursor-interaction, pointer);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-font-smoothing: inherit;
+  font-family: var(--font-sans);
+  height: fit-content;
+  min-height: calc(12px + 2 * var(--control-spacing, 12px));
+  padding-inline: var(--control-spacing, 12px);
+  border-color: transparent;
+  border-radius: var(--radius-full);
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+  font-size: calc(var(--font-size-base) * 14 / 16);
+  font-size: round(nearest, calc(var(--font-size-base) * 14 / 16), 1px);
+  font-weight: var(--font-weight-normal);
+  line-height: 18px;
+}
+
+.btn {
+  border-color: var(--border);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+}
+
+.btn:is(.btn-block, .viz-tile) {
+  inline-size: 100%;
+}
+
+.btn.viz-tile {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+a.btn {
+  cursor: var(--cursor-interaction, pointer);
+  text-decoration: none;
+}
+
+.btn:not(:disabled):hover {
+  background: light-dark(
+    color-mix(in srgb, var(--foreground) 5.5%, transparent),
+    color-mix(in srgb, var(--foreground) 8%, transparent)
+  );
+}
+
+.nav-link:not(:disabled):not([aria-disabled=&quot;true&quot;]):hover {
+  background: color-mix(in srgb, var(--foreground) 10%, transparent);
+}
+
+.btn-primary {
+  border-color: var(--border);
+  color: var(--primary-foreground);
+  background: var(--foreground);
+  background-clip: border-box;
+}
+
+.btn-primary .text-muted {
+  color: color-mix(in srgb, var(--primary-foreground) 50%, transparent);
+}
+
+.btn-primary:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 80%, transparent);
+  background-clip: border-box;
+}
+
+.btn-ghost {
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.btn-ghost:not(:disabled):hover {
+  color: var(--muted-foreground);
+  background: light-dark(
+    color-mix(in srgb, var(--foreground) 5.5%, transparent),
+    color-mix(in srgb, var(--foreground) 8%, transparent)
+  );
+}
+
+.nav-pills .nav-link {
+  min-width: 0;
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.nav-justified .nav-link {
+  flex: 1 1 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.nav-pills .nav-link.active {
+  color: var(--foreground);
+  background: var(--muted);
+}
+
+/* Shared preview chrome; product styles stay inside each variant. */
+.viz-dotted-background {
+  background-image: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--foreground) 14%, transparent) 0.8px,
+    transparent 0.8px
+  );
+  background-position: center;
+  background-size: 16px 16px;
+}
+
+.viz-carousel {
+  position: relative;
+  min-width: 0;
+}
+
+.viz-carousel:has(&gt; .viz-carousel-controls) {
+  min-height: calc(60px + var(--viz-carousel-picker-height, 0px));
+  padding-bottom: 60px;
+}
+
+.viz-carousel &gt; [data-variant][hidden] {
+  display: none !important;
+}
+
+.viz-carousel &gt; [data-variant] {
+  isolation: isolate;
+}
+
+.viz-carousel-controls {
+  --viz-carousel-hover: light-dark(
+    color-mix(in srgb, var(--foreground) 5.4%, transparent),
+    color-mix(in srgb, var(--foreground) 7.8%, transparent)
+  );
+  position: absolute;
+  z-index: 2;
+  bottom: 8px;
+  left: 50%;
+  display: flex;
+  width: max-content;
+  /* Leave room for the host&#x27;s design-controls launcher at the trailing edge. */
+  max-width: calc(100% - 96px);
+  align-items: center;
+  gap: 0;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-sans);
+  /* Match the settings dropdown chrome independently of the content font size. */
+  font-size: 13px;
+  font-weight: var(--font-weight-normal);
+  line-height: 18px;
+  transform: translateX(-50%);
+  user-select: none;
+}
+
+/* Keep authored mockup button styles out of the shared carousel chrome. */
+.viz-carousel-controls button,
+.viz-carousel-picker &gt; summary {
+  display: flex !important;
+  height: auto !important;
+  min-height: 30px;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px;
+  padding: 0 6px !important;
+  -webkit-app-region: no-drag;
+  border: 0 !important;
+  border-radius: 14px !important;
+  color: inherit !important;
+  background: transparent !important;
+  font: inherit !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.viz-carousel-controls &gt; button,
+.viz-carousel-picker &gt; summary {
+  position: relative;
+  isolation: isolate;
+}
+
+.viz-carousel-controls &gt; button {
+  --icon-size: 16px;
+  width: 30px !important;
+  padding: 0 !important;
+}
+
+.viz-carousel-picker &gt; summary {
+  padding-inline: 12px !important;
+}
+
+.viz-carousel-controls .viz-carousel-caret {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  margin: 0;
+  color: inherit;
+  transform: rotate(180deg);
+}
+
+.viz-carousel-controls &gt; button &gt; svg,
+.viz-carousel-controls .viz-carousel-caret,
+.viz-carousel-count {
+  opacity: 0.5;
+}
+
+.viz-carousel-controls &gt; button::before,
+.viz-carousel-picker &gt; summary::before {
+  position: absolute;
+  z-index: -1;
+  inset: 3px;
+  border-radius: 12px;
+  content: &quot;&quot;;
+  pointer-events: none;
+}
+
+.viz-carousel-controls &gt; button:hover::before,
+.viz-carousel-picker &gt; summary:hover::before {
+  background: var(--viz-carousel-hover);
+}
+
+.viz-carousel-controls &gt; button,
+.viz-carousel-controls [data-lucide],
+.viz-carousel-controls .lucide {
+  flex-shrink: 0;
+}
+
+.viz-carousel-picker {
+  min-width: 0;
+}
+
+.viz-carousel-picker &gt; summary {
+  min-width: 0;
+  list-style: none;
+}
+
+.viz-carousel-picker &gt; summary::-webkit-details-marker {
+  display: none;
+}
+
+.viz-carousel-count {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.viz-carousel-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.viz-carousel-options {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 4px);
+  left: 0;
+  display: flex;
+  max-height: 240px;
+  flex-direction: column;
+  gap: 2px;
+  overflow: auto;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--background);
+  box-shadow: 0 4px 12px light-dark(rgb(0 0 0 / 6%), rgb(0 0 0 / 25%));
+}
+
+.viz-carousel-options &gt; button {
+  border-radius: max(0px, calc(var(--radius-lg) - 5px)) !important;
+  width: 100% !important;
+  min-height: 28px;
+  justify-content: flex-start !important;
+  padding: 4px 8px !important;
+  font-size: var(--font-size-small) !important;
+  text-align: start;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.viz-carousel-options &gt; [aria-current=&quot;true&quot;],
+.viz-carousel-options &gt; button:hover {
+  background: var(--viz-carousel-hover) !important;
+}
+
+.btn:disabled,
+.nav-link:disabled,
+.nav-link[aria-disabled=&quot;true&quot;] {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+[data-lucide] {
+  stroke-width: 1.6;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--foreground);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  corner-shape: var(--corner-shape);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  height: calc(12px + 2 * var(--control-spacing, 12px));
+  min-height: calc(12px + 2 * var(--control-spacing, 12px));
+  padding-inline: calc(4px + var(--control-spacing, 12px) / 2);
+  border-color: var(--input);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--popover) 96%, transparent);
+  font-size: calc(var(--font-size-base) * 14 / 16);
+  font-size: round(nearest, calc(var(--font-size-base) * 14 / 16), 1px);
+  font-weight: var(--font-weight-normal);
+  line-height: 1.4285714286;
+}
+.form-control:is(
+  [type=&quot;file&quot;],
+  [type=&quot;date&quot;],
+  [type=&quot;datetime-local&quot;],
+  [type=&quot;month&quot;],
+  [type=&quot;week&quot;],
+  [type=&quot;color&quot;]
+) {
+  height: calc(12px + 2 * var(--control-spacing, 12px));
+  min-height: calc(12px + 2 * var(--control-spacing, 12px));
+  line-height: 18px;
+}
+.form-control:is(
+  [type=&quot;date&quot;],
+  [type=&quot;datetime-local&quot;],
+  [type=&quot;month&quot;],
+  [type=&quot;week&quot;]
+) {
+  padding-inline: var(--control-spacing, 12px);
+}
+
+.form-control::placeholder {
+  color: var(--muted-foreground);
+}
+
+.form-control[type=&quot;file&quot;] {
+  overflow: hidden;
+  cursor: var(--cursor-interaction, pointer);
+  padding: 0;
+}
+
+.form-control[type=&quot;file&quot;]::file-selector-button {
+  padding: 0 8px;
+  border: 0;
+  border-right: 1px solid var(--input);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: inherit;
+  font: inherit;
+  min-height: calc(10px + 2 * var(--control-spacing, 12px));
+  padding-inline: var(--control-spacing, 12px);
+  margin-inline-end: var(--control-spacing, 12px);
+}
+
+.form-control[type=&quot;file&quot;]:not(:disabled):hover::file-selector-button {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-control-color[type=&quot;color&quot;] {
+  width: 40px;
+  height: calc(12px + 2 * var(--control-spacing, 12px));
+  padding: 3px;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch {
+  border: 0;
+  border-radius: calc(var(--radius-lg) - 4px);
+  corner-shape: var(--corner-shape);
+}
+
+textarea.form-control {
+  height: auto;
+  resize: vertical;
+  min-height: 96px;
+  padding: 8px 10px;
+}
+
+.form-control:focus-visible {
+  border-color: var(--ring);
+  box-shadow: none;
+}
+.form-control:disabled {
+  color: var(--muted-foreground);
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+  opacity: 1;
+}
+.form-control[aria-invalid=&quot;true&quot;] {
+  border-color: var(--red);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--red) 20%, transparent);
+}
+
+.form-control:disabled,
+.form-select:disabled {
+  cursor: not-allowed;
+}
+
+.form-select {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: fit-content;
+  min-height: calc(12px + 2 * var(--control-spacing, 12px));
+  margin: 0;
+  /* The secondary icon role is 14px at compact density and 16px at web density. */
+  --icon-size: calc(10px + var(--control-spacing, 12px) / 2);
+  /* Settings dropdowns retain a 12px inset and a 4px text-to-chevron gap. */
+  padding: 0 calc(16px + var(--icon-size)) 0 12px;
+  outline: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  corner-shape: var(--corner-shape);
+  color: var(--foreground);
+  background-color: var(--secondary);
+  background-image:
+    linear-gradient(
+      45deg,
+      transparent calc(50% - 0.6px),
+      var(--muted-foreground) calc(50% - 0.6px) calc(50% + 0.6px),
+      transparent calc(50% + 0.6px)
+    ),
+    linear-gradient(
+      135deg,
+      transparent calc(50% - 0.6px),
+      var(--muted-foreground) calc(50% - 0.6px) calc(50% + 0.6px),
+      transparent calc(50% + 0.6px)
+    );
+  background-position:
+    calc(100% - 12px - var(--icon-size) / 2) 50%,
+    calc(100% - 12px - var(--icon-size) * 0.18) 50%;
+  background-repeat: no-repeat;
+  background-size: calc(var(--icon-size) * 0.32) calc(var(--icon-size) * 0.32);
+  cursor: var(--cursor-interaction, default);
+  font-size: calc(var(--font-size-base) * 14 / 16);
+  font-size: round(nearest, calc(var(--font-size-base) * 14 / 16), 1px);
+  font-weight: var(--font-weight-normal);
+  line-height: 18px;
+}
+
+.form-select option {
+  color: var(--popover-foreground);
+  background-color: var(--popover);
+}
+
+.form-select:not(:disabled):hover {
+  background-color: light-dark(
+    color-mix(in srgb, var(--foreground) 5.5%, transparent),
+    color-mix(in srgb, var(--foreground) 8%, transparent)
+  );
+}
+
+.form-select:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+.form-select:disabled {
+  opacity: 0.4;
+}
+
+.form-check {
+  display: flex;
+  min-height: calc(12px + 2 * var(--control-spacing, 12px));
+  align-items: center;
+  gap: 6px;
+}
+
+.form-check-input {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  margin: 0;
+  border: 1px solid var(--input);
+  color: var(--primary-foreground);
+  background-color: transparent;
+  cursor: var(--cursor-interaction, default);
+  transition:
+    background-color 150ms,
+    border-color 150ms,
+    box-shadow 150ms;
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;] {
+  corner-shape: round;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  width: calc(10px + var(--control-spacing, 12px) / 2);
+  height: calc(10px + var(--control-spacing, 12px) / 2);
+  border-color: var(--border-strong, var(--input));
+  border-radius: calc(var(--radius-sm) / 2);
+  background-color: transparent;
+  color: var(--foreground);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input:not(:disabled):not(:checked):hover {
+  background-color: var(--card);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;checkbox&quot;]:is(:checked, :indeterminate) {
+  border-color: var(--border-strong, var(--input));
+  background-color: color-mix(in srgb, var(--popover) 96%, transparent);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;checkbox&quot;]:checked::before {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-foreground);
+  content: &quot;&quot;;
+  mask: var(--checkmark-image) center / 12px 12px no-repeat;
+  background-color: var(--foreground);
+}
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;checkbox&quot;]:indeterminate::before {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 65%;
+  height: 6.65%;
+  margin: auto;
+  border-radius: var(--radius-full);
+  background: var(--foreground);
+  mask: none;
+  content: &quot;&quot;;
+}
+
+.form-check-input[type=&quot;radio&quot;] {
+  border-radius: var(--radius-full);
+  width: 16px;
+  height: 16px;
+  border: 0;
+  box-shadow: inset 0 0 0 1px var(--input);
+}
+
+.form-check-input[type=&quot;radio&quot;]:checked {
+  border: 0;
+  background: radial-gradient(
+    circle,
+    var(--primary-foreground) 0 3px,
+    var(--foreground) 3px
+  );
+  box-shadow: none;
+}
+
+.form-check:not(.form-switch) .form-check-input:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;]:focus-visible {
+  border-color: var(--ring);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+}
+.form-check:not(.form-switch) .form-check-input[type=&quot;radio&quot;]:disabled,
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;radio&quot;]:disabled
+  + .form-check-label {
+  opacity: 0.5;
+}
+
+.form-switch .form-check-input:disabled,
+.form-switch .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.form-check-label {
+  color: var(--foreground);
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-switch .form-check-input {
+  position: relative;
+  width: 32px;
+  height: 20px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  box-shadow: none;
+  transition: background-color 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 1px solid light-dark(var(--primary-foreground), var(--foreground));
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-sm);
+  content: &quot;&quot;;
+  transform: translate(2px, -50%);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+  border-color: #fff;
+  background: #fff;
+}
+
+.form-switch .form-check-input:checked {
+  background: var(--blue);
+}
+
+.form-switch .form-check-input:checked::before {
+  transform: translate(14px, -50%);
+}
+
+.form-switch .form-check-input:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+  outline: none;
+}
+
+.form-range {
+  appearance: none;
+  display: block;
+  width: 100%;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  accent-color: var(--primary);
+  height: calc(12px + 2 * var(--control-spacing, 12px));
+  min-height: calc(12px + 2 * var(--control-spacing, 12px));
+  outline: none;
+  border-radius: var(--radius-full);
+  color: var(--foreground);
+  background: transparent;
+}
+
+.form-range::-webkit-slider-runnable-track {
+  background: var(--form-range-track, var(--border));
+  height: 2px;
+  border-radius: var(--radius-full);
+}
+
+.form-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  margin-top: -9px;
+  border-color: transparent;
+  background: currentColor;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Outline the native track and thumb, preserving the larger input hit area. */
+.form-range:focus-visible::-webkit-slider-runnable-track {
+  outline: 2px auto Highlight;
+  outline-color: -webkit-focus-ring-color;
+}
+
+.form-range::-moz-range-track {
+  background: var(--form-range-track, var(--border));
+  height: 2px;
+  border-radius: var(--radius-full);
+}
+
+.form-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  border-color: transparent;
+  background: currentColor;
+  box-shadow: var(--shadow-sm);
+}
+
+.form-range:focus-visible::-moz-range-thumb {
+  outline: 2px solid Highlight;
+  outline-offset: 2px;
+}
+
+.form-range:disabled {
+  opacity: 1;
+  cursor: default;
+}
+
+.btn:not(.btn-primary, .viz-tile):is(
+  [aria-pressed=&quot;true&quot;],
+  [aria-selected=&quot;true&quot;],
+  .is-selected
+) {
+  border-color: transparent;
+  color: var(--primary-foreground);
+  background: var(--blue);
+}
+
+.btn.viz-tile:is([aria-pressed=&quot;true&quot;], [aria-selected=&quot;true&quot;], .is-selected) {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.btn:focus-visible,
+.nav-link:focus-visible {
+  outline-offset: 2px;
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.viz-carousel-controls :is(button, summary):focus-visible {
+  outline: 2px solid var(--ring) !important;
+  outline-offset: 2px !important;
+}
+
+/* Web recipes are the default, including on renderers without inline style queries. */
+@supports (border-radius: if(style(--corner-shape: round): 1px; else: 2px)) {
+  /* Match the host&#x27;s proportional text-sm scale at every text preference. */
+  .tooltip,
+  .viz-badge,
+  .btn,
+  .nav-link,
+  .form-control,
+  .form-select {
+    font-size: if(
+      style(--corner-shape: round): round(
+          nearest,
+          calc(var(--font-size-base) * 14 / 16),
+          1px
+        );
+        else: round(nearest, calc(var(--font-size-base) * 13 / 14), 1px)
+    );
+  }
+
+  .btn,
+  .nav-link,
+  .form-select {
+    border-radius: if(
+      style(--corner-shape: round): var(--radius-full); else: var(--radius-lg)
+    );
+  }
+
+  .form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;] {
+    border-radius: if(
+      style(--corner-shape: round): calc(var(--radius-sm) / 2);
+        else: calc(var(--radius-lg) * 0.4)
+    );
+  }
+
+  .tooltip {
+    font-weight: if(
+      style(--corner-shape: round): 600; else: var(--font-weight-normal)
+    );
+  }
+}
+
+@media (pointer: coarse) {
+  .viz-carousel:has(&gt; .viz-carousel-controls) {
+    min-height: calc(76px + var(--viz-carousel-picker-height, 0px));
+    padding-bottom: 76px;
+  }
+
+  .btn,
+  .nav-link,
+  .viz-carousel-controls button,
+  .viz-carousel-picker &gt; summary,
+  .form-control,
+  .form-select {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Keep small-screen WebKit from zooming when a text field receives focus. */
+  .form-control,
+  .form-select {
+    font-size: max(16px, calc(var(--font-size-base) * 14 / 16));
+    font-size: max(
+      16px,
+      round(nearest, calc(var(--font-size-base) * 14 / 16), 1px)
+    );
+  }
+  .form-control:is(
+    [type=&quot;file&quot;],
+    [type=&quot;date&quot;],
+    [type=&quot;datetime-local&quot;],
+    [type=&quot;month&quot;],
+    [type=&quot;week&quot;],
+    [type=&quot;time&quot;],
+    [type=&quot;color&quot;]
+  ) {
+    height: 44px;
+    min-height: 44px;
+    font-size: max(16px, calc(var(--font-size-base) * 14 / 16));
+    font-size: max(
+      16px,
+      round(nearest, calc(var(--font-size-base) * 14 / 16), 1px)
+    );
+  }
+
+  .form-control[type=&quot;file&quot;]::file-selector-button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .form-control-color[type=&quot;color&quot;] {
+    width: 44px;
+    height: 44px;
+  }
+
+  .form-control:is(
+    [type=&quot;date&quot;],
+    [type=&quot;datetime-local&quot;],
+    [type=&quot;month&quot;],
+    [type=&quot;time&quot;],
+    [type=&quot;week&quot;]
+  ) {
+    min-width: 0;
+    max-width: 100%;
+    padding-block: 8px;
+  }
+
+  .form-check {
+    min-height: 44px;
+    padding-inline: 15px;
+  }
+
+  .form-check-input {
+    position: relative;
+  }
+
+  .form-check-input::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 44px;
+    height: 44px;
+    content: &quot;&quot;;
+    transform: translate(-50%, -50%);
+  }
+
+  .form-check-label {
+    display: inline-flex;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .form-range {
+    height: 44px;
+    touch-action: pan-y;
+  }
+}
+
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#widget &gt; svg {
+  width: 100%;
+}
+
+/* Model-authored chart rules can otherwise stretch icons after these styles load. */
+svg.lucide {
+  display: block;
+  width: var(--icon-size) !important;
+  height: var(--icon-size) !important;
+  flex: none;
+  margin: 0 !important;
+  stroke-width: 1.6;
+}
+
+.text-warning,
+.text-destructive {
+  color: var(--destructive);
+}
+
+html&gt;body{padding:0}&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script type=&quot;application/json&quot; id=&quot;codex-visualization-widget-state&quot;&gt;__CODEX_VISUALIZATION_WIDGET_STATE__&lt;/script&gt;
+&lt;script&gt;(() =&gt; {
+  const root = document.documentElement;
+  const mediaQuery = globalThis.matchMedia(&quot;(prefers-color-scheme: dark)&quot;);
+  const apply = Reflect.apply;
+  const isArray = Array.isArray;
+  const hasOwn = Object.hasOwn;
+  const parentWindow = globalThis.parent;
+  const stringify = JSON.stringify;
+  const parse = JSON.parse;
+  const encode = TextEncoder.prototype.encode.bind(new TextEncoder());
+  const initialStateElement = document.getElementById(
+    &quot;codex-visualization-widget-state&quot;,
+  );
+  const initialGlobals = parse(initialStateElement?.textContent ?? &quot;{}&quot;);
+  initialStateElement?.remove();
+  /** @type {Record&lt;string, unknown&gt; | null} */
+  let state = initialGlobals.widgetState ?? null;
+  const statePersistence = initialGlobals.statePersistence ?? &quot;none&quot;;
+  let nextStateRequestId = 0;
+  /** @type {Map&lt;number, { resolve: () =&gt; void; reject: (error: Error) =&gt; void; timeout: ReturnType&lt;typeof globalThis.setTimeout&gt;; serializedState: string }&gt;} */
+  const pendingStateWrites = new Map();
+  const persistenceError = () =&gt;
+    Object.assign(
+      new Error(&quot;The host could not persist the widget state update&quot;),
+      {
+        code: -32000,
+        data: { code: &quot;widget_state_persistence_failed&quot;, retryable: false },
+      },
+    );
+  /**
+   * @param {object} prototype
+   * @param {string} property
+   */
+  const getPrototypeGetter = (prototype, property) =&gt; {
+    // oxlint-disable-next-line typescript/unbound-method -- invoked through captured Reflect.apply
+    const getter = Object.getOwnPropertyDescriptor(prototype, property)?.get;
+    if (getter == null) {
+      throw new Error(`Missing ${property} getter`);
+    }
+    return getter;
+  };
+  const getMessageData = getPrototypeGetter(MessageEvent.prototype, &quot;data&quot;);
+  const getMessagePorts = getPrototypeGetter(MessageEvent.prototype, &quot;ports&quot;);
+  const getMessageSource = getPrototypeGetter(MessageEvent.prototype, &quot;source&quot;);
+  // oxlint-disable-next-line typescript/unbound-method -- captured before the untrusted fragment runs
+  const addHostMessageListener = MessagePort.prototype.addEventListener;
+  // oxlint-disable-next-line typescript/unbound-method -- captured before the untrusted fragment runs
+  const postHostMessage = MessagePort.prototype.postMessage;
+  // oxlint-disable-next-line typescript/unbound-method -- captured before the untrusted fragment runs
+  const startHostPort = MessagePort.prototype.start;
+  // oxlint-disable-next-line typescript/unbound-method -- captured before the untrusted fragment runs
+  const stopMessagePropagation = Event.prototype.stopImmediatePropagation;
+  /** @type {MessagePort | null} */
+  let hostPort = null;
+  const postToHost = (type, payload) =&gt; {
+    if (hostPort != null) {
+      apply(postHostMessage, hostPort, [{ type, ...payload }]);
+    }
+  };
+  const openExternal = ({ href }) =&gt; {
+    if (globalThis.navigator.userActivation?.isActive === true) {
+      postToHost(&quot;open-external&quot;, { href });
+    }
+  };
+  const sendFollowUpMessage = ({ context, prompt, title }) =&gt; {
+    if (globalThis.navigator.userActivation?.isActive === true) {
+      postToHost(&quot;follow-up&quot;, { context, prompt, title });
+    }
+    return Promise.resolve();
+  };
+  /**
+   * @param {Record&lt;string, unknown&gt; | ((previous: Record&lt;string, unknown&gt; | null) =&gt; Record&lt;string, unknown&gt;)} next
+   * @returns {Promise&lt;void&gt;}
+   */
+  const setWidgetState = async (next) =&gt; {
+    const nextState = typeof next === &quot;function&quot; ? next(state) : next;
+    if (
+      nextState == null ||
+      typeof nextState !== &quot;object&quot; ||
+      isArray(nextState)
+    ) {
+      throw new TypeError(&quot;Widget state must be a JSON object&quot;);
+    }
+    const inputState = stringify(
+      nextState,
+      (_key, /** @type {unknown} */ value) =&gt; {
+        if (
+          typeof value === &quot;undefined&quot; ||
+          typeof value === &quot;function&quot; ||
+          typeof value === &quot;symbol&quot; ||
+          (typeof value === &quot;number&quot; &amp;&amp; !Number.isFinite(value))
+        ) {
+          throw new TypeError(&quot;Widget state must be a JSON object&quot;);
+        }
+        return value;
+      },
+    );
+    const parsedState = parse(inputState);
+    if (
+      parsedState == null ||
+      typeof parsedState !== &quot;object&quot; ||
+      isArray(parsedState)
+    ) {
+      throw new TypeError(&quot;Widget state must be a JSON object&quot;);
+    }
+    const storedState = {
+      modelContent: null,
+      privateContent: null,
+      ...parsedState,
+    };
+    const serializedState = stringify(storedState);
+    if (encode(serializedState).length &gt; 16 * 1024) {
+      throw new TypeError(
+        &quot;Widget state must be a JSON object of at most 16 KiB&quot;,
+      );
+    }
+    if (
+      hasOwn(storedState, &quot;imageIds&quot;) &amp;&amp;
+      (!isArray(storedState.imageIds) ||
+        storedState.imageIds.some(
+          (/** @type {unknown} */ id) =&gt; typeof id !== &quot;string&quot;,
+        ))
+    ) {
+      throw new TypeError(&quot;Widget state imageIds must be an array of strings&quot;);
+    }
+    if (storedState.imageIds?.length &gt; 0) {
+      throw Object.assign(
+        new TypeError(&quot;Visualization state does not support image attachments&quot;),
+        { code: -32602, data: { code: &quot;images_unsupported&quot; } },
+      );
+    }
+    state = storedState;
+    globalThis.openai.widgetState = state;
+    globalThis.dispatchEvent(
+      new CustomEvent(&quot;openai:set_globals&quot;, {
+        detail: { globals: { widgetState: state } },
+      }),
+    );
+    if (statePersistence === &quot;none&quot;) {
+      throw persistenceError();
+    }
+    const id = ++nextStateRequestId;
+    return new Promise((resolve, reject) =&gt; {
+      const timeout = globalThis.setTimeout(() =&gt; {
+        pendingStateWrites.delete(id);
+        reject(persistenceError());
+      }, 30_000);
+      pendingStateWrites.set(id, { resolve, reject, timeout, serializedState });
+      postToHost(&quot;widget-state-write&quot;, { id, state: serializedState });
+    });
+  };
+  const syncTheme = () =&gt; {
+    const theme = mediaQuery.matches ? &quot;dark&quot; : &quot;light&quot;;
+    root.dataset.theme = theme;
+    globalThis.openai = {
+      ...globalThis.openai,
+      openExternal,
+      sendFollowUpMessage,
+      setWidgetState,
+      theme,
+      visualizationStyleVariables: {},
+      visualizationTheme: theme,
+      widgetState: state,
+      statePersistence,
+      stateModelContext: &quot;none&quot;,
+    };
+    globalThis.dispatchEvent(
+      new CustomEvent(&quot;openai:set_globals&quot;, {
+        detail: { globals: globalThis.openai },
+      }),
+    );
+  };
+  const sendHeight = () =&gt; {
+    postToHost(&quot;height&quot;, {
+      height: Math.ceil(
+        Math.max(
+          document.body.scrollHeight,
+          document.body.getBoundingClientRect().height,
+        ),
+      ),
+    });
+  };
+
+  globalThis.addEventListener(
+    &quot;message&quot;,
+    (event) =&gt; {
+      const data = apply(getMessageData, event, []);
+      const ports = apply(getMessagePorts, event, []);
+      const source = apply(getMessageSource, event, []);
+      if (
+        hostPort != null ||
+        source !== parentWindow ||
+        typeof data !== &quot;object&quot; ||
+        data?.type !== &quot;codex-visualization-initialize&quot; ||
+        !isArray(ports) ||
+        ports.length !== 1
+      ) {
+        return;
+      }
+      apply(stopMessagePropagation, event, []);
+      const nextHostPort = ports[0];
+      try {
+        apply(addHostMessageListener, nextHostPort, [
+          &quot;message&quot;,
+          (event) =&gt; {
+            const data = apply(getMessageData, event, []);
+            if (typeof data === &quot;object&quot; &amp;&amp; data?.type === &quot;measure&quot;) {
+              sendHeight();
+            } else if (
+              typeof data === &quot;object&quot; &amp;&amp;
+              data?.type === &quot;widget-state-result&quot;
+            ) {
+              /** @type {unknown} */
+              const id = data.id;
+              if (typeof id !== &quot;number&quot;) {
+                return;
+              }
+              const pending = pendingStateWrites.get(id);
+              if (pending != null) {
+                pendingStateWrites.delete(id);
+                globalThis.clearTimeout(pending.timeout);
+                if (data.ok === true) {
+                  pending.resolve();
+                } else {
+                  pending.reject(persistenceError());
+                }
+              }
+            }
+          },
+        ]);
+        apply(startHostPort, nextHostPort, []);
+      } catch {
+        return;
+      }
+      hostPort = nextHostPort;
+      for (const [id, { serializedState }] of pendingStateWrites) {
+        postToHost(&quot;widget-state-write&quot;, { id, state: serializedState });
+      }
+      sendHeight();
+    },
+    { capture: true },
+  );
+  document.currentScript?.remove();
+  mediaQuery.addEventListener(&quot;change&quot;, syncTheme);
+  globalThis.addEventListener(&quot;click&quot;, (event) =&gt; {
+    if (event.defaultPrevented) {
+      return;
+    }
+    let element = null;
+    if (event.target instanceof globalThis.Element) {
+      element = event.target;
+    } else if (event.target instanceof globalThis.Node) {
+      element = event.target.parentElement;
+    }
+    const link = element?.closest(&quot;a[href]&quot;);
+    const href = link?.getAttribute(&quot;href&quot;);
+    if (href == null) {
+      return;
+    }
+    if (href.startsWith(&quot;#&quot;)) {
+      let id;
+      try {
+        id = decodeURIComponent(href.slice(1));
+      } catch {
+        return;
+      }
+      const target = id.length === 0 ? root : document.getElementById(id);
+      if (
+        target == null ||
+        globalThis.navigator.userActivation?.isActive !== true
+      ) {
+        return;
+      }
+      event.preventDefault();
+      postToHost(&quot;scroll-to&quot;, {
+        top: target.getBoundingClientRect().top + globalThis.scrollY,
+      });
+      return;
+    }
+    event.preventDefault();
+    openExternal({ href });
+  });
+  new ResizeObserver(sendHeight).observe(document.body);
+  syncTheme();
+})();
+&lt;/script&gt;
+&lt;div id=&quot;cv-convolution-lab&quot;&gt;
+  &lt;h2&gt;Convolution &amp;amp; Pooling Playground&lt;/h2&gt;
+  &lt;div class=&quot;viz-controls&quot;&gt;
+    &lt;label class=&quot;form-label&quot;&gt;Input image&lt;select class=&quot;form-select&quot; data-c=&quot;source&quot;&gt;&lt;option value=&quot;photo&quot;&gt;Cat photo · grayscale&lt;/option&gt;&lt;option value=&quot;shapes&quot;&gt;Shapes · 64 × 64&lt;/option&gt;&lt;option value=&quot;checker&quot;&gt;Checkerboard · 32 × 32&lt;/option&gt;&lt;option value=&quot;gradient&quot;&gt;Gradient · 32 × 32&lt;/option&gt;&lt;option value=&quot;tiny&quot;&gt;Numeric grid · 8 × 8&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+  &lt;/div&gt;
+  &lt;details open&gt;&lt;summary&gt;Convolution settings&lt;/summary&gt;
+    &lt;div class=&quot;viz-controls&quot;&gt;
+      &lt;label class=&quot;form-label&quot;&gt;Kernel type&lt;select class=&quot;form-select&quot; id=&quot;cv-kind&quot;&gt;&lt;option value=&quot;identity&quot;&gt;Identity&lt;/option&gt;&lt;option value=&quot;gaussian&quot;&gt;Gaussian blur&lt;/option&gt;&lt;option value=&quot;box&quot;&gt;Mean / box blur&lt;/option&gt;&lt;option value=&quot;sobelx&quot;&gt;Sobel X · vertical edges&lt;/option&gt;&lt;option value=&quot;sobely&quot;&gt;Sobel Y · horizontal edges&lt;/option&gt;&lt;option value=&quot;laplace&quot;&gt;Laplacian · normalized&lt;/option&gt;&lt;option value=&quot;sharpen&quot;&gt;Sharpen&lt;/option&gt;&lt;option value=&quot;custom&quot;&gt;Custom weights&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+      &lt;label class=&quot;form-label&quot;&gt;Kernel size&lt;select class=&quot;form-select&quot; data-c=&quot;k&quot;&gt;&lt;option&gt;1&lt;/option&gt;&lt;option&gt;3&lt;/option&gt;&lt;option&gt;5&lt;/option&gt;&lt;option&gt;7&lt;/option&gt;&lt;option&gt;9&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+      &lt;label class=&quot;form-label&quot;&gt;Operation&lt;select class=&quot;form-select&quot; data-c=&quot;op&quot;&gt;&lt;option value=&quot;correlation&quot;&gt;CNN cross-correlation · no kernel flip&lt;/option&gt;&lt;option value=&quot;convolution&quot;&gt;Mathematical convolution · 180° kernel flip&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+      &lt;label class=&quot;form-label&quot;&gt;Stride&lt;select class=&quot;form-select&quot; data-c=&quot;stride&quot;&gt;&lt;option&gt;1&lt;/option&gt;&lt;option&gt;2&lt;/option&gt;&lt;option&gt;3&lt;/option&gt;&lt;option&gt;4&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+      &lt;label class=&quot;form-label&quot;&gt;Padding&lt;select class=&quot;form-select&quot; data-c=&quot;padding&quot;&gt;&lt;option value=&quot;valid&quot;&gt;Valid · no padding&lt;/option&gt;&lt;option value=&quot;same&quot;&gt;Same · output size = ceil(input / stride)&lt;/option&gt;&lt;option value=&quot;manual&quot;&gt;Manual padding&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+      &lt;label class=&quot;form-label&quot;&gt;Padding pixels per side&lt;input class=&quot;form-range&quot; type=&quot;range&quot; data-c=&quot;p&quot; min=&quot;0&quot; max=&quot;8&quot; step=&quot;1&quot;&gt;&lt;output id=&quot;cv-p-value&quot; class=&quot;tabular-nums&quot;&gt;&lt;/output&gt;&lt;/label&gt;
+      &lt;label class=&quot;form-label&quot;&gt;Boundary values&lt;select class=&quot;form-select&quot; data-c=&quot;border&quot;&gt;&lt;option value=&quot;zero&quot;&gt;Zero&lt;/option&gt;&lt;option value=&quot;reflect&quot;&gt;Reflect · exclude edge&lt;/option&gt;&lt;option value=&quot;replicate&quot;&gt;Replicate edge&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+      &lt;label class=&quot;form-label&quot;&gt;Filter gain &lt;output id=&quot;cv-gain-value&quot; class=&quot;tabular-nums&quot;&gt;&lt;/output&gt;&lt;input class=&quot;form-range&quot; id=&quot;cv-gain&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;3&quot; step=&quot;0.1&quot;&gt;&lt;/label&gt;
+      &lt;label class=&quot;form-label&quot;&gt;Filters / output channels&lt;select class=&quot;form-select&quot; data-c=&quot;filters&quot;&gt;&lt;option&gt;1&lt;/option&gt;&lt;option&gt;2&lt;/option&gt;&lt;option&gt;4&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+      &lt;label class=&quot;form-label&quot;&gt;Selected filter&lt;select class=&quot;form-select&quot; data-c=&quot;active&quot;&gt;&lt;/select&gt;&lt;/label&gt;
+    &lt;/div&gt;
+    &lt;details&gt;&lt;summary&gt;Kernel weights&lt;/summary&gt;&lt;label class=&quot;form-label&quot; for=&quot;cv-weights&quot;&gt;Base weights · space-separated; leave the field to apply&lt;/label&gt;&lt;textarea class=&quot;form-control&quot; id=&quot;cv-weights&quot; rows=&quot;3&quot; spellcheck=&quot;false&quot;&gt;&lt;/textarea&gt;&lt;/details&gt;
+  &lt;/details&gt;
+  &lt;details open&gt;&lt;summary&gt;Activation &amp;amp; pooling&lt;/summary&gt;&lt;div class=&quot;viz-controls&quot;&gt;
+    &lt;label class=&quot;form-label&quot;&gt;Activation&lt;select class=&quot;form-select&quot; data-c=&quot;activation&quot;&gt;&lt;option value=&quot;none&quot;&gt;None&lt;/option&gt;&lt;option value=&quot;relu&quot;&gt;ReLU · clamp negative values to zero&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+    &lt;label class=&quot;form-label&quot;&gt;Pooling&lt;select class=&quot;form-select&quot; data-c=&quot;pool&quot;&gt;&lt;option value=&quot;none&quot;&gt;None&lt;/option&gt;&lt;option value=&quot;max&quot;&gt;Max pooling&lt;/option&gt;&lt;option value=&quot;average&quot;&gt;Average pooling&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+    &lt;label class=&quot;form-label&quot;&gt;Pooling size&lt;select class=&quot;form-select&quot; data-c=&quot;pk&quot;&gt;&lt;option&gt;2&lt;/option&gt;&lt;option&gt;3&lt;/option&gt;&lt;option&gt;4&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+    &lt;label class=&quot;form-label&quot;&gt;Pooling stride&lt;select class=&quot;form-select&quot; data-c=&quot;ps&quot;&gt;&lt;option&gt;1&lt;/option&gt;&lt;option&gt;2&lt;/option&gt;&lt;option&gt;3&lt;/option&gt;&lt;option&gt;4&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+  &lt;/div&gt;&lt;/details&gt;
+  &lt;div class=&quot;viz-controls&quot;&gt;&lt;label class=&quot;form-label&quot;&gt;Feature-map display · visualization only&lt;select class=&quot;form-select&quot; data-c=&quot;display&quot;&gt;&lt;option value=&quot;fixed&quot;&gt;Fixed 0…1 · clip display&lt;/option&gt;&lt;option value=&quot;signed&quot;&gt;Signed −1…+1 · zero is mid-gray&lt;/option&gt;&lt;option value=&quot;auto&quot;&gt;Auto min…max · separate scale per stage&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;&lt;/div&gt;
+  &lt;div id=&quot;cv-error&quot; class=&quot;text-destructive&quot; role=&quot;alert&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;cv-stages&quot;&gt;
+    &lt;figure&gt;&lt;figcaption&gt;01 · Input &lt;span id=&quot;cv-shape-input&quot; class=&quot;text-small tabular-nums&quot;&gt;&lt;/span&gt;&lt;/figcaption&gt;&lt;canvas id=&quot;cv-input&quot; role=&quot;img&quot; aria-label=&quot;Input image&quot;&gt;&lt;/canvas&gt;&lt;div id=&quot;cv-range-input&quot; class=&quot;text-small tabular-nums&quot;&gt;&lt;/div&gt;&lt;/figure&gt;
+    &lt;figure&gt;&lt;figcaption&gt;02 · Padded &lt;span id=&quot;cv-shape-padded&quot; class=&quot;text-small tabular-nums&quot;&gt;&lt;/span&gt;&lt;/figcaption&gt;&lt;canvas id=&quot;cv-padded&quot; role=&quot;img&quot; aria-label=&quot;Padded input&quot;&gt;&lt;/canvas&gt;&lt;div id=&quot;cv-range-padded&quot; class=&quot;text-small tabular-nums&quot;&gt;&lt;/div&gt;&lt;/figure&gt;
+    &lt;figure&gt;&lt;figcaption&gt;03 · Convolution &lt;span id=&quot;cv-shape-conv&quot; class=&quot;text-small tabular-nums&quot;&gt;&lt;/span&gt;&lt;/figcaption&gt;&lt;canvas id=&quot;cv-conv&quot; role=&quot;img&quot; aria-label=&quot;Convolution output&quot;&gt;&lt;/canvas&gt;&lt;div id=&quot;cv-range-conv&quot; class=&quot;text-small tabular-nums&quot;&gt;&lt;/div&gt;&lt;/figure&gt;
+    &lt;figure&gt;&lt;figcaption&gt;04 · Activation &lt;span id=&quot;cv-shape-act&quot; class=&quot;text-small tabular-nums&quot;&gt;&lt;/span&gt;&lt;/figcaption&gt;&lt;canvas id=&quot;cv-act&quot; role=&quot;img&quot; aria-label=&quot;Activation output&quot;&gt;&lt;/canvas&gt;&lt;div id=&quot;cv-range-act&quot; class=&quot;text-small tabular-nums&quot;&gt;&lt;/div&gt;&lt;/figure&gt;
+    &lt;figure&gt;&lt;figcaption&gt;05 · Pooling &lt;span id=&quot;cv-shape-pooled&quot; class=&quot;text-small tabular-nums&quot;&gt;&lt;/span&gt;&lt;/figcaption&gt;&lt;canvas id=&quot;cv-pooled&quot; role=&quot;img&quot; aria-label=&quot;Pooling output&quot;&gt;&lt;/canvas&gt;&lt;div id=&quot;cv-range-pooled&quot; class=&quot;text-small tabular-nums&quot;&gt;&lt;/div&gt;&lt;/figure&gt;
+  &lt;/div&gt;
+  &lt;div id=&quot;cv-padding-detail&quot; class=&quot;text-small tabular-nums&quot;&gt;&lt;/div&gt;
+  &lt;div id=&quot;cv-bank&quot; class=&quot;cv-bank&quot;&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;style&gt;
+#cv-convolution-lab{color:var(--foreground)}
+#cv-convolution-lab [hidden]{display:none!important}
+#cv-convolution-lab h2{padding-right:95px}
+#cv-convolution-lab details{margin:14px 0}
+#cv-convolution-lab summary{cursor:default;font-weight:500}
+#cv-convolution-lab .cv-stages{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin:20px 0 12px}
+#cv-convolution-lab figure{margin:0;min-width:0}
+#cv-convolution-lab figcaption{font-weight:500;margin-bottom:8px}
+#cv-convolution-lab figcaption span{display:block;font-weight:400}
+#cv-convolution-lab canvas{display:block;width:100%;height:auto;image-rendering:pixelated;touch-action:manipulation}
+#cv-convolution-lab .cv-bank{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:18px 0}
+#cv-convolution-lab .cv-bank canvas{margin:8px 0}
+#cv-convolution-lab #cv-error{margin:8px 0}
+@media(max-width:800px){#cv-convolution-lab .cv-stages{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:520px){#cv-convolution-lab .cv-stages,#cv-convolution-lab .cv-bank{grid-template-columns:repeat(2,minmax(0,1fr))}}
+&lt;/style&gt;
+&lt;script type=&quot;application/json&quot; id=&quot;cv-photo-data&quot;&gt;{&quot;w&quot;: 128, &quot;h&quot;: 67, &quot;data&quot;: &quot;tKusq6mmopycnaCho6Wmp6qrrK6wsrS1t7i5ubq7u7y9vb2+vr6+vr6+vr+/v7+/wMC/v76+vr6/vr69u7y8urq6u7u7ubm4uLi3tra2tra1tbW1tLSzs7OysrKzsrKysrKysbCvr66vrq6vrq6trKuqq6uqqKipqKempaWko6+uoqKfnpqVj5CSlJaXmpydnZ+foaSnqaqsra6usLKztLS1tre3t7i4t7e3t7e2tre3t7a2tre3t7a2tbS0tLSzs7Oys7Kvrq2trq+urq2tra2srKurq6urqamqqqqqqqqqqampp6alpaWlo6Sjo6OioqGhoaCfnp+enp2cm5qXpq6jop+dmpaQkZOUlpiam52foKCipKepqqytrq+wsrS0s7W2t7e3uLi4t7e3t7e3t7e2tra2t7e3t7a2tbS0tLOysrKzsq+urq6vr6+ura6ura2trKysrKyrqqurq6urqqupqaipp6ampqWkpKSjo6OjoqKhoKGgn56enZ6dnJilrKGhnpuZlI+QkpSWl5mbnZ6foKGjpqirrK2ur7CxsrS0tLa3t7e4t7e3tra2t7e2t7e2tra3t7e2tra0tLS0s7KysbGxr66vrq6urq2tra2tra2srKurq6urq6ysrKurqqmpqp2gp6ampaWkpKOjo6KioqGhoJ+enZ6dnp2cmKasoJ+dm5iUkJCSlJWXmZqbnZ6foKKlqKqsra2vsLGztLS1tba3t7i3t7e3t7e2t7e3t7a2t7e2tra2tbS0s7SysrGxsbGwsK+vr66urq2tra2trKurqausrKutra6tq6upp6+igXueqKalpaWko6OioqGhoaCfn5+dnZ2cnZuap6ufnpyal5OPj5KUlZeZmpudnp6foqSnqausrq6wsbO0tbW1tra3t7e2t7e3tra3tre2tre3t7a2tra1tLS0s7KysbGxsbCwr6+vrq2urq2trayrqqu+rqmtrK2tra2tq6qrsp2NgIempqWlpKSjoqKhoaCgn5+fnZ2dnJycnJqoqp6dm5qXko6PkpOVlpibnJ2enp+ho6Wnqqytrq+wsrO0tbW0tra3t7a3t7a3t7a2tra1tre2trW2tbS0tLOysrGxsLCwsLCvrq6urq2trayrq6uqqcPJopqtraytraupprKvpo98fJimpaSkpKOioqGgn5+enp6dnJycnJubmqepnZyamJaSjY6QkpSVl5mbnJ2en6CipKapq6yur7Cxs7S0tLW0tba1tra3tre3tra2tbW2trW1tbW0tLOzs7GxsbCxsbGwr66ura2traysrKuqqqmot9XQinShrKyrqaintLG0mXBuh6KjpKOjo6KhoJ+fn56dnZybm5ubm5uZpqicm5mXlZGNjpCSk5WXmZucnZ2eoKKkpamrrK2ur7Cys7O0tLS0tbW1tra2tra2tbW1tbW1tLS1tLSzsrKysbGwsLGwsK+urq6srKysq6uqq6qqqqiz2dnMekRzkqCfn6uls7KHX2CDn6Kjo6OioaCfnp+enp2cnJubm5qampilp5qamZaUkIyNj5CSk5WYmpycnZ6goqSmqKmrrK6vr7Gys7O0tLS0tbW1tba2trW0tLW0tLS0tLSysrKysrGxsbGwr6+vrq6uraysq6qrqqqrqqqqqa3S3dC/ZG91lIp9jniWqXZMWnaEpaOjoqGgn5+enp2dnZ2bm5uamZqZl6SlmJiXlZOQi4yOj5CSlJeYm5ycnqCipKanqKqrra2usLKys7Szs7O0tLS1tbW1tbS0tLSzs7OysrGysbKxsbGxsbCvrq6urq2srKuqqqqqq6qqqqmpqMTVw6OFjoWUlIGIhXaUckVlZ1OYo6KhoJ+dnp2dnZydnJuamZmZmZiWpKSXl5aUko+Li42OkJGTlZeam5ydn6GjpaaoqamrrK2vsbKzs7Kzs7OztLW1tbW0tLS0tLKysrKysrGxsrGxsLGwsK6traytrKysq6qrqqqqqqqpqKeotM/Ao5KTf5acgoSEkHRaQWhgNGihoaGfnp2enZ2cm5ybmpmZmJiZl5alopaVlZOQjYmKjI2OkJKUlpmampyeoKOkpaenqaqsra6wsrGys7Kzs7O0tbW1tLO0tLOzsrKysbGxsbGxsbGxsK+vrq6srKyrq6qqqqqqqqmqqamop6euz8+zjox/p5yEgXV1dW5EZEomSpahoJ+enZ2dnJuam5qZmJiXmJeWlaWilJWTkY6MiYiKjI2PkZOWmJmam52foaKjpqeoqqusrbCxsbGysrKzs7S0tLS0tLSzs7OysbGwsbCwsLCvsLCvr66traysrKurqamqqqmpqaqop6alo7LYzZmFmnmqjX+EdWxeV0BAMy09haKgnp2dnJycmpqamZeXl5eXlpaUpKGTk5KPjYqHhoiKjI6QkpWWmJmanJ6goaKkpqipqqusrrCwsLGxsbGys7O0tLSztLOysrGxsbGwsLCvr6+vrq+urq2trK2sqqqpqaipp6eoqKenpqWjxt3Hj4iddqyNj4FtZl1RVEhHRzh6op6cnJucm5uamZiXlpeXlpaWlZOioJKRkI6MiYWGh4iKjI6Rk5WYmJmbnZ6goaOlpqipqqytrq+wr6+wsbGysrOzs7Oys7OysbGwsLCwr66trq2urq2traysrKuqqaiop6empqampqalpLHLv9SngoB8TUtebWlsZVVWWk5MN1qXm5ubm5uamZmYl5eWlpaWlZSTkqGfkZCOjYqHg4SGiIqMjZCSlZeXl5qcnZ6foKKlpqeoqqytrq6urq6wr7CxsrKysrKysbGwsK+ur66uraysrKysq6ysq6uqqKinp6ampqWlpaWlpaSks8WvtsFxeEdTWnyZa0ZFTUhSUExCPXWcnJybm5qZmJaWlZWVlZWVlJKRoJ2Qj42LiYaDhIaJiouNj5GUlZWWmJqcnJ2foKKkpaeoqqurq6usrKytra2urq+wsbCxsbGwr6+tr66srrOxtbazrqulo6WmpaWmpqakpKKjo6KhoaC92Yqux3h0NjZ5sZRlTTc/SURDRkdAVI6fnJubmZiXlZWUlJSUlJSTkZCfm46OjIqIhYKEh4eIiYqLjI+Rk5SWl5iZm5ucnZ+ip6epra2ur6+vsbKztLS2t7e4vbm2sqy2qZGSqbLIt5m3wLCjnpWRp6Oepqqrp7GtpqWkqKWiobvEusazdUFNkpSBZ1hgVjs7OTU9SUVJaZacnJuZmJaVlJSTk5OTk5KRj56ajYyLiYiFgX+DjZecnp+gpKSlpqisra6zs7O2wcS0ucvEw8G3scTFuL66tK3CtLi6sKmkqKKUfW9+u8y7q7K0saqZlZinn5Sfop+epamhmZqfnJSTucbB1JxRTGaMamFcYWpoWlpGNkdSRkVQf56dnaCUjZSTk5KSkpKQj4+NnJmMjIuJiIWCpMfQ1tbXz87GubzHycfMzL7Fyc3ZxK/NzMK7uK+6v7aus6yipsCxraqjm5ucjn95cWOvz7yurbG0sZ+WoaCalp+bkZ2foJSOpJaUkJO31dzGX0V6enlwYG9hSE9dXUVGWFZHP0dkkpqanIVufZSTkZCPj46PjoubmIuLiYiHhb/6+fTx7uvn3c7F3dnP1NC3qtLO0NbAxcTAtrO1tbG2r6qmpaKttaqhnpmXk46GfHdvUoLFva6usbW0pZuenpqdm5uRnZ2Vi5Ckl46YoLXi9716uJuEe3x+i31rXlI+Ok5UUURETFN9m5OKdWZojZKPjoyMjYyLiZmWiIeFgoGR8/z18Orm4NfT1uny5erx2rjM5dnh28rDurqusLavq6+mpKKko6uppJ2XlI+KhHx2b2lIZ7jEua2ttbWqoKGfnJybmZSZm46FkqCamKGnveL76sLTsqOck5OcmH9rYFVaXVdNQUVCQ2CPi4BvYFp/joyLjIuKiomHmJWMk5qjrLz0+/Xu6OXb1trf6OXi6eDBx/Py8Pbx5dLCuayvsKuoqKGen6KipKKemJeRjIN+eXh0a1CJwcjCta2ys6+mo52dnZyamJiXi4WPmpSXnrS4yPLpvMCzrqikpqiWdGx2fHJrYEtEQkNGUoGBdGhhW3yJiYqKiYmJh4WWw8LGxsbFxfD79e/p49/d397j4d7b0czh7u3u7+jg0sy+srGuqqWioZ6doJ+enZmXk4+IgH14dW9oUZLEx8K7s7a1sKmnnZudnZiXmJePioyXlaOopKm6yubq3rWlrrS1n4WCkJSKf29WS1BJTE9OcXpvZmBdfIWGhoaGhoaGhJTUxLi2vMbF4f317ebj4eDf3tvX1M/O19/k6OTh2M/EyMC0sK2qpqOenJycnpyblpOPi4R9enZybGNHjL/Gxb+3trawraijop6cnJiVk5GPk5ugnZqgrJ+/1ubq28bIwreonp2loJOCa0xOTEZUUktncmljXF1/hISEhIODgoF/kLWmpKSts6Gh7PXt5uLf3NvY1s/LycvS09fY1M7NxcPHwbazrqylpKKdnJqamJmVkI+Lgnx3dG9sXzh1u8XBvrq3trGrp6alnZuclpKSk5CUnZWYnqGdmsfM0dnY2eLcy766tq2qm4p2VFZJSU8/P1ZoZGBcaYeJi42QkpCLhX2LnZabnqOgf3rC2ejn4tvY1tTPy8XGxsXIy8zIx8jDxsTBu7awq6ain5yamZaXl5KPjIeBeXdzc3BiQn+1xMW/u7q3sayrp6Ofnp2ZlZOXk5KVkpiXnpCawMjD0+Pw8ejYzMPJv7Cnl3tiTUtSTj1CVWJgXFlfa3iJmKWsrqqvw9eYkZWXlo1kYau6yNjf2tbT0s/JxsPCw8TFxsfHxMbFv7y4tbCrqKCdmJeXlJSUkI+NiYJ7enZ1dWlTlrvHxr+7ubmwrKilop6bm5iZlZaRkZCUkpeRj6TAysvK5O3t5uHXz9HEuKKag2lbXFtAO1BSY2VhTU9kd4ubpKmtxufay5SJjIqHd01XlKq2usbY2tTRzcjFwsHCwsPAwb6+wsK6uLW0r6inoJuYlZWUk5OOjYuFg313c3RxZlKZvMfFwby5t7CsqqGgnJqdnJqUlZaTk4+PkZGapce8yM3O3+no49fPyLyuoZWVgnBVQTtQWk5haFZXhJaboammnrHOoX6MkISFgXhnPk+GnKuzuL/N1tLMxsLEwsHBvLy8u7y/vrq4s7GuqKefmZmVlZKSkoyLiYWEfnp2cW5mRom6w8XBv7m1r66nn56bmpyYmpWVk5GPjIyPnJ2ky8a5urbCw9DU19HMu6ylnIp8Z0U6Tl9RSFZbYpSZp8fGqpKLkZSRkp+NgH95cF0xTX2PoK62urrByMvHxMTBwsG9wLy8u7i4trSurqmmopqYlJSUlZWRjY6JhIOAfHdyb2JDiLG8w769ubSur6igmZuYl5aXlZOSko6Nj52fpqXN2smmmIaEncrZ1cm8sJeGbVtHRmBmVUpER1WAi6fLpIF3eYCLnrG9yIt+enZrVi5RcoiYpbC1uLSyucDFx8fFwr+9u7u4tLWzsayppaOmm5iUl5WUk5GMioWEgoF7dnJuYk6TsLrDwL24sK+qpp2enpeVl5SVk5GPjoyera+mrs/SzsSrh3OKv9nQvr60kGRaVl5sY1tPUEk+U3GKuI91cnR4hJiwwczUi3t3cmdRK05sgZKfqK2vrq+usrvFycXDwLy4tLKzsa2rpaWloaCalZSXlZOUkIuKhISCfXp3dXBhV520usDBvbmxq6ahm5qbmJiWlpWQjoyLk7K3tqe2y9PSybKpoLXP0r+0rLKqhXt0allXUU9OTDlEXo2EbmtucXqSqbfG0NqJeHVwY0omUmt+jZmfpqiprK6yr7O9vsC7uLSzsK6trKWipKOdnpeal5mWlZeRj4yIhoSDf3p1bltZobO5v8G+ubGvp6SdmpyanJSUk5CMh4igubesncDPzdXKwK2lsre/tqigrZ2EdmxmYVVRTU1GMDdYc2VgYmlyiqW0wMzW64d2c2teQy1edH6KlJyhpaWprK6tqaeptLW3tLSxraqrpqGio52em5qYlpeXlJCPjIyGhIB6dG5qWkybr7a7uLy+trGrp52enJuZk5WSkY+HjbG/v5qVxdXR0MWyrrewrLSyoZ+jioF6d3JiVUxJRjknL1djWlZZYXSbsb3K0ej0hXRwaFs7MV1vfoePmJmhoqKjpaOioJuenq6wrq2mqqmjoZ6emp2amZeZmJiXkZCLiYN+eHVycG1aQpKqsri3vLy4sK+rop6alpWTl5OPj4qbtru5joq9yM/NwKSamqiuraaUn6CRf3RmYFdTUEk5MCAuVV1STVNefqW2xcza8PGEcm9mVjU4XWt5g4qRlpqcm52fnZqamJuYmp2kpqOkpJ+em56dnZyZmZqWlJeTjouGgHt2dHBwbVlRk6axtLe4ubiwraminJuZlZKTj5COjq29vrGDcLbDxMCbkJWQiZeuoqSjmIRuY1xVTkY+QD8rHy5SVklHUGGJp7bFzOTw74NwbGNSLzpdanaAiZCUlZWTl5eVl5aUlJWSkZaZnZ2dm5yal5qcnJiampWTkY2LioaAe3VzcG9rVlyZpq+1uLi2s66tqKOenJmVlZKRkY2Pr7O5q4Jnp8nMvqSwsZJ6iJyhpbN/fGJbTFBOPTtBRCUhM1BNP0BRa5GntcLM5uvqg29pYE8qQFxrdn+IkJGQkY+QkJCSkZCQko+SkpGSlpiYl5eampuXlpeYkZGNjI2KhH58cXFua2ZUYZ+nrLS3tLSysKumpJ6al5OWkpKOiZews7qrhnCqycW9vcOjmJB8gZ2qrIlyVlZTUlZWTUI4JCQ4T0c5PVRxlKi2wtDm6OiAbGddSilDWWhzfIOGi4uKiomJiouMjoqNjIyOjI+Qj4+SlpeWlJWUmJaPkY+KjYmAfXdycXFwbVRlnqOqrrK0sq+rqqSgmJiXlJSSk4yXrbO3uK2QfKbCt4uvvqqSiI11jK+ngGNXV2FZXVg4MDApLT9NQjQ+VnWUqrXD1+Tk5H5rZFlHJkdaZnF5fYCDhISFhISDhYWIhYiGhoiKjYuKiYmLjJCSkpOSk5GPjo2KhYB+fHp6eXNrUmafpaessLSxr6uppZ2XmJWRko+Mlbm+trq1qpeHpaSJeKSXko6GinKGqql8bGlmZmZQQycgLS80P0I8Lj1bfJerusLa4uLifWljWEEoSlljbnR5enx+foF/f39/f3+AhYOEhImJiYeFhomHioqOkJCPj5COi4eDg4B/fHp1cGxYa6ClqKiur66pp6OgnZmXlJGQjIukwMO6uLKsoIejooauv5BvUX2FhJCern53c2hVRUZNRjE4NDQ5MS4pQGCEnay5yNzi4eN8aGFUOilMWGJrb3R2d3l7e3x6eXt7e3x+f4OFh4WEhYWFh4WHhYaKioyMjYuKhYOBgH57eXNwb1t1o6Wkp6urrammoZ+dmJSTkJCKj7G4wcC0sbOhgaado8fYt4tjZpiPn6OrgYJ4YUJOZGJOQzk2ODUqIyZDZImgsL3O3+Hi43pmXlE2LE1XX2htb3BzdXR2dnV0d3Z2eX2Af4KEg4KDgYOEg4WFhoeIiYqKiYaCf39/e3h2cnFwWXeioqGjp6qqqKOhnZOTlZKOioqbwcHAv7SsrKWInqWUqNi5m35xlKKioaWLiHtcVlplXDwzOTM8NSYbIURnjaO0wNPf4eHhd2JaTC8uTFhfY2dqbW5vbm9xcW5wb3F0eHl6gIF/fn59foGCg4WChIWFh4WHg4B+fX16dXNxcG9VdZ2eoKOlqaqkoJ2bko+Tj4mHh6S7vsO7rJ+npYeVq4KeyL2cg3p9pqWWko2ReFtZXmFWMiUwNjoxKRgdRWuSpLbD193f3eF1XlZHKDVOVV5gYmRmaGppa2xtaHOEj5KMhXx8e3t5eHp7fH59gH9/gYKDg4N/fn59enZ1cnFyb1Z5mJucm5+kpKKcnJWNjYuJhYODqsC8urqsmpqVj4yqpLC+yKSHhn2YnIZ/iY1nWl1kaFA9Li04OC4oHB5FbZaqucfX3N3d4HJaUkMlOElTWV5fYGFgYmNlZmeGnZaId2BhZHV1dXZzdnZ1eXp7fXp9fHx9fHl7e3t5dnZ1cm5qWXqUmZmWnJ+bmpmYkYiGhYKAfom6yMPCuqKOl5OJhZ6/q6OieV9VYH+McnR7eEs8PkhHP0A4MjkzMSsYG0Zvlqu7y9jZ3NzfblZPPiA6R01RV1dZWlpZW1tag6mSgGZLMy8vR3Fwb25wcHFydHR1dXd1dHR1c3V2c3Z0cnFwa2lbfpSUkpGVlZKUkI2HgX99eXp7h7XMw8K0m4+akIF4l8a4ubaVc1ZCVoFnZ25LJzlJVVBEPzcvMzMyNiYeR3GWqbzN19vZ2d1pUUo4ITxCQUJHSEhLTEtNTWGjnoRmSDMsKSstUmJhYmNhYmJiZmZpaWplaGdpaGtrbnFvbGtqZFR4jpCLjIuHhIN+eXZxcHFvcnV1qdHBua6Tl6qdhWp9sqqvwbWSfnNVZVxfWzNQbnJrVDozKicwNDMvJyJGdJapvc3V2NnY22BGPS4fPkZMV19lam9xcXRyiqCKbUg4LykoKChDiImKiIaFhISHh4eFgnx3c25nY19fYWNjaGpeSm2DhHx8eHR5e3x8end4d3Z4c22Pzsy+saalsqWDZ2Om1MzCqIt3e2pSRktKV3qCeGdYUTwoLDQ2NC8fG0Rzl6i8zdPY2dXZdm15g46fqK2wsa+vr7Gzs7OpknhdPjUsKSgoKUS7wb+8u7m4uLe4uLi3tLGwraigl46AcWFZVlI1RGpsfJKhqrGytLS0sa+sq6mknKPBzci2rrW6qo1taYLX1cCvkGloYUQzO0Jke3l3ZVpVNSk0MjI0Lx0XQW+SprrK0dbZ1NfJxMbHyMnJx8XDvbq4ubu6uayIbkw8NC0sKCgmUsbIx8XCv72+wsvX3tvW0Me8s6uop6Sgl4NiPA8adp+1wsnNz9HSzsvEvLSspJ6Xlq3E0MbBvb+nh3hxZbLUt62ReXJlPC0sP3OGgG9aUEcsJzA1MzEsGRM7a4+juMnO09bS1c7JycvLysrJyczS2uTp6efk2Y5kSDwzMConJR+CysfIzdTa4enw9PT08/Ly8Ojax7Kjn52alIlmNJLO3ebs7/Dx8e/u7Onm39fLvq+aqL/Jz8vCt6SJe3xykcy5tqiGdmw3Kh44eIl2Z1JAMyYlKjU2MSURDTNnjKG5yc/S1NDU0cvM0NXZ2djZ3N/f4OHi5OTmvWpNPC8pIx0WV83T2eDt9ff29/f39vXz8fHw7OXe0bijm5aSh3/D8vPs49nU0c3KyMfHy8zQ09XV0bmoq6W+0cq5qpCAj4aByt3LvZ9+bzYeFzp7g3ZkWU4sJSsuMzInFQsJLGCHn7bKzdPT0dLf4u30+Pn39vXy8vDv6uPe2NHQrGhLQDgzNEOToZ6jqbC0uLvAx87X4Ojt7uvm493OuaSZlI+Pz+nZ0tDP0NHQzc3JxcbGw8C7uLe3r5mBgZ3AycW1npmeioWr39XJontuQyMfRH2Dd29jTiwtMDUyJhMIBwknWYObtMfO09LP0vf5+vn49/b09fT09ff39/b08vDy6ePj5OTm5uDb19TT09TW1tTRy8S9u77L3ePb0cKtoZuRjsnf2+Lq7/Dx7+7s7Oro5+bm5eLc1cu9pXlsZHOhqqm3uayWhZLY0L+ceWhPNylIf4R6bWBJKi4rKScgEAMCBiFUgpuzxc7R0s3P9/b39vX09PT19vX29/b28/Py8fPz9PT19PDo4NvX1tXT1Njc4+rx9PHp3Mm6vMa7raammI/L7/H19PLx8O/t7ero6erp6uvs7O7u7Onm4tO7oZeMxt3Nn35gaszTyKJzYFk3K1N2cHR7dFEwIBwhISEeFAQAGU9/nbXGzM/SzdDw7/Dv8PDx8fDz8/Hv7erq6efp6+vw8O7m3NPQz83MysnHxsXHyMzV3OLh2caxoaOmpZyY1/z39PLw7u7t6+vo5+nn5+jo5ufm6Ofl5ubm5Ofq597c2s2ie1RI1PDwzJl1XBoaU36Osa+TezsjN0VISUhFNhgOPXaYtMTMz8/O0NvY293e4eLi4+Tg3tzX19fZ1tnZ4OTf2NHIxcXGxMPEwcG/vLu6t7m4vL6+s6KYm6CfnOD99vTx7+3p6Ojm5uXj4uPk497f3d3d3Nvd3dzc29rX09DQz87Lx8Xm7OfHrqmceXiXvMXWw6qjjoiao6OfmZOKfFQvVYeswsnNz8rMy8nGwMbKysjLzMjEw8PDxcnIxcnOycbDubW1u7q4uLq8urSwsLKtq6mkn5yVkpedl5Da/PXw6+jn497d2tja1dfV1dbT0M3My83Nzc/LycvMxsbDwby7tcXX3NTd2tne39vg4t7c2drY2tzg4NrW0MK3sKuqp5V3dJC0w83Py8rMw7+9v7+6urq8ube0sbe4ura6vLuysbCkpKusrKutsLGqp6ipqaOhn5uTj4iGk5qJw/3y6ODY1dDNycjHycjAw77Bv761uLO1ubS3u7e1sLGwqqmyp6qww8m/v83GwL7FwbzCyMTHyszKzcvLzMvIxsG3qqWhpaaZhoyrxs/KyMzEvcPHvLy5trOzs7OwsrOxsLezpKarqJmgp6KjpKilpKKhnp2fmZqWkIuFf4CJiZj27d3Pwru0tLGxr7CztKurqqmkp6GdoqCinJufmqCcoKCYnaGdnKCrsKCjrKerp6Smn6uwsLS0sra4t66ysKutq6uro5qWl5ORi3mev8XJzMG+ycC2u7y2s7G0trWusbS4saeao6efmqGjnqCeoZqcn5iVmZ2UmpOOiHl0b3pxrOnVxLGpp5yem5uYm5+gmpiWlJefkI+RjY6LjI+Nj42VlJKSl5GRmJeQi5GOkpeTk5mQmZ+apqOcm6ehl5iclpSUlpqXmJGNj4qJf2WTt8fBtLe6sbOyuLKusKyvsKirqq2loZqen5ean5qcnJaXl5mZk46bmJWXk5CEeG5pZ1aswrOnnJ+alZ6XkZiZk5WOkI2Ok5OHjouFiIaFioWIhY2NiYuTiYaPjIOEi4mQi4yOlJKYmZCamZaOkpCTkJKRj46Pj5CPj4+Jg3t9cV2VvLuusq+ssbS1r6utqKmoo6SmoZ2ZlpmalZaVk4+Tk5WQlZmPk5aVkJSLhXtyamZbTp+llYaJj5GPl5COlZaSj42LjIyLh4aKiYeKh4aKg4SEh4eJiZCGhIqEgYOKiouIiouQk4+SjI+Qj4qKiY+KjY2OjI+NjIuPjYJ/d3Z9XWSdsaaqoqmmrKiipKOjoZ2cmZuXlI6Rk5KQj5GNioyVkpCTlJCTlJCIiH57cGZmZVZGl56Pg4OEh42OipCWlY+OiYSBh4B7e3t+eoODg4d9fHt5e3x+h4SDiYeDg4OHioOIi4uJhI6IhY6Gf4WEh4iIh4mEhIKFhYSDd3Rybm1gQnw=&quot;}&lt;/script&gt;
+&lt;script&gt;
+(()=&gt;{
+function kernelFor(kind, k) {
+  const a = Array(k*k).fill(0), m = (k-1)/2;
+  if (kind === &#x27;identity&#x27; || kind === &#x27;custom&#x27;) { a[m*k+m]=1; return a; }
+  if (kind === &#x27;box&#x27;) return a.map(()=&gt;1/(k*k));
+  if (kind === &#x27;gaussian&#x27;) { const sigma=Math.max(.5,k/6); let sum=0; for(let y=0;y&lt;k;y++)for(let x=0;x&lt;k;x++){const v=Math.exp(-((x-m)**2+(y-m)**2)/(2*sigma*sigma));a[y*k+x]=v;sum+=v;} return a.map(v=&gt;v/sum); }
+  if (k===1) return [kind===&#x27;sharpen&#x27;?1:0];
+  if (kind === &#x27;sharpen&#x27;) return a.map((_,i)=&gt;(i===m*k+m?2:0)-1/(k*k));
+  if (kind === &#x27;laplace&#x27;) return a.map((_,i)=&gt;i===m*k+m?-1:1/(k*k-1));
+  function binomial(n){const b=[1];for(let i=1;i&lt;=n;i++)b.push(b[i-1]*(n-i+1)/i);return b;}
+  const sm=binomial(k-1), b=binomial(k-2), d=sm.map((_,i)=&gt;(b[i-1]||0)-(b[i]||0));
+  for(let y=0;y&lt;k;y++)for(let x=0;x&lt;k;x++)a[y*k+x]=kind===&#x27;sobelx&#x27;?sm[y]*d[x]:d[y]*sm[x];
+  const total=a.reduce((s,v)=&gt;s+Math.max(v,0),0);return a.map(v=&gt;v/total);
+}
+function makePadding(w,h,k,s,mode,p){
+  if(mode===&#x27;same&#x27;){const pw=Math.max(0,(Math.ceil(w/s)-1)*s+k-w),ph=Math.max(0,(Math.ceil(h/s)-1)*s+k-h);return {l:Math.floor(pw/2),r:Math.ceil(pw/2),t:Math.floor(ph/2),b:Math.ceil(ph/2)};}
+  const n=mode===&#x27;valid&#x27;?0:p;return {l:n,r:n,t:n,b:n};
+}
+function extendImage(src,pad,border){
+  const w=src.w+pad.l+pad.r,h=src.h+pad.t+pad.b,a=new Float64Array(w*h);
+  const reflect=(v,n)=&gt;{if(n===1)return 0;const period=2*(n-1);v=((v%period)+period)%period;return v&lt;n?v:period-v;};
+  for(let y=0;y&lt;h;y++)for(let x=0;x&lt;w;x++){let sx=x-pad.l,sy=y-pad.t;if(sx&lt;0||sy&lt;0||sx&gt;=src.w||sy&gt;=src.h){if(border===&#x27;zero&#x27;)continue;if(border===&#x27;replicate&#x27;){sx=Math.max(0,Math.min(src.w-1,sx));sy=Math.max(0,Math.min(src.h-1,sy));}else{sx=reflect(sx,src.w);sy=reflect(sy,src.h);}}a[y*w+x]=src.a[sy*src.w+sx];}
+  return {w,h,a};
+}
+function correlate(src,weights,k,s,op,gain){
+  const w=Math.floor((src.w-k)/s)+1,h=Math.floor((src.h-k)/s)+1;if(w&lt;1||h&lt;1)throw Error(&#x27;Kernel exceeds padded input. Choose a smaller kernel or add padding.&#x27;);
+  const a=new Float64Array(w*h),used=weights.map((v,i)=&gt;gain*(op===&#x27;convolution&#x27;?weights[weights.length-1-i]:v));
+  for(let y=0;y&lt;h;y++)for(let x=0;x&lt;w;x++){let sum=0;for(let j=0;j&lt;k;j++)for(let i=0;i&lt;k;i++)sum+=src.a[(y*s+j)*src.w+x*s+i]*used[j*k+i];a[y*w+x]=sum;}
+  return {w,h,a,used};
+}
+function poolImage(src,mode,k,s){
+  if(mode===&#x27;none&#x27;)return {w:src.w,h:src.h,a:src.a.slice()};
+  const w=Math.floor((src.w-k)/s)+1,h=Math.floor((src.h-k)/s)+1;if(w&lt;1||h&lt;1)throw Error(&#x27;Pooling window exceeds feature map. Reduce pooling size or convolution stride.&#x27;);
+  const a=new Float64Array(w*h);for(let y=0;y&lt;h;y++)for(let x=0;x&lt;w;x++){let v=mode===&#x27;max&#x27;?-Infinity:0;for(let j=0;j&lt;k;j++)for(let i=0;i&lt;k;i++){const n=src.a[(y*s+j)*src.w+x*s+i];v=mode===&#x27;max&#x27;?Math.max(v,n):v+n;}a[y*w+x]=mode===&#x27;max&#x27;?v:v/(k*k);}return {w,h,a};
+}
+if(typeof module!==&#x27;undefined&#x27;)module.exports={kernelFor,makePadding,extendImage,correlate,poolImage};
+
+const root=document.getElementById(&#x27;cv-convolution-lab&#x27;),q=s=&gt;root.querySelector(s),id=s=&gt;document.getElementById(&#x27;cv-&#x27;+s);
+const names={identity:&#x27;Identity&#x27;,gaussian:&#x27;Gaussian&#x27;,box:&#x27;Mean&#x27;,sobelx:&#x27;Sobel X&#x27;,sobely:&#x27;Sobel Y&#x27;,laplace:&#x27;Laplacian&#x27;,sharpen:&#x27;Sharpen&#x27;,custom:&#x27;Custom&#x27;};
+const defaults={source:&#x27;photo&#x27;,k:3,op:&#x27;correlation&#x27;,stride:1,padding:&#x27;same&#x27;,p:1,border:&#x27;zero&#x27;,filters:1,active:0,activation:&#x27;none&#x27;,pool:&#x27;max&#x27;,pk:2,ps:2,display:&#x27;fixed&#x27;,kinds:[&#x27;gaussian&#x27;,&#x27;sobelx&#x27;,&#x27;sobely&#x27;,&#x27;laplace&#x27;],gains:[1,1,1,1],custom:[null,null,null,null]};
+let state=structuredClone(defaults),calc=null,pending=false;
+const photo=JSON.parse(document.getElementById(&#x27;cv-photo-data&#x27;).textContent),photoData=Float64Array.from(atob(photo.data),v=&gt;v.charCodeAt(0)/255);
+function sourceImage(){
+ if(state.source===&#x27;photo&#x27;)return {w:photo.w,h:photo.h,a:photoData};
+ const n=state.source===&#x27;shapes&#x27;?64:state.source===&#x27;tiny&#x27;?8:32,a=new Float64Array(n*n);
+ for(let y=0;y&lt;n;y++)for(let x=0;x&lt;n;x++){let v=0;if(state.source===&#x27;checker&#x27;)v=(Math.floor(x/4)+Math.floor(y/4))%2;
+ else if(state.source===&#x27;gradient&#x27;)v=x/(n-1);
+ else if(state.source===&#x27;tiny&#x27;)v=(y*n+x)/(n*n-1);
+ else{v=.12;if(x&gt;=8&amp;&amp;x&lt;=28&amp;&amp;y&gt;=10&amp;&amp;y&lt;=45)v=.8;if((x-45)**2+(y-35)**2&lt;12**2)v=1;if(Math.abs(y-x)&lt;2)v=.5;}a[y*n+x]=v;}
+ return {w:n,h:n,a};
+}
+function weights(i){return state.kinds[i]===&#x27;custom&#x27;&amp;&amp;state.custom[i]?.length===state.k*state.k?state.custom[i]:kernelFor(state.kinds[i],state.k);}
+function fmt(v){return Number.isFinite(v)?(Math.abs(v)&lt;.0000005?&#x27;0&#x27;:Number(v.toFixed(5)).toString()):&#x27;—&#x27;;}
+function extrema(map){let lo=Infinity,hi=-Infinity;for(const v of map.a){lo=Math.min(lo,v);hi=Math.max(hi,v);}return [lo,hi];}
+function paint(canvas,map,feature){
+ const native=document.createElement(&#x27;canvas&#x27;);native.width=map.w;native.height=map.h;const c=native.getContext(&#x27;2d&#x27;),pixels=c.createImageData(map.w,map.h);let lo=0,hi=1;
+ if(feature&amp;&amp;state.display===&#x27;signed&#x27;){lo=-1;hi=1;}if(feature&amp;&amp;state.display===&#x27;auto&#x27;)[lo,hi]=extrema(map);
+ for(let i=0;i&lt;map.a.length;i++){const t=hi===lo?.5:(map.a[i]-lo)/(hi-lo),v=Math.round(255*Math.max(0,Math.min(1,t)));pixels.data[i*4]=v;pixels.data[i*4+1]=v;pixels.data[i*4+2]=v;pixels.data[i*4+3]=255;}
+ c.putImageData(pixels,0,0);const scale=4;canvas.width=map.w*scale;canvas.height=map.h*scale;const cx=canvas.getContext(&#x27;2d&#x27;);cx.imageSmoothingEnabled=false;cx.drawImage(native,0,0,canvas.width,canvas.height);
+}
+function sync(){
+ const ac=q(&#x27;[data-c=&quot;active&quot;]&#x27;);ac.replaceChildren();for(let i=0;i&lt;state.filters;i++){const o=document.createElement(&#x27;option&#x27;);o.value=i;o.textContent=`Filter ${i+1} · ${names[state.kinds[i]]}`;ac.appendChild(o);}
+ root.querySelectorAll(&#x27;[data-c]&#x27;).forEach(el=&gt;el.value=state[el.dataset.c]);id(&#x27;kind&#x27;).value=state.kinds[state.active];id(&#x27;gain&#x27;).value=state.gains[state.active];id(&#x27;gain-value&#x27;).textContent=fmt(state.gains[state.active]);
+ q(&#x27;[data-c=&quot;p&quot;]&#x27;).disabled=state.padding!==&#x27;manual&#x27;;id(&#x27;p-value&#x27;).textContent=state.padding===&#x27;manual&#x27;?state.p:&#x27;Auto&#x27;;
+ for(const key of [&#x27;pk&#x27;,&#x27;ps&#x27;])q(`[data-c=&quot;${key}&quot;]`).disabled=state.pool===&#x27;none&#x27;;
+ id(&#x27;weights&#x27;).rows=state.k;const w=weights(state.active);id(&#x27;weights&#x27;).value=Array.from({length:state.k},(_,y)=&gt;w.slice(y*state.k,(y+1)*state.k).map(v=&gt;Number(v.toPrecision(9))).join(&#x27; &#x27;)).join(&#x27;\n&#x27;);
+}
+function stage(name,map,feature,channels){paint(id(name),map,feature);id(&#x27;shape-&#x27;+name).textContent=`${map.h} × ${map.w} × ${channels}`;const [lo,hi]=extrema(map);id(&#x27;range-&#x27;+name).textContent=`min ${fmt(lo)} · max ${fmt(hi)}`;}
+function draw(){
+ if(!calc)return;const {src,pad,padded,bank,acts,pools}=calc,conv=bank[state.active],act=acts[state.active],pooled=pools[state.active];
+ stage(&#x27;input&#x27;,src,false,1);stage(&#x27;padded&#x27;,padded,false,1);stage(&#x27;conv&#x27;,conv,true,state.filters);stage(&#x27;act&#x27;,act,true,state.filters);stage(&#x27;pooled&#x27;,pooled,true,state.filters);
+ id(&#x27;padding-detail&#x27;).textContent=`Padding L/R/T/B: ${pad.l}/${pad.r}/${pad.t}/${pad.b} · Activation: ${state.activation} · Pool padding: valid (0) · Selected filter: ${state.active+1}`;
+ const bankEl=id(&#x27;bank&#x27;);bankEl.replaceChildren();bankEl.hidden=state.filters===1;
+ if(state.filters&gt;1)bank.forEach((m,i)=&gt;{const div=document.createElement(&#x27;div&#x27;),b=document.createElement(&#x27;button&#x27;),c=document.createElement(&#x27;canvas&#x27;);b.className=&#x27;btn&#x27;;b.type=&#x27;button&#x27;;b.setAttribute(&#x27;aria-pressed&#x27;,String(i===state.active));b.textContent=`Filter ${i+1} · ${names[state.kinds[i]]}`;b.onclick=()=&gt;{state.active=i;sync();draw();save();};c.setAttribute(&#x27;role&#x27;,&#x27;img&#x27;);c.setAttribute(&#x27;aria-label&#x27;,`Convolution output of filter ${i+1}`);div.append(b,c);bankEl.appendChild(div);paint(c,m,true);});
+ root.dataset.outputShape=`${conv.h},${conv.w},${state.filters}`;root.dataset.poolShape=`${pooled.h},${pooled.w},${state.filters}`;
+}
+function recompute(){
+ try{const src=sourceImage(),pad=makePadding(src.w,src.h,state.k,state.stride,state.padding,state.p),padded=extendImage(src,pad,state.border),bank=[],acts=[],pools=[];
+ for(let i=0;i&lt;state.filters;i++){const conv=correlate(padded,weights(i),state.k,state.stride,state.op,state.gains[i]),act={w:conv.w,h:conv.h,a:Float64Array.from(conv.a,v=&gt;state.activation===&#x27;relu&#x27;?Math.max(0,v):v)};bank.push(conv);acts.push(act);pools.push(poolImage(act,state.pool,state.pk,state.ps));}
+ calc={src,pad,padded,bank,acts,pools};id(&#x27;error&#x27;).textContent=&#x27;&#x27;;q(&#x27;.cv-stages&#x27;).hidden=false;draw();
+ }catch(e){calc=null;id(&#x27;error&#x27;).textContent=e.message;q(&#x27;.cv-stages&#x27;).hidden=true;id(&#x27;padding-detail&#x27;).textContent=&#x27;&#x27;;id(&#x27;bank&#x27;).replaceChildren();root.dataset.outputShape=&#x27;invalid&#x27;;root.dataset.poolShape=&#x27;invalid&#x27;;}
+}
+function save(){const copy=structuredClone(state);try{window.openai?.setWidgetState?.({modelContent:{...copy,outputShape:root.dataset.outputShape,poolShape:root.dataset.poolShape},privateContent:null})?.catch(()=&gt;{});}catch{}}
+function restore(saved){if(!saved?.modelContent)return;const s=saved.modelContent;const next=structuredClone(defaults);for(const key of Object.keys(next)){if(s[key]!==undefined)next[key]=s[key];}const enumAllowed={source:[&#x27;photo&#x27;,&#x27;shapes&#x27;,&#x27;checker&#x27;,&#x27;gradient&#x27;,&#x27;tiny&#x27;],op:[&#x27;correlation&#x27;,&#x27;convolution&#x27;],padding:[&#x27;same&#x27;,&#x27;valid&#x27;,&#x27;manual&#x27;],border:[&#x27;zero&#x27;,&#x27;reflect&#x27;,&#x27;replicate&#x27;],activation:[&#x27;none&#x27;,&#x27;relu&#x27;],pool:[&#x27;none&#x27;,&#x27;max&#x27;,&#x27;average&#x27;],display:[&#x27;fixed&#x27;,&#x27;signed&#x27;,&#x27;auto&#x27;]};for(const [key,allowed]of Object.entries(enumAllowed))if(!allowed.includes(next[key]))next[key]=defaults[key];for(const [key,allowed]of Object.entries({k:[1,3,5,7,9],stride:[1,2,3,4],filters:[1,2,4],pk:[2,3,4],ps:[1,2,3,4]}))if(!allowed.includes(next[key]))next[key]=defaults[key];for(const key of [&#x27;p&#x27;,&#x27;active&#x27;])next[key]=Math.max(0,Math.floor(Number(next[key])||0));next.p=Math.min(8,next.p);next.active=Math.min(next.filters-1,next.active);next.kinds=defaults.kinds.map((d,i)=&gt;names[next.kinds?.[i]]?next.kinds[i]:d);next.gains=defaults.gains.map((d,i)=&gt;Number.isFinite(next.gains?.[i])?Math.max(0,Math.min(3,next.gains[i])):d);next.custom=defaults.custom.map((d,i)=&gt;Array.isArray(next.custom?.[i])&amp;&amp;next.custom[i].length===next.k**2&amp;&amp;next.custom[i].every(v=&gt;Number.isFinite(v)&amp;&amp;Math.abs(v)&lt;=100)?next.custom[i]:null);state=next;}
+root.querySelectorAll(&#x27;[data-c]&#x27;).forEach(el=&gt;el.addEventListener(el.type===&#x27;range&#x27;?&#x27;input&#x27;:&#x27;change&#x27;,()=&gt;{const key=el.dataset.c;state[key]=typeof defaults[key]===&#x27;number&#x27;?Number(el.value):el.value;if(key===&#x27;filters&#x27;)state.active=Math.min(state.active,state.filters-1);if(key===&#x27;k&#x27;)state.custom=[null,null,null,null];if(key===&#x27;display&#x27;){draw();save();return;}sync();recompute();save();}));
+id(&#x27;kind&#x27;).onchange=()=&gt;{state.kinds[state.active]=id(&#x27;kind&#x27;).value;sync();recompute();save();};
+id(&#x27;gain&#x27;).oninput=()=&gt;{state.gains[state.active]=Number(id(&#x27;gain&#x27;).value);id(&#x27;gain-value&#x27;).textContent=fmt(state.gains[state.active]);recompute();save();};
+id(&#x27;weights&#x27;).onchange=()=&gt;{const values=id(&#x27;weights&#x27;).value.trim().split(/[\s,]+/).map(Number);if(values.length!==state.k*state.k||values.some(v=&gt;!Number.isFinite(v)||Math.abs(v)&gt;100)){id(&#x27;error&#x27;).textContent=`Enter exactly ${state.k*state.k} finite numbers between −100 and 100. Current output retains the last valid kernel.`;return;}state.custom[state.active]=values;state.kinds[state.active]=&#x27;custom&#x27;;sync();recompute();save();};
+restore(window.openai?.widgetState);sync();recompute();window.addEventListener(&#x27;openai:set_globals&#x27;,e=&gt;{if(e.detail?.globals?.widgetState){restore(e.detail.globals.widgetState);sync();recompute();}});
+new MutationObserver(()=&gt;{if(pending)return;pending=true;requestAnimationFrame(()=&gt;{pending=false;draw();});}).observe(document.documentElement,{attributes:true,attributeFilter:[&#x27;class&#x27;,&#x27;style&#x27;,&#x27;data-theme&#x27;]});
+})();
+&lt;/script&gt;
+
+
+
+&lt;script&gt;
+(() =&gt; {
+  if (window.FloatingUIDOM == null) {
+    return;
+  }
+  const { autoUpdate, computePosition, flip, offset, shift, size } =
+    window.FloatingUIDOM;
+  const tooltipPlacements = new Set([&quot;top&quot;, &quot;right&quot;, &quot;bottom&quot;, &quot;left&quot;]);
+  const tooltipId = `codex-visualization-tooltip-${
+    window.crypto?.randomUUID?.() ?? Date.now().toString(36)
+  }`;
+  const tooltipGap = 5;
+  const hoverDelay = 700;
+  const skipDelay = 300;
+  let activeTrigger = null;
+  let pendingTrigger = null;
+  let tooltip = null;
+  let openTimeout = null;
+  let autoUpdateCleanup = null;
+  let positionRequest = 0;
+  let skipDelayUntil = 0;
+  let lastPointerWasTouch = false;
+  let pinnedByTouch = false;
+
+  const getTrigger = (event) =&gt; {
+    for (const target of event.composedPath()) {
+      if (target?.nodeType === Node.ELEMENT_NODE) {
+        const trigger = target.closest(&quot;[data-tooltip]&quot;);
+        if (trigger) return trigger;
+      }
+    }
+    return null;
+  };
+  const containsTarget = (trigger, target) =&gt;
+    target?.nodeType != null &amp;&amp; trigger.contains(target);
+  const getContent = (trigger) =&gt;
+    trigger.getAttribute(&quot;data-tooltip&quot;)?.trim() ?? &quot;&quot;;
+  const getPlacement = (trigger) =&gt; {
+    const placement = trigger.getAttribute(&quot;data-tooltip-placement&quot;);
+    return tooltipPlacements.has(placement) ? placement : &quot;top&quot;;
+  };
+  const getTooltip = () =&gt; {
+    if (tooltip == null) {
+      tooltip = document.createElement(&quot;div&quot;);
+      tooltip.id = tooltipId;
+      tooltip.className = &quot;tooltip&quot;;
+      tooltip.setAttribute(&quot;role&quot;, &quot;tooltip&quot;);
+    }
+    return tooltip;
+  };
+  const setDescribedBy = (trigger, described) =&gt; {
+    const ids = new Set(
+      (trigger.getAttribute(&quot;aria-describedby&quot;) ?? &quot;&quot;)
+        .split(/\s+/)
+        .filter(Boolean),
+    );
+    if (described) {
+      ids.add(tooltipId);
+    } else {
+      ids.delete(tooltipId);
+    }
+    if (ids.size === 0) {
+      trigger.removeAttribute(&quot;aria-describedby&quot;);
+    } else {
+      trigger.setAttribute(&quot;aria-describedby&quot;, [...ids].join(&quot; &quot;));
+    }
+  };
+  const clearOpenTimeout = () =&gt; {
+    if (openTimeout != null) {
+      window.clearTimeout(openTimeout);
+      openTimeout = null;
+    }
+    pendingTrigger = null;
+  };
+  const closeTooltip = (activateSkipDelay = true) =&gt; {
+    clearOpenTimeout();
+    pinnedByTouch = false;
+    positionRequest += 1;
+    autoUpdateCleanup?.();
+    autoUpdateCleanup = null;
+    if (activeTrigger == null) {
+      return;
+    }
+    setDescribedBy(activeTrigger, false);
+    activeTrigger = null;
+    tooltip?.remove();
+    if (activateSkipDelay) {
+      skipDelayUntil = Date.now() + skipDelay;
+    }
+  };
+  const updatePosition = (trigger, floating) =&gt; {
+    const request = ++positionRequest;
+    void computePosition(trigger, floating, {
+      middleware: [
+        offset(tooltipGap),
+        flip({ padding: tooltipGap }),
+        shift({ padding: tooltipGap }),
+        size({
+          padding: tooltipGap,
+          apply({ availableHeight, availableWidth, elements }) {
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-width&quot;,
+              `${Math.max(0, availableWidth)}px`,
+            );
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-height&quot;,
+              `${Math.max(0, availableHeight)}px`,
+            );
+          },
+        }),
+      ],
+      placement: getPlacement(trigger),
+      strategy: &quot;fixed&quot;,
+    })
+      .then(({ x, y }) =&gt; {
+        if (activeTrigger !== trigger || request !== positionRequest) {
+          return;
+        }
+        const scale = window.devicePixelRatio || 1;
+        floating.style.transform = `translate(${Math.round(x * scale) / scale}px, ${Math.round(y * scale) / scale}px)`;
+        floating.style.visibility = &quot;visible&quot;;
+      })
+      .catch(() =&gt; {
+        if (activeTrigger === trigger &amp;&amp; request === positionRequest) {
+          closeTooltip(false);
+        }
+      });
+  };
+  const openTooltip = (trigger) =&gt; {
+    const content = getContent(trigger);
+    if (!trigger.isConnected || content.length === 0) {
+      return;
+    }
+    clearOpenTimeout();
+    if (activeTrigger === trigger) {
+      return;
+    }
+    closeTooltip();
+    const floating = getTooltip();
+    floating.textContent = content;
+    floating.style.visibility = &quot;hidden&quot;;
+    floating.style.transform = &quot;translate(0, 0)&quot;;
+    document.body.appendChild(floating);
+    activeTrigger = trigger;
+    setDescribedBy(trigger, true);
+    autoUpdateCleanup = autoUpdate(trigger, floating, () =&gt; {
+      updatePosition(trigger, floating);
+    });
+  };
+  const requestOpen = (trigger, immediate = false) =&gt; {
+    if (
+      getContent(trigger).length === 0 ||
+      activeTrigger === trigger ||
+      pendingTrigger === trigger
+    ) {
+      return;
+    }
+    clearOpenTimeout();
+    pendingTrigger = trigger;
+    const delay =
+      immediate || activeTrigger != null || Date.now() &lt; skipDelayUntil
+        ? 0
+        : hoverDelay;
+    if (delay === 0) {
+      openTooltip(trigger);
+      return;
+    }
+    openTimeout = window.setTimeout(() =&gt; {
+      openTimeout = null;
+      pendingTrigger = null;
+      openTooltip(trigger);
+    }, delay);
+  };
+  const handlePointerOpen = (event) =&gt; {
+    if (event.pointerType === &quot;touch&quot;) {
+      return;
+    }
+    const trigger = getTrigger(event);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    requestOpen(trigger);
+  };
+  const handlePointer = (event) =&gt; {
+    lastPointerWasTouch =
+      event.type === &quot;pointerdown&quot; &amp;&amp; event.pointerType === &quot;touch&quot;;
+  };
+  const handleTouchClick = (event) =&gt; {
+    const isTouch = event.pointerType === &quot;touch&quot; || lastPointerWasTouch;
+    lastPointerWasTouch = false;
+    if (!isTouch || event.detail === 0) {
+      return;
+    }
+    const trigger = getTrigger(event);
+    if (
+      trigger == null ||
+      !trigger.isConnected ||
+      getContent(trigger).length === 0 ||
+      (pinnedByTouch &amp;&amp; activeTrigger === trigger)
+    ) {
+      if (pinnedByTouch) {
+        closeTooltip();
+      }
+      return;
+    }
+    openTooltip(trigger);
+    pinnedByTouch = activeTrigger === trigger;
+    window.setTimeout(() =&gt; {
+      if (activeTrigger === trigger &amp;&amp; !trigger.isConnected) {
+        closeTooltip(false);
+      }
+    }, 0);
+  };
+  const handleLeave = (event) =&gt; {
+    if (pinnedByTouch) {
+      return;
+    }
+    const trigger = getTrigger(event);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const handleFocusIn = (event) =&gt; {
+    const trigger = getTrigger(event);
+    if (trigger?.matches(&quot;:focus-visible&quot;)) {
+      requestOpen(trigger, true);
+    }
+  };
+  const handleKeyDown = (event) =&gt; {
+    if (event.key === &quot;Escape&quot;) {
+      closeTooltip();
+    }
+  };
+  const handleContextMenu = (event) =&gt; {
+    lastPointerWasTouch = false;
+    const trigger = getTrigger(event);
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const handlers = {
+    pointerover: handlePointerOpen,
+    pointerdown: handlePointer,
+    pointercancel: handlePointer,
+    click: handleTouchClick,
+    pointerout: handleLeave,
+    focusin: handleFocusIn,
+    focusout: handleLeave,
+    keydown: handleKeyDown,
+    contextmenu: handleContextMenu,
+  };
+  const roots = new Map();
+  const handledEvents = new WeakSet();
+  const handleEvent = (event) =&gt; {
+    if (handledEvents.has(event)) return;
+    handledEvents.add(event);
+    handlers[event.type](event);
+  };
+  const discoverRoots = (node) =&gt; {
+    if (node.shadowRoot) listen(node.shadowRoot);
+    for (const element of node.querySelectorAll(&quot;*&quot;)) {
+      if (element.shadowRoot) listen(element.shadowRoot);
+    }
+  };
+  const listen = (root) =&gt; {
+    if (roots.has(root)) return;
+    for (const type of Object.keys(handlers)) root.addEventListener(type, handleEvent);
+    const observer = new window.MutationObserver((records) =&gt; {
+      for (const { addedNodes } of records) {
+        for (const node of addedNodes) {
+          if (node.nodeType === Node.ELEMENT_NODE) discoverRoots(node);
+        }
+      }
+      for (const [root, cleanup] of roots) {
+        if (root.host &amp;&amp; !root.host.isConnected) {
+          cleanup();
+          roots.delete(root);
+        }
+      }
+      if (activeTrigger &amp;&amp; !activeTrigger.isConnected) closeTooltip(false);
+    });
+    observer.observe(root, { childList: true, subtree: true });
+    roots.set(root, () =&gt; {
+      observer.disconnect();
+      for (const type of Object.keys(handlers)) root.removeEventListener(type, handleEvent);
+    });
+    discoverRoots(root);
+  };
+  const destroy = () =&gt; {
+    closeTooltip(false);
+    lastPointerWasTouch = false;
+    for (const cleanup of roots.values()) cleanup();
+    roots.clear();
+    tooltip = null;
+  };
+
+  // Events between children of one shadow root never reach the document.
+  listen(document);
+  window.addEventListener(&quot;pagehide&quot;, destroy, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-tabs&quot;&gt;
+(() =&gt; {
+  const selector = &#x27;.nav[role=&quot;tablist&quot;] [role=&quot;tab&quot;]&#x27;;
+  const disabled = &#x27;:disabled,[aria-disabled=&quot;true&quot;]&#x27;;
+  const selectTab = (selected) =&gt; {
+    const panelId = selected.getAttribute(&quot;aria-controls&quot;);
+    for (const tab of selected.closest(&#x27;[role=&quot;tablist&quot;]&#x27;).querySelectorAll(&#x27;[role=&quot;tab&quot;]&#x27;)) {
+      const active = tab === selected;
+      tab.classList.toggle(&quot;active&quot;, active);
+      tab.setAttribute(&quot;aria-selected&quot;, String(active));
+      const id = tab.getAttribute(&quot;aria-controls&quot;);
+      const panel = id &amp;&amp; document.getElementById(id);
+      if (panel != null) {
+        panel.hidden = id !== panelId;
+        if (!panel.hidden &amp;&amp; selected.id) {
+          panel.setAttribute(&quot;aria-labelledby&quot;, selected.id);
+        }
+      }
+    }
+  };
+  const interact = (event) =&gt; {
+    const tab = event.target?.closest?.(selector);
+    if (event.defaultPrevented || tab == null || tab.matches(disabled)) {
+      return;
+    }
+    if (event.type === &quot;click&quot;) {
+      selectTab(tab);
+      return;
+    }
+    const tabs = Array.from(
+      tab.closest(&#x27;[role=&quot;tablist&quot;]&#x27;).querySelectorAll(&#x27;[role=&quot;tab&quot;]&#x27;),
+    ).filter((candidate) =&gt; !candidate.matches(disabled));
+    const current = tabs.indexOf(tab);
+    let next;
+    if (event.key === &quot;ArrowRight&quot; || event.key === &quot;ArrowDown&quot;) {
+      next = (current + 1) % tabs.length;
+    } else if (event.key === &quot;ArrowLeft&quot; || event.key === &quot;ArrowUp&quot;) {
+      next = (current + tabs.length - 1) % tabs.length;
+    } else if (event.key === &quot;Home&quot;) {
+      next = 0;
+    } else if (event.key === &quot;End&quot;) {
+      next = tabs.length - 1;
+    } else {
+      return;
+    }
+    event.preventDefault();
+    tabs[next].focus();
+    selectTab(tabs[next]);
+  };
+
+  for (const list of document.querySelectorAll(&#x27;.nav[role=&quot;tablist&quot;]&#x27;)) {
+    const selected =
+      list.querySelector(&#x27;[role=&quot;tab&quot;][aria-selected=&quot;true&quot;]&#x27;) ??
+      list.querySelector(&#x27;[role=&quot;tab&quot;].active&#x27;) ??
+      list.querySelector(&#x27;[role=&quot;tab&quot;]&#x27;);
+    if (selected != null) {
+      selectTab(selected);
+    }
+  }
+  document.addEventListener(&quot;click&quot;, interact);
+  document.addEventListener(&quot;keydown&quot;, interact);
+  window.addEventListener(&quot;pagehide&quot;, () =&gt; {
+    document.removeEventListener(&quot;click&quot;, interact);
+    document.removeEventListener(&quot;keydown&quot;, interact);
+  }, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-carousel&quot;&gt;
+  (() =&gt; {
+    for (const root of document.querySelectorAll(&quot;.viz-carousel&quot;)) {
+      const panels = Array.from(
+        root.querySelectorAll(&quot;:scope &gt; [data-variant]&quot;),
+      );
+      if (panels.length === 0) {
+        continue;
+      }
+      root.setAttribute(&quot;role&quot;, &quot;group&quot;);
+      panels.forEach((panel, index) =&gt; {
+        panel.hidden = index !== 0;
+        panel.setAttribute(&quot;role&quot;, &quot;group&quot;);
+        if (!panel.hasAttribute(&quot;aria-label&quot;)) {
+          panel.setAttribute(&quot;aria-label&quot;, panel.dataset.variant);
+        }
+      });
+      root.dataset.activeVariant = panels[0].dataset.variant;
+      if (panels.length === 1) {
+        continue;
+      }
+
+      const controls = document.createElement(&quot;div&quot;);
+      controls.className = &quot;viz-carousel-controls&quot;;
+      // Portable copy of the settings dropdown&#x27;s legacy glyph; no 14px icon-package preset matches it.
+      // https://github.com/openai/openai/blob/master/codex/codex-apps/webview/src/icons/chevron.svg
+      controls.innerHTML = `
+      &lt;button type=&quot;button&quot; class=&quot;viz-carousel-previous cursor-interaction&quot;&gt;&lt;i data-lucide=&quot;chevron-left&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;
+      &lt;details class=&quot;viz-carousel-picker&quot;&gt;
+        &lt;summary class=&quot;cursor-interaction&quot;&gt;
+          &lt;span class=&quot;viz-carousel-count tabular-nums&quot;&gt;&lt;/span&gt;
+          &lt;span class=&quot;viz-carousel-name&quot;&gt;&lt;/span&gt;
+          &lt;svg class=&quot;viz-carousel-caret&quot; width=&quot;14&quot; height=&quot;14&quot; viewBox=&quot;0 0 20 21&quot; fill=&quot;none&quot; aria-hidden=&quot;true&quot; focusable=&quot;false&quot;&gt;
+            &lt;path d=&quot;M15.2793 7.71101C15.539 7.45131 15.961 7.45131 16.2207 7.71101C16.4804 7.97071 16.4804 8.39272 16.2207 8.65242L10.4707 14.4024C10.211 14.6621 9.78902 14.6621 9.52932 14.4024L3.77932 8.65242L3.69436 8.54792C3.52385 8.28979 3.55205 7.93828 3.77932 7.71101C4.00659 7.48374 4.3581 7.45554 4.61623 7.62605L4.72073 7.71101L10 12.9903L15.2793 7.71101Z&quot; fill=&quot;currentColor&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;0.6&quot; /&gt;
+          &lt;/svg&gt;
+        &lt;/summary&gt;
+        &lt;div class=&quot;viz-carousel-options&quot;&gt;&lt;/div&gt;
+      &lt;/details&gt;
+      &lt;button type=&quot;button&quot; class=&quot;viz-carousel-next cursor-interaction&quot;&gt;&lt;i data-lucide=&quot;chevron-right&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;`;
+      const previous = controls.querySelector(&quot;.viz-carousel-previous&quot;);
+      const next = controls.querySelector(&quot;.viz-carousel-next&quot;);
+      const picker = controls.querySelector(&quot;.viz-carousel-picker&quot;);
+      const summary = picker.querySelector(&quot;summary&quot;);
+      const count = controls.querySelector(&quot;.viz-carousel-count&quot;);
+      const name = controls.querySelector(&quot;.viz-carousel-name&quot;);
+      const options = controls.querySelector(&quot;.viz-carousel-options&quot;);
+      const status = document.createElement(&quot;span&quot;);
+      status.className = &quot;sr-only&quot;;
+      status.setAttribute(&quot;role&quot;, &quot;status&quot;);
+      status.setAttribute(&quot;aria-live&quot;, &quot;polite&quot;);
+      status.setAttribute(&quot;aria-atomic&quot;, &quot;true&quot;);
+      previous.setAttribute(
+        &quot;aria-label&quot;,
+        root.dataset.previousLabel ?? &quot;Previous variant&quot;,
+      );
+      next.setAttribute(&quot;aria-label&quot;, root.dataset.nextLabel ?? &quot;Next variant&quot;);
+
+      let active = 0;
+      let mousePointerId = null;
+      let summaryPointerHandled = false;
+      summary.addEventListener(&quot;pointerdown&quot;, (event) =&gt; {
+        summaryPointerHandled =
+          event.pointerType === &quot;mouse&quot; &amp;&amp; event.button === 0 &amp;&amp; !event.ctrlKey;
+        if (!summaryPointerHandled) {
+          return;
+        }
+        event.preventDefault();
+        summary.focus({ preventScroll: true });
+        picker.open = !picker.open;
+        mousePointerId = picker.open ? event.pointerId : null;
+      });
+      summary.addEventListener(&quot;click&quot;, (event) =&gt; {
+        if (summaryPointerHandled &amp;&amp; event.detail &gt; 0) {
+          event.preventDefault();
+        }
+      });
+      const choices = panels.map((panel, index) =&gt; {
+        const choice = document.createElement(&quot;button&quot;);
+        choice.type = &quot;button&quot;;
+        choice.className = &quot;cursor-interaction&quot;;
+        choice.textContent = panel.dataset.variant;
+        choice.addEventListener(&quot;click&quot;, () =&gt; {
+          select(index);
+          summary.focus();
+        });
+        choice.addEventListener(&quot;pointerup&quot;, (event) =&gt; {
+          if (
+            picker.open &amp;&amp;
+            event.pointerType === &quot;mouse&quot; &amp;&amp;
+            event.button === 0 &amp;&amp;
+            event.pointerId === mousePointerId
+          ) {
+            choice.click();
+          }
+        });
+        options.appendChild(choice);
+        return choice;
+      });
+      const select = (index) =&gt; {
+        const changed = active !== index;
+        active = index;
+        panels.forEach((panel, position) =&gt; {
+          panel.hidden = position !== active;
+          choices[position].setAttribute(
+            &quot;aria-current&quot;,
+            String(position === active),
+          );
+        });
+        root.dataset.activeVariant = panels[active].dataset.variant;
+        count.textContent = `${active + 1} / ${panels.length}`;
+        name.textContent = panels[active].dataset.variant;
+        picker.open = false;
+        mousePointerId = null;
+        if (changed) {
+          status.textContent = `${count.textContent}: ${name.textContent}`;
+        }
+      };
+      previous.addEventListener(&quot;click&quot;, () =&gt;
+        select((active + panels.length - 1) % panels.length),
+      );
+      next.addEventListener(&quot;click&quot;, () =&gt;
+        select((active + 1) % panels.length),
+      );
+      picker.addEventListener(&quot;keydown&quot;, (event) =&gt; {
+        if (event.key === &quot;Escape&quot; &amp;&amp; picker.open) {
+          event.preventDefault();
+          picker.open = false;
+          mousePointerId = null;
+          summary.focus();
+          return;
+        }
+        if (event.altKey || event.ctrlKey || event.metaKey) {
+          return;
+        }
+        const index = choices.indexOf(document.activeElement);
+        let nextIndex;
+        if (event.key === &quot;ArrowDown&quot;) {
+          nextIndex = index &lt; 0 ? active : (index + 1) % choices.length;
+        } else if (event.key === &quot;ArrowUp&quot;) {
+          nextIndex = index &lt; 0 ? active : (index + choices.length - 1) % choices.length;
+        } else if (picker.open &amp;&amp; event.key === &quot;Home&quot;) {
+          nextIndex = 0;
+        } else if (picker.open &amp;&amp; event.key === &quot;End&quot;) {
+          nextIndex = choices.length - 1;
+        } else {
+          return;
+        }
+        event.preventDefault();
+        picker.open = true;
+        choices[nextIndex].focus();
+      });
+      picker.addEventListener(&quot;focusout&quot;, (event) =&gt; {
+        if (!picker.contains(event.relatedTarget)) {
+          picker.open = false;
+          mousePointerId = null;
+        }
+      });
+      const dismiss = (event) =&gt; {
+        if (!summary.contains(event.target)) {
+          mousePointerId = null;
+        }
+        if (!picker.contains(event.target)) {
+          picker.open = false;
+        }
+      };
+      const endPointerSelection = () =&gt; {
+        mousePointerId = null;
+      };
+      const sizePicker = () =&gt; {
+        root.style.setProperty(
+          &quot;--viz-carousel-picker-height&quot;,
+          `${picker.open ? options.offsetHeight : 0}px`,
+        );
+      };
+      picker.addEventListener(&quot;toggle&quot;, sizePicker);
+      window.addEventListener(&quot;resize&quot;, sizePicker);
+      document.addEventListener(&quot;pointerdown&quot;, dismiss);
+      document.addEventListener(&quot;pointerup&quot;, endPointerSelection);
+      document.addEventListener(&quot;pointercancel&quot;, endPointerSelection);
+      window.addEventListener(&quot;blur&quot;, endPointerSelection);
+      window.addEventListener(
+        &quot;pagehide&quot;,
+        () =&gt; {
+          document.removeEventListener(&quot;pointerdown&quot;, dismiss);
+          document.removeEventListener(&quot;pointerup&quot;, endPointerSelection);
+          document.removeEventListener(&quot;pointercancel&quot;, endPointerSelection);
+          window.removeEventListener(&quot;blur&quot;, endPointerSelection);
+          window.removeEventListener(&quot;resize&quot;, sizePicker);
+        },
+        { once: true },
+      );
+      root.append(controls, status);
+      select(0);
+    }
+  })();
+&lt;/script&gt;
+
+&lt;script&gt;
+(() =&gt; {
+  const initialize = () =&gt; {
+    globalThis.lucide?.createIcons({ attrs: { width: 16, height: 16 } });
+  };
+  if (globalThis.lucide != null) {
+    initialize();
+    return;
+  }
+  document
+    .getElementById(&quot;codex-visualization-lucide&quot;)
+    ?.addEventListener(&quot;load&quot;, initialize, { once: true });
+})();
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+
+<script>(() => {
+  const frame = document.getElementById("codex-visualization");
+  if (!(frame instanceof HTMLIFrameElement)) {
+    return;
+  }
+  const isShare = document.documentElement.classList.contains(
+    "visualization-share-root",
+  );
+  let viewportHeight = globalThis.innerHeight;
+  let sizeFingerprint = null;
+  let sizeWriteTimeout;
+  let lastSize = null;
+  let pendingSize = null;
+  const storageKey = `codex:visualization-widget-state-v2:${JSON.stringify([
+    globalThis.location.pathname,
+    globalThis.location.search,
+  ])}`;
+  const sizeStorageKey = `${storageKey}:share-size-v1`;
+  const parseState = (serializedState) => {
+    if (
+      typeof serializedState !== "string" ||
+      new TextEncoder().encode(serializedState).length > 16 * 1024
+    ) {
+      throw new TypeError(
+        "Widget state must be a JSON object of at most 16 KiB",
+      );
+    }
+    /** @type {unknown} */
+    const state = JSON.parse(serializedState);
+    if (
+      state == null ||
+      typeof state !== "object" ||
+      Array.isArray(state) ||
+      ("imageIds" in state &&
+        (!Array.isArray(state.imageIds) || state.imageIds.length > 0))
+    ) {
+      throw new TypeError("Widget state must be a JSON object");
+    }
+    const storedState = { modelContent: null, privateContent: null, ...state };
+    const canonicalState = JSON.stringify(
+      storedState,
+      (_key, /** @type {unknown} */ value) => {
+        if (typeof value === "number" && !Number.isFinite(value)) {
+          throw new TypeError("Widget state must contain finite numbers");
+        }
+        return value;
+      },
+    );
+    if (new TextEncoder().encode(canonicalState).length > 16 * 1024) {
+      throw new TypeError(
+        "Widget state must be a JSON object of at most 16 KiB",
+      );
+    }
+    return storedState;
+  };
+  let storage = null;
+  let state = null;
+  try {
+    const localStorage = globalThis.localStorage;
+    const probeKey = `${storageKey}:probe`;
+    localStorage.setItem(probeKey, "1");
+    localStorage.removeItem(probeKey);
+    storage = localStorage;
+    const savedState = storage.getItem(storageKey);
+    if (savedState != null) {
+      try {
+        state = parseState(savedState);
+      } catch {
+        // Invalid saved state does not disable future writes.
+      }
+    }
+  } catch {
+    storage = null;
+  }
+  const persistSize = () => {
+    globalThis.clearTimeout(sizeWriteTimeout);
+    if (pendingSize == null) {
+      return;
+    }
+    try {
+      storage?.setItem(sizeStorageKey, pendingSize);
+    } catch {
+      // A denied or full cache must not affect the visualization.
+    }
+    pendingSize = null;
+  };
+  if (isShare) {
+    globalThis.addEventListener("pagehide", persistSize);
+  }
+  const initialGlobals = {
+    widgetState: state,
+    statePersistence: storage == null ? "none" : "local",
+  };
+
+  const channel = new MessageChannel();
+  channel.port1.addEventListener("message", (event) => {
+    const data = event.data;
+    if (typeof data !== "object" || data == null) {
+      return;
+    }
+    if (data.type === "widget-state-write") {
+      if (!Number.isSafeInteger(data.id) || data.id <= 0) {
+        return;
+      }
+      let ok = false;
+      try {
+        if (storage != null) {
+          const state = parseState(data.state);
+          storage.setItem(storageKey, JSON.stringify(state));
+          ok = true;
+        }
+      } catch {
+        // Storage denial, quota limits, and invalid state return a failed receipt.
+      }
+      channel.port1.postMessage({
+        type: "widget-state-result",
+        id: data.id,
+        ok,
+      });
+      return;
+    }
+    if (data.type === "height") {
+      const height = data.height;
+      if (
+        typeof height !== "number" ||
+        !Number.isFinite(height) ||
+        height < 0
+      ) {
+        return;
+      }
+      if (height <= 10_000) {
+        const width = isShare && storage != null ? frame.clientWidth : null;
+        frame.style.height = Math.ceil(height) + "px";
+        if (isShare && storage != null) {
+          const size = JSON.stringify({
+            fingerprint: sizeFingerprint,
+            width,
+            viewportHeight: globalThis.innerHeight,
+            dark: globalThis.matchMedia("(prefers-color-scheme: dark)").matches,
+            scale: globalThis.devicePixelRatio,
+            height: Math.ceil(height),
+          });
+          if (size !== lastSize) {
+            lastSize = size;
+            pendingSize = size;
+            globalThis.clearTimeout(sizeWriteTimeout);
+            sizeWriteTimeout = globalThis.setTimeout(persistSize, 100);
+          }
+        }
+      }
+      if (isShare) {
+        // Keep unusually tall content accessible without accepting an unbounded height.
+        if (height > 10_000 && Number.parseFloat(frame.style.height) === 0) {
+          frame.style.removeProperty("height");
+        }
+        frame.scrolling = height > 10_000 ? "auto" : "no";
+        document.documentElement.classList.add("visualization-share-ready");
+      }
+      return;
+    }
+    if (data.type === "scroll-to") {
+      const top = data.top;
+      if (
+        typeof top === "number" &&
+        Number.isFinite(top) &&
+        top >= 0 &&
+        globalThis.navigator.userActivation?.isActive === true
+      ) {
+        globalThis.scrollTo({
+          top: Math.ceil(
+            globalThis.scrollY + frame.getBoundingClientRect().top + top,
+          ),
+        });
+      }
+      return;
+    }
+    if (data.type === "open-external") {
+      const rawHref = data.href;
+      if (typeof rawHref !== "string") {
+        return;
+      }
+      let href;
+      try {
+        const url = new URL(rawHref, document.baseURI);
+        if (url.protocol !== "https:") {
+          return;
+        }
+        href = url.href;
+      } catch {
+        return;
+      }
+      if (globalThis.navigator.userActivation?.isActive === true) {
+        const anchor = document.createElement("a");
+        anchor.href = href;
+        anchor.rel = "noopener noreferrer";
+        anchor.target = "_blank";
+        document.body.appendChild(anchor);
+        anchor.click();
+        anchor.remove();
+      }
+      return;
+    }
+    if (data.type === "follow-up") {
+      const prompt = data.prompt;
+      if (
+        typeof prompt !== "string" ||
+        globalThis.navigator.userActivation?.isActive !== true
+      ) {
+        return;
+      }
+      const title = data.title;
+      globalThis.prompt(typeof title === "string" ? title : prompt, prompt);
+    }
+  });
+  channel.port1.start();
+  const srcdoc = frame.dataset.srcdoc;
+  if (srcdoc == null) {
+    return;
+  }
+  globalThis.addEventListener("resize", () => {
+    const height = Number.parseFloat(frame.style.height);
+    if (!isShare && (!Number.isFinite(height) || height <= viewportHeight)) {
+      frame.style.removeProperty("height");
+    }
+    viewportHeight = globalThis.innerHeight;
+    channel.port1.postMessage({ type: "measure" });
+  });
+  frame.addEventListener(
+    "load",
+    () => {
+      frame.contentWindow?.postMessage(
+        { type: "codex-visualization-initialize" },
+        "*",
+        [channel.port2],
+      );
+    },
+    { once: true },
+  );
+  // Match the trusted bootstrap element, not the same text in an authored title.
+  const frameHtml = srcdoc.replace(
+    '<script type="application/json" id="codex-visualization-widget-state">__CODEX_VISUALIZATION_WIDGET_STATE__<\/script>',
+    () =>
+      '<script type="application/json" id="codex-visualization-widget-state">' +
+      JSON.stringify(initialGlobals).replaceAll("<", "\\u003c") +
+      "<\/script>",
+  );
+  if (isShare && storage != null) {
+    // Fingerprint the rendered document, including restored widget state, without
+    // storing its content. This is a layout cache, not a security identity.
+    let hash = 5381;
+    for (let index = 0; index < frameHtml.length; index += 1) {
+      hash = (hash * 33 + frameHtml.charCodeAt(index)) % 4_294_967_296;
+    }
+    sizeFingerprint = hash.toString(36);
+    try {
+      const size = JSON.parse(storage.getItem(sizeStorageKey) ?? "null");
+      if (
+        size?.fingerprint === sizeFingerprint &&
+        size.width === frame.clientWidth &&
+        size.viewportHeight === globalThis.innerHeight &&
+        size.dark ===
+          globalThis.matchMedia("(prefers-color-scheme: dark)").matches &&
+        size.scale === globalThis.devicePixelRatio &&
+        typeof size.height === "number" &&
+        Number.isFinite(size.height) &&
+        size.height >= 0 &&
+        size.height <= 10_000
+      ) {
+        frame.style.height = size.height + "px";
+      }
+    } catch {
+      // Ignore missing or invalid cache entries and measure the live frame.
+    }
+  }
+  frame.srcdoc = frameHtml;
+  delete frame.dataset.srcdoc;
+})();
+</script>
+</body>
+</html>
